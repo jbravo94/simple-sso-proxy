@@ -1,5 +1,8 @@
 package dev.heinzl.simplessoproxy;
 
+import java.net.URL;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,12 +14,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import groovy.util.GroovyScriptEngine;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
 @EnableConfigurationProperties(UriConfiguration.class)
 @RestController
 public class SimpleSsoProxyApplication {
+
+	public GroovyScriptEngine groovyScriptEngine = new GroovyScriptEngine(new URL[] {});
 
 	public static void main(String[] args) {
 		SpringApplication.run(SimpleSsoProxyApplication.class, args);
