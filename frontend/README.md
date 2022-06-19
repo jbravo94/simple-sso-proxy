@@ -29,6 +29,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Links
 
 https://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/
+https://stackoverflow.com/questions/44593237/elevate-md-card-in-angular-material
 
 ## TODOs
 

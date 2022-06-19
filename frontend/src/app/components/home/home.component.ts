@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  services: Service[] = [new Service('Reset Password', 'Click here to reset your password')];
+  services: Service[] = [new Service('Reset Password', 'Click here to reset your password', '/home')];
 
   constructor(private authService: AuthService) { }
 

@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class SettingsComponent implements OnInit {
 
-  services: Service[] = [new Service('Manage Apps', 'Click here to add or remove apps')];
+  services: Service[] = [new Service('Manage Apps', 'Click here to add or remove apps', '/home')];
 
   constructor(private authService: AuthService) { }
 

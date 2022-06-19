@@ -20,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
+import { ElevationDirective } from './directives/elevation/elevation.directive';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -38,7 +39,8 @@ const MATERIAL_MODULES = [
     NavigationComponent,
     LoginComponent,
     HomeComponent,
-    SettingsComponent
+    SettingsComponent,
+    ElevationDirective
   ],
   imports: [
     BrowserModule,
