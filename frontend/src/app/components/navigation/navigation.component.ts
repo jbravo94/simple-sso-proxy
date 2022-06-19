@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavigationComponent implements OnInit {
 
+  isSidebarOpen = false;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  toggleSidebarState() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  onSidebarClose() {
+    this.isSidebarOpen = false;
+  }
 }
