@@ -1,17 +1,19 @@
 <mat-toolbar>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
-        (click)="toggleSidebarState()">
+        (click)="toggleSidebarState()" *ngIf="isLoggedIn()">
         <mat-icon *ngIf="!isSidebarOpen">menu</mat-icon>
         <mat-icon *ngIf="isSidebarOpen">close</mat-icon>
     </button>
-    <span>My App</span>
+    <span>Login Portal</span>
     <span class="example-spacer"></span>
-    <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon">
+    <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon"
+        *ngIf="isLoggedIn()">
         <mat-icon>settings</mat-icon>
     </button>
 </mat-toolbar>
 <mat-drawer-container class="example-container" autosize>
-    <mat-drawer #drawer class="example-sidenav" mode="over" [opened]="isSidebarOpen" (closedStart)="onSidebarClose()">
+    <mat-drawer #drawer class="example-sidenav" mode="over" [opened]="isSidebarOpen" (closedStart)="onSidebarClose()"
+        *ngIf="isLoggedIn()">
         <p>Auto-resizing sidenav</p>
     </mat-drawer>
 

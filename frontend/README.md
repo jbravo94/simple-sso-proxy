@@ -29,3 +29,10 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ## Links
 
 https://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/
+
+## TODOs
+
+* Add routing
+* Add forget password
+
+* App login with multiple promises to create progressbar

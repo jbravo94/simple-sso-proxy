@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -9,13 +10,15 @@ export class LoginComponent implements OnInit {
 
   hide = true;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
   signIn() {
     alert("Sign in triggered!");
+    this.authService.toggleLoggedIn();
+    return false;
   }
 
 }

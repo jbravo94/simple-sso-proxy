@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-navigation',
@@ -9,7 +10,7 @@ export class NavigationComponent implements OnInit {
 
   isSidebarOpen = false;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
   }
@@ -20,5 +21,9 @@ export class NavigationComponent implements OnInit {
 
   onSidebarClose() {
     this.isSidebarOpen = false;
+  }
+
+  isLoggedIn() {
+    return this.authService.getLoggedIn();
   }
 }
