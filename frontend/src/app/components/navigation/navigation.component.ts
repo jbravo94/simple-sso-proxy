@@ -26,4 +26,9 @@ export class NavigationComponent implements OnInit {
   isLoggedIn() {
     return this.authService.getLoggedIn();
   }
+
+  logout() {
+    this.isSidebarOpen = false;
+    this.authService.logout();
+  }
 }

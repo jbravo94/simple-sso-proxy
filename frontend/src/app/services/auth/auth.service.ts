@@ -19,4 +19,8 @@ export class AuthService {
       this.localTokenService.removeProxyData();
     }
   }
+
+  logout() {
+    this.toggleLoggedIn();
+  }
 }

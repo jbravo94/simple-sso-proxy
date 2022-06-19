@@ -14,7 +14,7 @@
 <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="over" [opened]="isSidebarOpen" (closedStart)="onSidebarClose()"
         *ngIf="isLoggedIn()">
-        <p>Auto-resizing sidenav</p>
+        <button mat-button (click)="logout()">Logout</button>
     </mat-drawer>
 
     <div class="example-sidenav-content">

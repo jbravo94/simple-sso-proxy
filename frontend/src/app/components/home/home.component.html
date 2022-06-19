@@ -1,1 +1,13 @@
-<app-login></app-login>
+<app-login [hidden]="isLoggedIn()"></app-login>
+<mat-grid-list cols="2" rowHeight="2:1">
+
+    <mat-grid-tile>
+        <mat-card class="example-card">
+            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+            <mat-card-content>
+                <p>This card indeterminates progress bar.</p>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+
+</mat-grid-list>
