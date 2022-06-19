@@ -7,7 +7,7 @@
     <span>Login Portal</span>
     <span class="example-spacer"></span>
     <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon"
-        *ngIf="isLoggedIn()">
+        *ngIf="isLoggedIn() && isAdmin()" (click)="onClickSettings()">
         <mat-icon>settings</mat-icon>
     </button>
 </mat-toolbar>
@@ -18,8 +18,7 @@
     </mat-drawer>
 
     <div class="example-sidenav-content">
-        <app-login [hidden]="isLoggedIn()"></app-login>
-        <app-home [hidden]="!isLoggedIn()"></app-home>
+        <router-outlet></router-outlet>
     </div>
 
 </mat-drawer-container>

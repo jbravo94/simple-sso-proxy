@@ -16,8 +16,8 @@ export class LoginComponent implements OnInit {
   }
 
   signIn() {
-    alert("Sign in triggered!");
-    this.authService.toggleLoggedIn();
+    alert('Sign in triggered!');
+    this.authService.login('', '');
     return false;
   }
 

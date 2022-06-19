@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -10,7 +11,7 @@ export class NavigationComponent implements OnInit {
 
   isSidebarOpen = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -27,8 +28,16 @@ export class NavigationComponent implements OnInit {
     return this.authService.getLoggedIn();
   }
 
+  isAdmin() {
+    return this.authService.isAdmin();
+  }
+
   logout() {
     this.isSidebarOpen = false;
     this.authService.logout();
+  }
+
+  onClickSettings() {
+    this.router.navigate(['/settings']);
   }
 }

@@ -61,7 +61,13 @@ export class LocalTokenService {
   }
 
   getProxyData() {
-    return this.getData(COOKIE_NAME);
+    const data = this.getData(COOKIE_NAME);
+
+    if (data) {
+      return JSON.parse(data);
+    } else {
+      return null;
+    }
   }
 
   private removeData(key: string) {
