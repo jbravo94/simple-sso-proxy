@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar color="primary">
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon"
         (click)="toggleSidebarState()" *ngIf="isLoggedIn()">
         <mat-icon *ngIf="!isSidebarOpen">menu</mat-icon>
@@ -14,7 +14,7 @@
 <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="over" [opened]="isSidebarOpen" (closedStart)="onSidebarClose()"
         *ngIf="isLoggedIn()">
-        <button mat-button (click)="logout()">Logout</button>
+        <button mat-raised-button class="sidebar-button" (click)="logout()" color="primary">Logout</button>
     </mat-drawer>
 
     <div class="example-sidenav-content">
