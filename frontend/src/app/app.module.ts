@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
+import { ElevationDirective } from './directives/elevation/elevation.directive';
 
 // Components
 import { AppComponent } from './app.component';
@@ -10,6 +11,7 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { SettingsComponent } from './components/settings/settings.component'
+import { AppsComponent } from './components/apps/apps/apps.component';
 
 // Material Components
 import { MatInputModule } from '@angular/material/input';
@@ -20,7 +22,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
-import { ElevationDirective } from './directives/elevation/elevation.directive';
+import { MatTableModule } from '@angular/material/table';
+import { MatMenuModule } from '@angular/material/menu';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -30,7 +33,9 @@ const MATERIAL_MODULES = [
   MatFormFieldModule,
   MatInputModule,
   MatGridListModule,
-  MatCardModule
+  MatCardModule,
+  MatTableModule,
+  MatMenuModule
 ];
 
 @NgModule({
@@ -40,7 +45,8 @@ const MATERIAL_MODULES = [
     LoginComponent,
     HomeComponent,
     SettingsComponent,
-    ElevationDirective
+    ElevationDirective,
+    AppsComponent
   ],
   imports: [
     BrowserModule,

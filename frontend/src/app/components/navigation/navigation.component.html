@@ -4,7 +4,7 @@
         <mat-icon *ngIf="!isSidebarOpen">menu</mat-icon>
         <mat-icon *ngIf="isSidebarOpen">close</mat-icon>
     </button>
-    <span>Login Portal</span>
+    <a routerLink="/home"><span>Login Portal</span></a>
     <span class="example-spacer"></span>
     <button mat-icon-button class="example-icon settings-icon" aria-label="Example icon-button with heart icon"
         *ngIf="isLoggedIn() && isAdmin()" (click)="onClickSettings()">

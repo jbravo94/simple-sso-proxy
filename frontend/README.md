@@ -33,7 +33,12 @@ https://stackoverflow.com/questions/44593237/elevate-md-card-in-angular-material
 
 ## TODOs
 
-* Add routing
 * Add forget password
 
 * App login with multiple promises to create progressbar
+
+* Add theming
+* Add breadcrumbs
+
+* Add Dialogs forms with pristine
+* Adds App in sidebar
