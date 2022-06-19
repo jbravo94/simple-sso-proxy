@@ -11,7 +11,8 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { SettingsComponent } from './components/settings/settings.component'
-import { AppsComponent } from './components/apps/apps/apps.component';
+import { AppsComponent } from './components/apps/apps.component';
+import { AppDialog } from './dialogs/app/app.dialog';
 
 // Material Components
 import { MatInputModule } from '@angular/material/input';
@@ -24,6 +25,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -35,7 +37,8 @@ const MATERIAL_MODULES = [
   MatGridListModule,
   MatCardModule,
   MatTableModule,
-  MatMenuModule
+  MatMenuModule,
+  MatDialogModule
 ];
 
 @NgModule({
@@ -46,7 +49,8 @@ const MATERIAL_MODULES = [
     HomeComponent,
     SettingsComponent,
     ElevationDirective,
-    AppsComponent
+    AppsComponent,
+    AppDialog
   ],
   imports: [
     BrowserModule,

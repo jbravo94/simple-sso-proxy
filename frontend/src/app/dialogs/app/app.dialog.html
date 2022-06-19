@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>App</h1>
+<div mat-dialog-content>
+    <p>Enter or modify app details here:</p>
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Login Url</mat-label>
+        <input matInput>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Logout Url</mat-label>
+        <input matInput>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>

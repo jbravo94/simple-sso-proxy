@@ -3,6 +3,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
 import { App } from 'src/app/models/app';
 import { AppsService } from 'src/app/services/apps/apps.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AppDialog } from 'src/app/dialogs/app/app.dialog';
 
 @Component({
   selector: 'app-apps',
@@ -15,15 +17,22 @@ export class AppsComponent implements OnInit {
 
   dataSource = new ExampleDataSource([]);
 
-  constructor(private appsService: AppsService) {
+  constructor(private appsService: AppsService, public dialog: MatDialog) {
     this.dataSource.setData(this.appsService.getApps());
   }
 
   ngOnInit(): void {
   }
 
-  addApp() {
+  addApp(): void {
+    const dialogRef = this.dialog.open(AppDialog, {
+      width: '250px',
+      data: {},
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }
 
