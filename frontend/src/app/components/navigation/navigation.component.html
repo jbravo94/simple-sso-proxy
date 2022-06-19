@@ -18,7 +18,8 @@
     </mat-drawer>
 
     <div class="example-sidenav-content">
-        <app-home></app-home>
+        <app-login [hidden]="isLoggedIn()"></app-login>
+        <app-home [hidden]="!isLoggedIn()"></app-home>
     </div>
 
 </mat-drawer-container>

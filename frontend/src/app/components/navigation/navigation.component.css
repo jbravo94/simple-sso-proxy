@@ -5,11 +5,8 @@
 }
 
 .example-sidenav-content {
-    display: flex;
     height: 100%;
-    align-items: center;
-    justify-content: center;
-    margin-top: -25%;
+    margin-top: 5%;
     margin-right: 5%;
     margin-left: 5%;
 }
