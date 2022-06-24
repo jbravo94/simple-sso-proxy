@@ -1,14 +1,16 @@
 export class App {
 
     name: string;
-    position: number;
-    weight: number;
-    symbol: string;
+    baseUrl: string;
+    loginScript: string;
+    logoutScript: string;
+    resetScript: string;
 
-    constructor(name: string, position: number, weight: number, symbol: string) {
+    constructor(name: string, baseUrl: string, loginScript: string, logoutScript: string, resetScript: string) {
         this.name = name;
-        this.position = position;
-        this.weight = weight;
-        this.symbol = symbol;
+        this.baseUrl = baseUrl;
+        this.loginScript = loginScript;
+        this.logoutScript = logoutScript;
+        this.resetScript = resetScript;
     }
 }

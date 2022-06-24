@@ -1,4 +1,4 @@
-package dev.heinzl.simplessoproxy;
+package dev.heinzl.simplessoproxy.configs;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -13,7 +13,7 @@ import { AppDialog } from 'src/app/dialogs/app/app.dialog';
 })
 export class AppsComponent implements OnInit {
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'options'];
+  displayedColumns: string[] = ['name', 'baseUrl', 'loginScript', 'logoutScript', 'resetScript', 'options'];
 
   dataSource = new ExampleDataSource([]);
 

@@ -42,3 +42,7 @@ https://stackoverflow.com/questions/44593237/elevate-md-card-in-angular-material
 
 * Add Dialogs forms with pristine
 * Adds App in sidebar
+
+* Patterns
+* Algorithms
+* Datastructures

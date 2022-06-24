@@ -14,7 +14,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import groovy.util.GroovyScriptEngine;
+import dev.heinzl.simplessoproxy.models.Credential;
+import dev.heinzl.simplessoproxy.repositories.CredentialsRepository;
+import dev.heinzl.simplessoproxy.scripting.ScriptEngine;
+import dev.heinzl.simplessoproxy.scripting.ScriptingApi;
+import dev.heinzl.simplessoproxy.scripting.ScriptingApiImpl;
 import reactor.core.publisher.Mono;
 
 @SpringBootApplication
@@ -22,21 +26,30 @@ import reactor.core.publisher.Mono;
 @RestController
 public class SimpleSsoProxyApplication {
 
-	public GroovyScriptEngine groovyScriptEngine = new GroovyScriptEngine(new URL[] {});
-
 	public static void main(String[] args) {
 		SpringApplication.run(SimpleSsoProxyApplication.class, args);
 	}
 
 	@Bean
-	public RouteLocator myRoutes(@Autowired CredentialsRepository credentialsRepository, RouteLocatorBuilder builder,
+	public RouteLocator myRoutes(@Autowired CredentialsRepository credentialsRepository,
+			@Autowired ScriptEngine scriptEngine, RouteLocatorBuilder builder,
 			UriConfiguration uriConfiguration) {
 		String httpUri = uriConfiguration.getHttpbin();
 
 		return builder.routes().route(p -> p.alwaysTrue()
 				.filters(f -> {
+
+					ScriptingApi scriptingApi = new ScriptingApiImpl(f);
+
 					credentialsRepository.save(new Credential("TEst", 2));
-					return f.addRequestHeader("authorization", "Basic YWRtaW46YWRtaW4=");
+
+					String script = """
+							scriptingApi.addProxyRequestHeaderIfNotPreset('authorization', 'Basic YWRtaW46YWRtaW4=');
+							""";
+
+					scriptEngine.applyScript(script, scriptingApi);
+
+					return scriptingApi.getGatewayFilterSpec();
 				})
 				.uri(httpUri)).build();
 		/*
