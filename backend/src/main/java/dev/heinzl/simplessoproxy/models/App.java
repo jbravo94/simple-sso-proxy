@@ -3,18 +3,21 @@ package dev.heinzl.simplessoproxy.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 @Document
 @Data
-public class Credential {
+@Builder
+public class App {
 
     @Id
     private String id;
-    @NonNull
     private String name;
-    @NonNull
-    private Integer age;
+    private String baseUrl;
+    private String loginScript;
+    private String logoutScript;
+    private String proxyScript;
+    private String resetScript;
 
 }
