@@ -23,7 +23,7 @@ export class AppDialog {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private appsService: AppsService
   ) {
-    this.app = data.app;
+    this.app = data.app || {};
     this.type = data.type || DialogType.CREATE;
   }
 

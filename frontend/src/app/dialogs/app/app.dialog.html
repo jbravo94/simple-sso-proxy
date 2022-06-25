@@ -3,38 +3,38 @@
     <p>Enter or modify app details here:</p>
     <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
-        <input matInput [(ngModel)]="data.name">
+        <input matInput [(ngModel)]="app.name">
     </mat-form-field>
     <mat-form-field appearance="fill">
         <mat-label>Base Url</mat-label>
-        <input matInput [(ngModel)]="data.baseUrl">
+        <input matInput [(ngModel)]="app.baseUrl">
     </mat-form-field>
     <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Login Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
-        <app-scripting></app-scripting>
-        <input matInput hidden [(ngModel)]="data.loginScript">
+        <app-scripting [(code)]="app.loginScript"></app-scripting>
+        <input matInput hidden [(ngModel)]="app.loginScript">
         <div class="template-function">{{'}'}}</div>
     </mat-form-field>
     <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Logout Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
-        <app-scripting></app-scripting>
-        <input matInput hidden [(ngModel)]="data.logoutScript">
+        <app-scripting [(code)]="app.logoutScript"></app-scripting>
+        <input matInput hidden [(ngModel)]="app.logoutScript">
         <div class="template-function">{{'}'}}</div>
     </mat-form-field>
     <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Reset Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
-        <app-scripting></app-scripting>
-        <input matInput hidden [(ngModel)]="data.resetScript">
+        <app-scripting [(code)]="app.resetScript"></app-scripting>
+        <input matInput hidden [(ngModel)]="app.resetScript">
         <div class="template-function">{{'}'}}</div>
     </mat-form-field>
     <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Proxy Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
-        <app-scripting></app-scripting>
-        <input matInput hidden [(ngModel)]="data.proxyScript">
+        <app-scripting [(code)]="app.proxyScript"></app-scripting>
+        <input matInput hidden [(ngModel)]="app.proxyScript">
         <div class="template-function">{{'}'}}</div>
     </mat-form-field>
 </div>

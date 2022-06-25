@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,12 +33,12 @@ public class AppsEndpoint {
     }
 
     @PostMapping
-    public Mono<App> create(App app) {
+    public Mono<App> create(@RequestBody App app) {
         return Mono.just(appsRepository.save(app));
     }
 
     @PutMapping("/{id}")
-    public Mono<App> update(App app, @PathVariable("id") String id) {
+    public Mono<App> update(@RequestBody App app, @PathVariable("id") String id) {
 
         Optional<App> originalAppOptional = appsRepository.findById(id);
 

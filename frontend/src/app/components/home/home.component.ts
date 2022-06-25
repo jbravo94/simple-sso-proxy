@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { App } from 'src/app/models/app';
 import { Service } from 'src/app/models/service';
+import { AppsService } from 'src/app/services/apps/apps.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
@@ -9,11 +11,14 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  services: Service[] = [new Service('Reset Password', 'Click here to reset your password', '/home')];
+  services: Service[] = [new Service('Reset Password', 'Click here to reset your password.', '/home')];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private appsService: AppsService) { }
 
   ngOnInit(): void {
+    this.appsService.getApps().subscribe((apps: App[]) => {
+      apps.forEach((app: App) => this.services.unshift(new Service(app.name, 'Click here to access this app.', app.baseUrl)));
+    });
   }
 
   isLoggedIn() {

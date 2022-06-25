@@ -54,3 +54,5 @@ https://gist.github.com/Ruminat/42364312e90ba5d71875697ede66990e
 * Factory for service testing
 * Confirmation for Deletion
 * Top Left Toast with autoclose
+
+https://stackoverflow.com/questions/35327929/angular-2-ngmodel-in-child-component-updates-parent-component-property
