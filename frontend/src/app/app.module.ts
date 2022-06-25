@@ -4,6 +4,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ElevationDirective } from './directives/elevation/elevation.directive';
+import { MonacoEditorModule } from '@materia-ui/ngx-monaco-editor';
+import { FormsModule } from '@angular/forms';
 
 // Components
 import { AppComponent } from './app.component';
@@ -56,6 +58,8 @@ const MATERIAL_MODULES = [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    MonacoEditorModule,
+    FormsModule,
     ...MATERIAL_MODULES
   ],
   providers: [],
