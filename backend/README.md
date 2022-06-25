@@ -18,4 +18,6 @@ spring.data.mongodb.password=example
 * Encrypt Passwords to make in memory attacks difficulter
 * Remove Crossorigin
 
-* Create Validator for App before inserting into routes 
+* Create Validator for App before inserting into routes
+
+* Get first basic auth token and then replace with proxy token in local storage or cookie with same core domain and several sub domains

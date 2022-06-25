@@ -34,11 +34,11 @@ public class ApiPathRouteLocatorImpl implements RouteLocator {
     BooleanSpec booleanSpec = predicateSpec.alwaysTrue();
 
     booleanSpec.filters(gatewayFilterSpec -> {
-      ScriptingApi scriptingApi = new ScriptingApiImpl(gatewayFilterSpec);
+      ScriptingApi scriptingApi = new ScriptingApiImpl(app, gatewayFilterSpec);
 
       scriptEngine.applyScript(app.getProxyScript(), scriptingApi);
 
-      return scriptingApi.getGatewayFilterSpec();
+      return gatewayFilterSpec;
     });
 
     return booleanSpec.uri(app.getBaseUrl());
