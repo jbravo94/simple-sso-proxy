@@ -29,6 +29,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScriptingComponent } from './components/scripting/scripting.component';
+import { HttpClientModule } from '@angular/common/http';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -60,8 +61,9 @@ const MATERIAL_MODULES = [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    MonacoEditorModule,
+    HttpClientModule,
     FormsModule,
+    MonacoEditorModule,
     ...MATERIAL_MODULES
   ],
   providers: [],

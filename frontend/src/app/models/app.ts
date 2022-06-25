@@ -1,5 +1,6 @@
 export class App {
 
+    id: string;
     name: string;
     baseUrl: string;
     loginScript: string;
@@ -7,7 +8,8 @@ export class App {
     resetScript: string;
     proxyScript: string;
 
-    constructor(name: string, baseUrl: string, loginScript: string, logoutScript: string, resetScript: string, proxyScript: string) {
+    constructor(id: string, name: string, baseUrl: string, loginScript: string, logoutScript: string, resetScript: string, proxyScript: string) {
+        this.id = id;
         this.name = name;
         this.baseUrl = baseUrl;
         this.loginScript = loginScript;

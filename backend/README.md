@@ -16,3 +16,4 @@ spring.data.mongodb.username=root
 spring.data.mongodb.password=example
 
 * Encrypt Passwords to make in memory attacks difficulter
+* Remove Crossorigin

@@ -4,7 +4,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { App } from 'src/app/models/app';
 import { AppsService } from 'src/app/services/apps/apps.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AppDialog } from 'src/app/dialogs/app/app.dialog';
+import { AppDialog, DialogType } from 'src/app/dialogs/app/app.dialog';
 
 @Component({
   selector: 'app-apps',
@@ -13,12 +13,16 @@ import { AppDialog } from 'src/app/dialogs/app/app.dialog';
 })
 export class AppsComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'baseUrl', 'loginScript', 'logoutScript', 'resetScript', 'proxyScript', 'options'];
+  displayedColumns: string[] = ['name', 'baseUrl', 'options'];
 
   dataSource = new ExampleDataSource([]);
 
   constructor(private appsService: AppsService, public dialog: MatDialog) {
-    this.dataSource.setData(this.appsService.getApps());
+    this.refresh();
+  }
+
+  refresh(): void {
+    this.appsService.getApps().subscribe((apps: App[]) => this.dataSource.setData(apps));
   }
 
   ngOnInit(): void {
@@ -31,19 +35,26 @@ export class AppsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      this.refresh();
     });
   }
 
   editApp(app: App): void {
     const dialogRef = this.dialog.open(AppDialog, {
       width: '80%',
-      data: app,
+      data: {
+        app: app,
+        type: DialogType.UPDATE
+      }
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      this.refresh();
     });
+  }
+
+  deleteApp(app: App): void {
+    this.appsService.deleteApp(app).subscribe(() => this.refresh());
   }
 }
 
