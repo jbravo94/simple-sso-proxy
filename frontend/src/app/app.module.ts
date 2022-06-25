@@ -28,6 +28,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ScriptingComponent } from './components/scripting/scripting.component';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -52,7 +53,8 @@ const MATERIAL_MODULES = [
     SettingsComponent,
     ElevationDirective,
     AppsComponent,
-    AppDialog
+    AppDialog,
+    ScriptingComponent
   ],
   imports: [
     BrowserModule,

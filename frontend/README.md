@@ -46,3 +46,8 @@ https://stackoverflow.com/questions/44593237/elevate-md-card-in-angular-material
 * Patterns
 * Algorithms
 * Datastructures
+
+Groovy Editor
+https://github.com/materiahq/ngx-monaco-editor
+https://gist.github.com/Ruminat/42364312e90ba5d71875697ede66990e
+

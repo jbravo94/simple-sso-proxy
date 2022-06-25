@@ -17,10 +17,6 @@ export class AppsComponent implements OnInit {
 
   dataSource = new ExampleDataSource([]);
 
-  editorOptions = { theme: 'vs-dark', language: 'javascript' };
-  code: string = 'function x() {\nconsole.log("Hello world!");\n}';
-  originalCode: string = 'function x() { // TODO }';
-
   constructor(private appsService: AppsService, public dialog: MatDialog) {
     this.dataSource.setData(this.appsService.getApps());
   }
