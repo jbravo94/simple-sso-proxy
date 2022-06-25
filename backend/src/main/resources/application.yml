@@ -5,15 +5,3 @@ server:
 spring:
   application:
     name: simple-sso-proxy
-  cloud:
-    gateway:
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedOrigins: "http://10.0.0.225:4200"
-            allowedMethods:
-            - GET
-            - POST
-            - PUT
-            - DELETE
-            - OPTIONS
