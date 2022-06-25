@@ -8,13 +8,13 @@ import lombok.NonNull;
 
 @Document
 @Data
-public class Credential {
+public class User {
 
     @Id
     private String id;
     @NonNull
-    private String name;
+    private String username;
     @NonNull
-    private Integer age;
+    private String password;
 
 }
