@@ -27,7 +27,7 @@ export class AppsService {
   }
 
   editApp(app: App): Observable<App> {
-    return this.http.put<App>(BACKEND_URL + '/api/v1/apps', app);
+    return this.http.put<App>(BACKEND_URL + '/api/v1/apps/' + app.id, app);
   }
 
   deleteApp(app: App): Observable<App> {
