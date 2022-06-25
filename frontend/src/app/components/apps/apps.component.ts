@@ -26,7 +26,7 @@ export class AppsComponent implements OnInit {
 
   addApp(): void {
     const dialogRef = this.dialog.open(AppDialog, {
-      width: '250px',
+      width: '80%',
       data: {},
     });
 

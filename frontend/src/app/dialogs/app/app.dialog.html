@@ -7,11 +7,14 @@
     </mat-form-field>
     <mat-form-field appearance="fill">
         <mat-label>Base Url</mat-label>
-        <input matInput>
+        <input matInput [(ngModel)]="code">
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Login Script</mat-label>
-        <input matInput>
+        <div class="template-function">{{'def script(scriptingApi) {'}}</div>
+        <app-scripting></app-scripting>
+        <input matInput hidden [(ngModel)]="code">
+        <div class="template-function">{{'}'}}</div>
     </mat-form-field>
     <mat-form-field appearance="fill">
         <mat-label>Logout Script</mat-label>

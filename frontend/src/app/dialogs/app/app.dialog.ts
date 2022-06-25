@@ -8,6 +8,9 @@ import { App } from 'src/app/models/app';
   styleUrls: ['./app.dialog.css']
 })
 export class AppDialog {
+
+  code = "";
+
   constructor(
     public dialogRef: MatDialogRef<AppDialog>,
     @Inject(MAT_DIALOG_DATA) public data: App,

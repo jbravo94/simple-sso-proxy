@@ -12,7 +12,7 @@ import { registerGroovyLanguageForMonaco } from './groovy-language-definition-fo
 export class ScriptingComponent implements OnInit {
 
   editorOptions = { theme: 'vs-dark', language: 'groovy' };
-  code: string = 'def script(scriptingApi) { return "" }';
+  code: string = '';
 
   constructor(private monacoLoaderService: MonacoEditorLoaderService) {
     this.monacoLoaderService.isMonacoLoaded$.pipe(
