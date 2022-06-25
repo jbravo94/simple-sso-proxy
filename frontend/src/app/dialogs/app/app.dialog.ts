@@ -9,8 +9,6 @@ import { App } from 'src/app/models/app';
 })
 export class AppDialog {
 
-  code = "";
-
   constructor(
     public dialogRef: MatDialogRef<AppDialog>,
     @Inject(MAT_DIALOG_DATA) public data: App,

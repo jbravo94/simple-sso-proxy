@@ -3,26 +3,39 @@
     <p>Enter or modify app details here:</p>
     <mat-form-field appearance="fill">
         <mat-label>Name</mat-label>
-        <input matInput>
+        <input matInput [(ngModel)]="data.name">
     </mat-form-field>
     <mat-form-field appearance="fill">
         <mat-label>Base Url</mat-label>
-        <input matInput [(ngModel)]="code">
+        <input matInput [(ngModel)]="data.baseUrl">
     </mat-form-field>
     <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Login Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
         <app-scripting></app-scripting>
-        <input matInput hidden [(ngModel)]="code">
+        <input matInput hidden [(ngModel)]="data.loginScript">
         <div class="template-function">{{'}'}}</div>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Logout Script</mat-label>
-        <input matInput>
+        <div class="template-function">{{'def script(scriptingApi) {'}}</div>
+        <app-scripting></app-scripting>
+        <input matInput hidden [(ngModel)]="data.logoutScript">
+        <div class="template-function">{{'}'}}</div>
     </mat-form-field>
-    <mat-form-field appearance="fill">
+    <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Reset Script</mat-label>
-        <input matInput>
+        <div class="template-function">{{'def script(scriptingApi) {'}}</div>
+        <app-scripting></app-scripting>
+        <input matInput hidden [(ngModel)]="data.resetScript">
+        <div class="template-function">{{'}'}}</div>
+    </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Proxy Script</mat-label>
+        <div class="template-function">{{'def script(scriptingApi) {'}}</div>
+        <app-scripting></app-scripting>
+        <input matInput hidden [(ngModel)]="data.proxyScript">
+        <div class="template-function">{{'}'}}</div>
     </mat-form-field>
 </div>
 <div mat-dialog-actions>

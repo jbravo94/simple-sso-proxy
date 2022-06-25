@@ -10,8 +10,8 @@ export class AppsService {
 
   getApps(): App[] {
     return [
-      { name: 'OpenMRS', baseUrl: 'https://demo.mybahmni.org/openmrs/', loginScript: '', logoutScript: '', resetScript: '' },
-      { name: 'odoo', baseUrl: 'https://erp-demo.mybahmni.org/', loginScript: '', logoutScript: '', resetScript: '' },
+      { name: 'OpenMRS', baseUrl: 'https://demo.mybahmni.org/openmrs/', loginScript: '', logoutScript: '', resetScript: '', proxyScript: '' },
+      { name: 'odoo', baseUrl: 'https://erp-demo.mybahmni.org/', loginScript: '', logoutScript: '', resetScript: '', proxyScript: '' },
     ];
   }
 }

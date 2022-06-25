@@ -13,7 +13,7 @@ import { AppDialog } from 'src/app/dialogs/app/app.dialog';
 })
 export class AppsComponent implements OnInit {
 
-  displayedColumns: string[] = ['name', 'baseUrl', 'loginScript', 'logoutScript', 'resetScript', 'options'];
+  displayedColumns: string[] = ['name', 'baseUrl', 'loginScript', 'logoutScript', 'resetScript', 'proxyScript', 'options'];
 
   dataSource = new ExampleDataSource([]);
 
@@ -28,6 +28,17 @@ export class AppsComponent implements OnInit {
     const dialogRef = this.dialog.open(AppDialog, {
       width: '80%',
       data: {},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  editApp(app: App): void {
+    const dialogRef = this.dialog.open(AppDialog, {
+      width: '80%',
+      data: app,
     });
 
     dialogRef.afterClosed().subscribe(result => {
