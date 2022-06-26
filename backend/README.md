@@ -21,3 +21,18 @@ spring.data.mongodb.password=example
 * Create Validator for App before inserting into routes
 
 * Get first basic auth token and then replace with proxy token in local storage or cookie with same core domain and several sub domains
+
+https://www.baeldung.com/spring-security-5-reactive
+
+* Answer with Futures or Flux
+
+CSRF / AspectJ / Bytecode weaving
+
+https://www.stackhawk.com/blog/angular-csrf-protection-guide-examples-and-how-to-enable-it/#:~:text=Cross%2Dsite%20request%20forgery%20(also,unwanted%20actions%20for%20application%20users.
+https://spring.io/blog/2022/02/21/spring-security-without-the-websecurityconfigureradapter
+https://github.com/eugenp/tutorials/blob/master/spring-security-modules/spring-security-web-mvc-custom/src/main/java/com/baeldung/web/controller/LoginController.java
+
+https://www.baeldung.com/spring-security-5-reactive
+https://www.baeldung.com/spring-security-authenticationmanagerresolver
+https://docs.spring.io/spring-security/site/docs/5.2.5.RELEASE/reference/html/protection-against-exploits-2.html
+https://docs.spring.io/spring-security/site/docs/5.2.5.RELEASE/reference/html/protection-against-exploits-2.html
