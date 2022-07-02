@@ -36,3 +36,5 @@ https://www.baeldung.com/spring-security-5-reactive
 https://www.baeldung.com/spring-security-authenticationmanagerresolver
 https://docs.spring.io/spring-security/site/docs/5.2.5.RELEASE/reference/html/protection-against-exploits-2.html
 https://docs.spring.io/spring-security/site/docs/5.2.5.RELEASE/reference/html/protection-against-exploits-2.html
+https://www.naturalprogrammer.com/courses/332639/lectures/5902512
+https://medium.com/zero-equals-false/protect-rest-apis-with-spring-security-reactive-and-jwt-7b209a0510f1

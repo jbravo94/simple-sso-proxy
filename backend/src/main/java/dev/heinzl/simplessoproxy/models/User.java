@@ -1,20 +1,42 @@
 package dev.heinzl.simplessoproxy.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import lombok.Data;
-import lombok.NonNull;
+import java.util.ArrayList;
+import java.util.List;
+import javax.validation.constraints.Email;
 
-@Document
+/**
+ * @author hantsy
+ */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Document
 public class User {
 
     @Id
     private String id;
-    @NonNull
+
     private String username;
-    @NonNull
+
+    @JsonIgnore
     private String password;
+
+    @Email
+    private String email;
+
+    @Builder.Default()
+    private boolean active = true;
+
+    @Builder.Default()
+    private List<String> roles = new ArrayList<>();
 
 }
