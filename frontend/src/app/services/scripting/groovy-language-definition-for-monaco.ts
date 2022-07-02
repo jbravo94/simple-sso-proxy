@@ -298,4 +298,78 @@ export const registerGroovyLanguageForMonaco = (languages: any) => {
         surroundingPairs,
         wordPattern,
     });
-};
+
+    monaco.languages.registerCompletionItemProvider('groovy', {
+        // Run this function when the period or open parenthesis is typed (and anything after a space)
+        triggerCharacters: ['.'],
+
+        // Function to generate autocompletion results
+        provideCompletionItems: function (model, position, token) {
+
+            const last_chars = model.getValueInRange({ startLineNumber: position.lineNumber, startColumn: 0, endLineNumber: position.lineNumber, endColumn: position.column });
+            const words = last_chars.replace("\t", "").split(" ");
+
+            if (!words || words.length === 0) {
+                return {
+                    suggestions: []
+                };
+            }
+
+            const lastWord = words[words.length - 1]
+
+            if (lastWord !== 'scriptingApi.') {
+                return {
+                    suggestions: []
+                };
+            }
+
+            const results: any = [
+                {
+                    label: "addProxyRequestHeaderIfNotPreset",
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    detail: "void addProxyRequestHeaderIfNotPreset(String key, String value)",
+                    insertText: "addProxyRequestHeaderIfNotPreset(\"key\", \"value\")"
+                },
+                {
+                    label: "addProxyCookieIfNotPreset",
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    detail: "void addProxyCookieIfNotPreset(String name, String value)",
+                    insertText: "addProxyCookieIfNotPreset(\"name\", \"value\")"
+                },
+                {
+                    label: "getUsername",
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    detail: "String getUsername()",
+                    insertText: "getUsername()"
+                },
+                {
+                    label: "getPassword",
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    detail: "String getPassword()",
+                    insertText: "getPassword()"
+                },
+            ];
+
+            return {
+                suggestions: results
+            };
+        },
+    });
+
+    monaco.languages.registerCompletionItemProvider('groovy', {
+        provideCompletionItems: function (model, position, token) {
+
+            const results: any = [
+                {
+                    label: "scriptingApi",
+                    detail: "Type . after this keyword for API suggestions.",
+                    insertText: "scriptingApi"
+                }
+            ];
+
+            return {
+                suggestions: results
+            };
+        },
+    });
+}

@@ -1,8 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MonacoEditorLoaderService } from '@materia-ui/ngx-monaco-editor';
-
-import { filter, take } from 'rxjs';
-import { registerGroovyLanguageForMonaco } from './groovy-language-definition-for-monaco';
+import { ScriptingService } from 'src/app/services/scripting/scripting.service';
 
 @Component({
   selector: 'app-scripting',
@@ -19,19 +16,16 @@ export class ScriptingComponent implements OnInit {
   @Output()
   codeChange = new EventEmitter();
 
+  private scriptingService: ScriptingService
+
   change(newCode: string) {
-    console.log('newvalue', newCode)
     this.code = newCode;
     this.codeChange.emit(newCode);
   }
 
-  constructor(private monacoLoaderService: MonacoEditorLoaderService) {
-    this.monacoLoaderService.isMonacoLoaded$.pipe(
-      filter(isLoaded => isLoaded),
-      take(1),
-    ).subscribe(() => {
-      registerGroovyLanguageForMonaco(monaco.languages)
-    });
+  constructor(scriptingService: ScriptingService) {
+    // Injection needed because of lazy loading of service which contains editor configs.
+    this.scriptingService = scriptingService;
   }
 
   ngOnInit(): void {
