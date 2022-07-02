@@ -29,7 +29,8 @@ import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ScriptingComponent } from './components/scripting/scripting.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BearerTokenInterceptor } from './interceptors/bearer-token.interceptor';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -66,7 +67,9 @@ const MATERIAL_MODULES = [
     MonacoEditorModule,
     ...MATERIAL_MODULES
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: BearerTokenInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

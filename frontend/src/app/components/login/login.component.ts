@@ -9,6 +9,8 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 export class LoginComponent implements OnInit {
 
   hide = true;
+  username: string = "";
+  password: string = "";
 
   constructor(private authService: AuthService) { }
 
@@ -17,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   signIn() {
     alert('Sign in triggered!');
-    this.authService.login('', '');
+    this.authService.login(this.username, this.password);
     return false;
   }
 

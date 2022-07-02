@@ -1,15 +1,16 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { BACKEND_URL, IS_DEV } from 'src/app/globals';
 import { App } from 'src/app/models/app';
+import { LocalTokenService } from '../local-token/local-token.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppsService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private localTokenService: LocalTokenService) { }
 
   getApps(): Observable<App[]> {
     if (IS_DEV) {

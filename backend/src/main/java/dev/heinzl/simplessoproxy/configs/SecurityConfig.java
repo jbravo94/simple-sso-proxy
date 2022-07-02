@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.config.web.server.ServerHttpSecurity.CorsSpec;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,10 +48,12 @@ public class SecurityConfig {
         final String PATH_POSTS = "/api/**";
 
         return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .cors(CorsSpec::disable)
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .authenticationManager(reactiveAuthenticationManager)
                 .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
                 .authorizeExchange(it -> it
+                        .pathMatchers(HttpMethod.OPTIONS, PATH_POSTS).permitAll()
                         .pathMatchers("/api/v1/auth/login").permitAll()
                         .pathMatchers(PATH_POSTS).authenticated()
                         .pathMatchers("/me").authenticated()

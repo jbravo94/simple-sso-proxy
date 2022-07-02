@@ -38,6 +38,7 @@ public class AppsEndpoint {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @CrossOrigin
     @GetMapping("/all")
     public Flux<App> getAll() {
 

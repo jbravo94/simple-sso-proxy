@@ -16,7 +16,7 @@ export class LocalTokenService {
     document.cookie = `${name}=${value}; ${expires}${cpath}`;
   }
 
-  setProxyCookie(value: string, expireDays: number, path: string = '') {
+  setProxyCookie(value: string, expireDays: number = 365, path: string = '') {
     this.setCookie(COOKIE_NAME, value, expireDays, path);
   }
 

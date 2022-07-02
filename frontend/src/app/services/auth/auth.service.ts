@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { convertFromBase64, convertToBase64 } from 'src/app/globalFunctions';
+import { BACKEND_URL } from 'src/app/globals';
 import { JwtToken } from 'src/app/models/jwtToken';
 import { LocalTokenService } from '../local-token/local-token.service';
 
@@ -10,38 +13,57 @@ export class AuthService {
 
   redirectUrl: string = '';
 
-  constructor(private localTokenService: LocalTokenService, private router: Router) { }
+  constructor(private localTokenService: LocalTokenService, private router: Router, private http: HttpClient) { }
 
   getLoggedIn() {
-    return this.localTokenService.getProxyData() != null;
+    return this.localTokenService.getProxyCookie() != null && this.localTokenService.getProxyCookie() != '';
   }
 
   private toggleDemoLogin() {
     if (!this.localTokenService.getProxyData()) {
-      this.localTokenService.setProxyData(new JwtToken('', '', 0, 0, ['admin']));
+      this.localTokenService.setProxyCookie(convertToBase64(JSON.stringify(new JwtToken('', '', 0, 0, ['ROLE_ADMIN']))));
     } else {
-      this.localTokenService.removeProxyData();
+      this.localTokenService.deleteProxyCookie();
     }
   }
 
   login(username: string, password: string) {
-    this.toggleDemoLogin();
-    if (this.redirectUrl) {
-      this.router.navigate([this.redirectUrl]);
-      this.redirectUrl = '';
-    } else {
-      this.router.navigate(['/home']);
-    }
+
+    this.http.post<any>(BACKEND_URL + '/api/v1/auth/login', { username: username, password: password }, { observe: 'response' }).subscribe((response) => {
+      const bearerToken = response.headers.get('Authorization');
+
+      if (bearerToken) {
+        this.localTokenService.setProxyCookie(bearerToken.split(' ')[1]);
+        if (this.redirectUrl) {
+          this.router.navigate([this.redirectUrl]);
+          this.redirectUrl = '';
+        } else {
+          this.router.navigate(['/home']);
+        }
+      }
+    })
   }
 
   logout() {
-    this.toggleDemoLogin();
+    this.localTokenService.deleteProxyCookie();
     this.router.navigate(['/login']);
   }
 
   isAdmin() {
-    const token: JwtToken = this.localTokenService.getProxyData();
+    const encodedData: string = this.localTokenService.getProxyCookie();
 
-    return token.roles && token.roles.indexOf('admin') !== -1;
+    if (!encodedData) {
+      return false;
+    }
+
+    const data: string = convertFromBase64(encodedData.split('.')[1]);
+
+    if (!data) {
+      return false;
+    }
+
+    const token: JwtToken = JSON.parse(data);
+
+    return token.roles && token.roles.indexOf('ROLE_ADMIN') !== -1;
   }
 }

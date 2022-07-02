@@ -56,3 +56,9 @@ https://gist.github.com/Ruminat/42364312e90ba5d71875697ede66990e
 * Top Left Toast with autoclose
 
 https://stackoverflow.com/questions/35327929/angular-2-ngmodel-in-child-component-updates-parent-component-property
+https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage
+https://ngrx.io/
+https://stackoverflow.com/questions/6182315/how-can-i-do-base64-encoding-in-node-js
+https://medium.com/angular-shots/shot-3-how-to-add-http-headers-to-every-request-in-angular-fab3d10edc26
+
+Mention here Chrome CORS Plugin: Moesif Origin & CORS Changer
