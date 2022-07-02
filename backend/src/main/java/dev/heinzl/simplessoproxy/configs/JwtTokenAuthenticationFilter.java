@@ -15,6 +15,7 @@ import reactor.core.publisher.Mono;
 public class JwtTokenAuthenticationFilter implements WebFilter {
 
     public static final String HEADER_PREFIX = "Bearer ";
+    public static final String COOKIE_KEY = "simple-proxy-sso-token";
 
     private final JwtTokenProvider tokenProvider;
 
@@ -30,6 +31,16 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
     }
 
     private String resolveToken(ServerHttpRequest request) {
+        String bearerToken = resolveTokenFromHeader(request);
+
+        if (bearerToken == null) {
+            bearerToken = resolveTokenFromCookie(request);
+        }
+
+        return bearerToken;
+    }
+
+    private String resolveTokenFromHeader(ServerHttpRequest request) {
         String bearerToken = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(HEADER_PREFIX)) {
             return bearerToken.substring(7);
@@ -37,4 +48,11 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
         return null;
     }
 
+    private String resolveTokenFromCookie(ServerHttpRequest request) {
+        String bearerToken = request.getCookies().getFirst(COOKIE_KEY).getValue();
+        if (StringUtils.hasText(bearerToken)) {
+            return bearerToken;
+        }
+        return null;
+    }
 }

@@ -55,8 +55,7 @@ public class SecurityConfig {
                 .authorizeExchange(it -> it
                         .pathMatchers(HttpMethod.OPTIONS, PATH_POSTS).permitAll()
                         .pathMatchers("/api/v1/auth/login").permitAll()
-                        .pathMatchers(PATH_POSTS).authenticated()
-                        .pathMatchers("/me").authenticated()
+                        .pathMatchers("/**").authenticated()
                         .pathMatchers("/users/{user}/**").access(this::currentUserMatchesPath)
                         .anyExchange().permitAll())
                 .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
