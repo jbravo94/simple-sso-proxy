@@ -11,13 +11,14 @@ import { AuthService } from 'src/app/services/auth/auth.service';
 })
 export class HomeComponent implements OnInit {
 
+  apps: Service[] = [];
   services: Service[] = [new Service('Reset Password', 'Click here to reset your password.', '/home')];
 
   constructor(private authService: AuthService, private appsService: AppsService) { }
 
   ngOnInit(): void {
     this.appsService.getApps().subscribe((apps: App[]) => {
-      apps.forEach((app: App) => this.services.unshift(new Service(app.name, 'Click here to access this app.', app.baseUrl)));
+      apps.forEach((app: App) => this.apps.push(new Service(app.name, 'Click here to access this app.', app.proxyUrl)));
     });
   }
 

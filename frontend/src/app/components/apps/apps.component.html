@@ -13,6 +13,12 @@
         <td mat-cell *matCellDef="let element">{{element.baseUrl}}</td>
     </ng-container>
 
+    <!-- Proxy URL Column -->
+    <ng-container matColumnDef="proxyUrl">
+        <th mat-header-cell *matHeaderCellDef>Proxy URL</th>
+        <td mat-cell *matCellDef="let element">{{element.proxyUrl}}</td>
+    </ng-container>
+
     <!-- Login Script Column -->
     <ng-container matColumnDef="loginScript">
         <th mat-header-cell *matHeaderCellDef>Login Script</th>

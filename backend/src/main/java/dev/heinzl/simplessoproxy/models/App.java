@@ -15,6 +15,7 @@ public class App {
     private String id;
     private String name;
     private String baseUrl;
+    private String proxyUrl;
     private String loginScript;
     private String logoutScript;
     private String proxyScript;

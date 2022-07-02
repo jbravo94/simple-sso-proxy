@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
   }
 
   signIn() {
-    alert('Sign in triggered!');
     this.authService.login(this.username, this.password);
     return false;
   }

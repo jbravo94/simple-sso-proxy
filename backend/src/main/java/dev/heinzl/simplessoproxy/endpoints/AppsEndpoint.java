@@ -79,6 +79,10 @@ public class AppsEndpoint {
                 originalApp.setBaseUrl(app.getBaseUrl());
             }
 
+            if (app.getProxyUrl() != null) {
+                originalApp.setProxyUrl(app.getProxyUrl());
+            }
+
             if (app.getLoginScript() != null) {
                 originalApp.setLoginScript(app.getLoginScript());
             }

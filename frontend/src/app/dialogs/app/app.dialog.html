@@ -9,6 +9,10 @@
         <mat-label>Base Url</mat-label>
         <input matInput [(ngModel)]="app.baseUrl">
     </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Proxy Url</mat-label>
+        <input matInput [(ngModel)]="app.proxyUrl">
+    </mat-form-field>
     <mat-form-field appearance="fill" floatLabel="always">
         <mat-label>Login Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
