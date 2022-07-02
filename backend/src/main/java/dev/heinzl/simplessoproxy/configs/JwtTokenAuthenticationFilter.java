@@ -1,6 +1,8 @@
 package dev.heinzl.simplessoproxy.configs;
 
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.Authentication;
@@ -49,9 +51,9 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
     }
 
     private String resolveTokenFromCookie(ServerHttpRequest request) {
-        String bearerToken = request.getCookies().getFirst(COOKIE_KEY).getValue();
-        if (StringUtils.hasText(bearerToken)) {
-            return bearerToken;
+        HttpCookie bearerTokenCookie = request.getCookies().getFirst(COOKIE_KEY);
+        if (bearerTokenCookie != null && StringUtils.hasText(bearerTokenCookie.getValue())) {
+            return bearerTokenCookie.getValue();
         }
         return null;
     }
