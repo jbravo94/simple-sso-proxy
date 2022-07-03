@@ -46,6 +46,7 @@ export class AuthService {
 
   logout() {
     this.localTokenService.deleteProxyCookie();
+    console.log("here");
     this.router.navigate(['/login']);
   }
 

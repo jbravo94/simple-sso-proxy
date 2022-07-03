@@ -8,16 +8,17 @@ export class LocalTokenService {
 
   constructor() { }
 
-  private setCookie(name: string, value: string, expireDays: number, path: string = '') {
+  private setCookie(name: string, value: string, expireDays: number, domain: string = '', path: string = '') {
     let d: Date = new Date();
     d.setTime(d.getTime() + expireDays * 24 * 60 * 60 * 1000);
     let expires: string = `expires=${d.toUTCString()}`;
     let cpath: string = path ? `; path=${path}` : '';
-    document.cookie = `${name}=${value}; ${expires}${cpath}`;
+    let cdomain: string = domain ? `; domain=${domain}` : '';
+    document.cookie = `${name}=${value}; ${expires}${cpath}${cdomain}`;
   }
 
-  setProxyCookie(value: string, expireDays: number = 365, path: string = '') {
-    this.setCookie(COOKIE_NAME, value, expireDays, path);
+  setProxyCookie(value: string) {
+    this.setCookie(COOKIE_NAME, value, 365, window.location.hostname, '/');
   }
 
   private getCookie(name: string) {
@@ -39,12 +40,12 @@ export class LocalTokenService {
     return this.getCookie(COOKIE_NAME);
   }
 
-  private deleteCookie(name: string) {
-    this.setCookie(name, '', -1);
+  private deleteCookie(name: string, domain: string, path: string) {
+    this.setCookie(name, '', -1, domain, path);
   }
 
   deleteProxyCookie() {
-    this.deleteCookie(COOKIE_NAME);
+    this.deleteCookie(COOKIE_NAME, window.location.hostname, '/');
   }
 
   private setData(key: string, data: object) {

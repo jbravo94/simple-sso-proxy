@@ -57,7 +57,7 @@ public class SecurityConfig {
                         .pathMatchers("/api/v1/auth/login").permitAll()
                         .pathMatchers("/**").authenticated()
                         .pathMatchers("/users/{user}/**").access(this::currentUserMatchesPath)
-                        .anyExchange().permitAll())
+                        .anyExchange().denyAll())
                 .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
                 .build();
 

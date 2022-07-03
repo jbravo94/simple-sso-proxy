@@ -64,3 +64,5 @@ https://medium.com/angular-shots/shot-3-how-to-add-http-headers-to-every-request
 Mention here Chrome CORS Plugin: Moesif Origin & CORS Changer
 https://gist.github.com/mwrouse/05d8c11cd3872c19c684bd1904a2202e
 https://stackoverflow.com/questions/61217446/how-can-i-get-suggestions-registercompletionitemprovider-to-show-between-curly
+
+Change setting cookie via javascript to set cookie via HTTP Set-Cookie and maybe redirect
