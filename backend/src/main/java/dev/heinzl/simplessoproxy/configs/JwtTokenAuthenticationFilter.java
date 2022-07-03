@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 public class JwtTokenAuthenticationFilter implements WebFilter {
 
     public static final String HEADER_PREFIX = "Bearer ";
-    public static final String COOKIE_KEY = "simple-proxy-sso-token";
+    public static final String COOKIE_KEY = "simple-sso-proxy-token";
 
     private final JwtTokenProvider tokenProvider;
 
