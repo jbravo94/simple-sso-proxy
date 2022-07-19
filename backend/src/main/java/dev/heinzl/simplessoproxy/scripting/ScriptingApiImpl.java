@@ -1,13 +1,18 @@
 package dev.heinzl.simplessoproxy.scripting;
 
+import java.util.List;
 import java.util.StringJoiner;
 
 import org.slf4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
+import org.springframework.http.HttpCookie;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.server.ServerWebExchange;
 
 import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
@@ -27,18 +32,65 @@ public class ScriptingApiImpl implements ScriptingApi {
     private WebClient client = WebClient.create();
 
     @Override
-    public void addProxyRequestHeaderIfNotPreset(String key, String value) {
-        gatewayFilterSpec.addRequestHeader(key, value);
+    public void addProxyRequestHeaderIfNotPreset(ServerWebExchange exchange, String key, String value) {
+        // TODO Fix
+        exchange.getRequest().getHeaders().set(key, value);
     }
 
     @Override
-    public void addProxyResponseHeaderIfNotPreset(String key, String value) {
-        gatewayFilterSpec.addResponseHeader(key, value);
+    public void addProxyResponseHeaderIfNotPreset(ServerWebExchange exchange, String key, String value) {
+        // TODO Fix
+        exchange.getResponse().getHeaders().set(key, value);
     }
 
     @Override
-    public void addProxyRequestCookieIfNotPreset(String name, String value) {
-        gatewayFilterSpec.addRequestHeader("Cookie", String.format("%s=%s", name, value));
+    public void addProxyRequestCookieIfNotPreset(ServerWebExchange exchange, String name, String value) {
+        // TODO Fix
+        exchange.getRequest().getHeaders().set("Cookie", String.format("%s=%s", name, value));
+    }
+
+    @Override
+    public void addProxyResponseCookieIfNotPreset(ServerWebExchange exchange, String name, String value, String path) {
+
+        if (path == null) {
+            path = "/";
+        }
+
+        MultiValueMap<String, HttpCookie> requestCookies = exchange.getRequest().getCookies();
+        HttpHeaders responseHeaders = exchange.getResponse().getHeaders();
+
+        List<HttpCookie> list = requestCookies.get(name);
+
+        if (list == null || list.size() == 0) {
+            responseHeaders.set("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
+        }
+    }
+
+    @Override
+    public void addPermanentProxyRequestHeaderIfNotPreset(String key, String value) {
+        // TODO Fix
+        gatewayFilterSpec.setRequestHeader(key, value);
+    }
+
+    @Override
+    public void addPermanentProxyResponseHeaderIfNotPreset(String key, String value) {
+        // TODO Fix
+        gatewayFilterSpec.setRequestHeader(key, value);
+    }
+
+    @Override
+    public void addPermanentProxyRequestCookieIfNotPreset(String name, String value) {
+        // TODO Fix
+        gatewayFilterSpec.setRequestHeader("Cookie", String.format("%s=%s", name, value));
+    }
+
+    @Override
+    public void addPermanentProxyResponseCookieIfNotPreset(String name, String value, String path) {
+        if (path == null) {
+            path = "/";
+        }
+
+        gatewayFilterSpec.addResponseHeader("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
     }
 
     @Override
@@ -65,15 +117,6 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public void addProxyResponseCookieIfNotPreset(String name, String value, String path) {
-        if (path == null) {
-            path = "/";
-        }
-
-        gatewayFilterSpec.addResponseHeader("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
-    }
-
-    @Override
     public Logger getLogger() {
         return log;
     }
@@ -89,9 +132,14 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
+    public WebClient getWebClient() {
+        return this.client;
+    }
+
+    @Override
     public void createGatewayFilter(Closure closure) {
         GatewayFilter gatewayFilter = new OrderedGatewayFilter((exchange, chain) -> {
-            closure.call();
+            closure.call(exchange);
             return chain.filter(exchange);
         }, 0);
 

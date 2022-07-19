@@ -13,21 +13,21 @@
         <mat-label>Proxy Url</mat-label>
         <input matInput [(ngModel)]="app.proxyUrl">
     </mat-form-field>
-    <mat-form-field appearance="fill" floatLabel="always">
+    <mat-form-field appearance="fill" floatLabel="always" *ngIf="false">
         <mat-label>Login Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
         <app-scripting [(code)]="app.loginScript"></app-scripting>
         <input matInput hidden [(ngModel)]="app.loginScript">
         <div class="template-function">{{'}'}}</div>
     </mat-form-field>
-    <mat-form-field appearance="fill" floatLabel="always">
+    <mat-form-field appearance="fill" floatLabel="always" *ngIf="false">
         <mat-label>Logout Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
         <app-scripting [(code)]="app.logoutScript"></app-scripting>
         <input matInput hidden [(ngModel)]="app.logoutScript">
         <div class="template-function">{{'}'}}</div>
     </mat-form-field>
-    <mat-form-field appearance="fill" floatLabel="always">
+    <mat-form-field appearance="fill" floatLabel="always" *ngIf="false">
         <mat-label>Reset Script</mat-label>
         <div class="template-function">{{'def script(scriptingApi) {'}}</div>
         <app-scripting [(code)]="app.resetScript"></app-scripting>

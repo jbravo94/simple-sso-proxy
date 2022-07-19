@@ -44,3 +44,15 @@ https://groovy-lang.org/closures.html#closure-as-object
 
 Make adapter for inmemory credentials or persistent
 Implement Testbutton for scripts
+store personal credentials
+
+scriptingApi.addProxyResponseHeaderIfNotPreset("Johnny", "Johnny")
+scriptingApi.addProxyResponseCookieIfNotPreset("bahmni.user", "%22superman%22", "/")
+
+def isOdd = {exchange ->
+    scriptingApi.logInfo(exchange.getRequest().getURI().toString())
+    def apps = scriptingApi.getRepositoryFacade().getAppsRepository().findAll().size();
+    scriptingApi.logInfo("JOHNNY " + apps) 
+    }
+
+scriptingApi.createGatewayFilter(isOdd);
