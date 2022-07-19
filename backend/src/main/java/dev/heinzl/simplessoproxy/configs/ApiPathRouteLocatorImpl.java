@@ -1,6 +1,10 @@
 package dev.heinzl.simplessoproxy.configs;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.BooleanSpec;
@@ -21,6 +25,7 @@ import dev.heinzl.simplessoproxy.scripting.ScriptingApiImpl;
 import dev.heinzl.simplessoproxy.services.ScriptEngine;
 import reactor.core.publisher.Flux;
 
+@Slf4j
 @AllArgsConstructor
 public class ApiPathRouteLocatorImpl implements RouteLocator {
   private final RouteLocatorBuilder routeLocatorBuilder;

@@ -38,5 +38,9 @@ https://docs.spring.io/spring-security/site/docs/5.2.5.RELEASE/reference/html/pr
 https://docs.spring.io/spring-security/site/docs/5.2.5.RELEASE/reference/html/protection-against-exploits-2.html
 https://www.naturalprogrammer.com/courses/332639/lectures/5902512
 https://medium.com/zero-equals-false/protect-rest-apis-with-spring-security-reactive-and-jwt-7b209a0510f1
+https://haris-zujo.medium.com/spring-cloud-gateway-request-filtering-and-redirection-9e4b6d559d1a
+https://runebook.dev/de/docs/http/headers/set-cookie#:~:text=Set%2DCookie-,Der%20Set%2DCookie%20HTTP%2DAntwortheader%20wird%20verwendet%2C%20um%20ein,in%20derselben%20Antwort%20gesendet%20werden.
+https://groovy-lang.org/closures.html#closure-as-object
 
 Make adapter for inmemory credentials or persistent
+Implement Testbutton for scripts

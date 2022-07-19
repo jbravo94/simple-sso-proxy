@@ -2,14 +2,20 @@ package dev.heinzl.simplessoproxy.scripting;
 
 import java.util.StringJoiner;
 
+import org.slf4j.Logger;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
+import groovy.lang.Closure;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class ScriptingApiImpl implements ScriptingApi {
 
@@ -37,7 +43,6 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     @Override
     public String getProxyUsername() {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -66,6 +71,31 @@ public class ScriptingApiImpl implements ScriptingApi {
         }
 
         gatewayFilterSpec.addResponseHeader("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
+    }
+
+    @Override
+    public Logger getLogger() {
+        return log;
+    }
+
+    @Override
+    public void logInfo(String text) {
+        log.info(text);
+    }
+
+    @Override
+    public RepositoryFacade getRepositoryFacade() {
+        return this.repositoryFacade;
+    }
+
+    @Override
+    public void createGatewayFilter(Closure closure) {
+        GatewayFilter gatewayFilter = new OrderedGatewayFilter((exchange, chain) -> {
+            closure.call();
+            return chain.filter(exchange);
+        }, 0);
+
+        gatewayFilterSpec.filter(gatewayFilter);
     }
 
     // add HTTP build and function for content extraction

@@ -1,6 +1,8 @@
 package dev.heinzl.simplessoproxy.scripting;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
+import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.stereotype.Component;
