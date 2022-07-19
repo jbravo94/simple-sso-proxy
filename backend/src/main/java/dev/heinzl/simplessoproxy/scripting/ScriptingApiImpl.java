@@ -3,23 +3,22 @@ package dev.heinzl.simplessoproxy.scripting;
 import java.util.StringJoiner;
 
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class ScriptingApiImpl implements ScriptingApi {
 
-    private App app;
-    private GatewayFilterSpec gatewayFilterSpec;
-    private WebClient client = WebClient.create();
-    private RepositoryFacade repositoryFacade;
+    private final App app;
+    private final GatewayFilterSpec gatewayFilterSpec;
+    private final RepositoryFacade repositoryFacade;
+    private final ReactiveAuthenticationManager authenticationManager;
 
-    public ScriptingApiImpl(App app, GatewayFilterSpec gatewayFilterSpec, RepositoryFacade repositoryFacade) {
-        this.app = app;
-        this.gatewayFilterSpec = gatewayFilterSpec;
-        this.repositoryFacade = repositoryFacade;
-    }
+    private WebClient client = WebClient.create();
 
     @Override
     public void addProxyRequestHeaderIfNotPreset(String key, String value) {
@@ -37,13 +36,25 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public String getUsername() {
+    public String getProxyUsername() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String getPassword() {
+    public String getProxyPassword() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getAppUsername() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public String getAppPassword() {
         // TODO Auto-generated method stub
         return null;
     }

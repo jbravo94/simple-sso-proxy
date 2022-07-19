@@ -15,6 +15,7 @@ import dev.heinzl.simplessoproxy.repositories.CredentialsRepository;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
 import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
+import dev.heinzl.simplessoproxy.scripting.ScriptingApiFactory;
 import dev.heinzl.simplessoproxy.services.ScriptEngine;
 import reactor.core.publisher.Mono;
 
@@ -28,10 +29,9 @@ public class SimpleSsoProxyApplication {
 	}
 
 	@Bean
-	public RouteLocator routeLocator(ScriptEngine scriptEngine,
-			RepositoryFacade repositoryFacade,
-			RouteLocatorBuilder routeLocatorBuilder) {
-		return new ApiPathRouteLocatorImpl(scriptEngine, repositoryFacade, routeLocatorBuilder);
+	public RouteLocator routeLocator(RouteLocatorBuilder routeLocatorBuilder, AppsRepository appsRepository,
+			ScriptingApiFactory scriptingApiFactory) {
+		return new ApiPathRouteLocatorImpl(routeLocatorBuilder, appsRepository, scriptingApiFactory);
 	}
 
 	@RequestMapping("/fallback")

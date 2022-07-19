@@ -9,8 +9,12 @@ public interface ScriptingApi {
 
     void addProxyResponseCookieIfNotPreset(String name, String value, String path);
 
-    String getUsername();
+    String getProxyUsername();
 
-    String getPassword();
+    String getProxyPassword();
+
+    String getAppUsername();
+
+    String getAppPassword();
 
 }
