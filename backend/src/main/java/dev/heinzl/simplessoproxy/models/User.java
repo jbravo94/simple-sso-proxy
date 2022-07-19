@@ -39,4 +39,7 @@ public class User {
     @Builder.Default()
     private List<String> roles = new ArrayList<>();
 
+    @Builder.Default()
+    private List<String> credentials = new ArrayList<>();
+
 }

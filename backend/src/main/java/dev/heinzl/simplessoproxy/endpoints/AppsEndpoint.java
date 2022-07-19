@@ -21,6 +21,7 @@ import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.models.User;
 import dev.heinzl.simplessoproxy.repositories.AppsRepository;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
+import dev.heinzl.simplessoproxy.services.GatewayRouteService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -37,6 +38,9 @@ public class AppsEndpoint {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    GatewayRouteService gatewayRouteService;
 
     @CrossOrigin
     @GetMapping("/all")
@@ -60,7 +64,11 @@ public class AppsEndpoint {
 
     @PostMapping
     public Mono<App> create(@RequestBody App app) {
-        return Mono.just(appsRepository.save(app));
+        App createApp = appsRepository.save(app);
+
+        gatewayRouteService.refreshRoutes();
+
+        return Mono.just(createApp);
     }
 
     @PutMapping("/{id}")
@@ -99,7 +107,11 @@ public class AppsEndpoint {
                 originalApp.setResetScript(app.getResetScript());
             }
 
-            return Mono.just(appsRepository.save(app));
+            App updatedApp = appsRepository.save(app);
+
+            gatewayRouteService.refreshRoutes();
+
+            return Mono.just(updatedApp);
         } else {
             return Mono.error(new NotFoundException("No App found with fiven id."));
         }
@@ -108,5 +120,6 @@ public class AppsEndpoint {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable("id") String id) {
         appsRepository.deleteById(id);
+        gatewayRouteService.refreshRoutes();
     }
 }

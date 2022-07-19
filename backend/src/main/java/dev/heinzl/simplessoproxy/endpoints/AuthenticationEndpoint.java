@@ -37,6 +37,7 @@ public class AuthenticationEndpoint {
                         .authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()))
                         .map(this.tokenProvider::createToken))
                 .map(jwt -> {
+                    // TODO Set-Cookie
                     HttpHeaders httpHeaders = new HttpHeaders();
                     httpHeaders.add(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
                     var tokenBody = Map.of("access_token", jwt);
