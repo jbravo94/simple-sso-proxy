@@ -24,13 +24,13 @@ public interface ScriptingApi {
 
     void addPermanentProxyResponseCookieIfNotPreset(String name, String value, String path);
 
-    String getProxyUsername();
+    String getProxyUsername(ServerWebExchange exchange);
 
-    String getProxyPassword();
+    String getProxyPassword(ServerWebExchange exchange);
 
-    String getAppUsername();
+    String getAppUsername(ServerWebExchange exchange);
 
-    String getAppPassword();
+    String getAppPassword(ServerWebExchange exchange);
 
     Logger getLogger();
 

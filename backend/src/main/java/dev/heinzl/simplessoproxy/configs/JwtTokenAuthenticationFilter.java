@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
 import org.springframework.util.StringUtils;
@@ -18,16 +19,22 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class JwtTokenAuthenticationFilter implements WebFilter {
 
-    public static final String HEADER_PREFIX = "Bearer ";
-    public static final String COOKIE_KEY = "simple-sso-proxy-token";
-
     private final JwtTokenProvider tokenProvider;
+    private final ServerSecurityContextRepository serverSecurityContextRepository;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        String token = resolveToken(exchange.getRequest());
+        String token = tokenProvider.resolveToken(exchange.getRequest());
         if (StringUtils.hasText(token) && this.tokenProvider.validateToken(token)) {
             Authentication authentication = this.tokenProvider.getAuthentication(token);
+
+            /*
+             * SecurityContextImpl securityContext = new
+             * SecurityContextImpl(authentication);
+             * this.serverSecurityContextRepository.save(exchange, securityContext)
+             * .contextWrite(ReactiveSecurityContextHolder.withSecurityContext(Mono.just(
+             * securityContext)));
+             */
 
             return chain.filter(exchange)
                     .contextWrite(ReactiveSecurityContextHolder.withAuthentication(authentication));
@@ -35,29 +42,4 @@ public class JwtTokenAuthenticationFilter implements WebFilter {
         return chain.filter(exchange);
     }
 
-    private String resolveToken(ServerHttpRequest request) {
-        String bearerToken = resolveTokenFromHeader(request);
-
-        if (bearerToken == null) {
-            bearerToken = resolveTokenFromCookie(request);
-        }
-
-        return bearerToken;
-    }
-
-    private String resolveTokenFromHeader(ServerHttpRequest request) {
-        String bearerToken = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(HEADER_PREFIX)) {
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
-    private String resolveTokenFromCookie(ServerHttpRequest request) {
-        HttpCookie bearerTokenCookie = request.getCookies().getFirst(COOKIE_KEY);
-        if (bearerTokenCookie != null && StringUtils.hasText(bearerTokenCookie.getValue())) {
-            return bearerTokenCookie.getValue();
-        }
-        return null;
-    }
 }

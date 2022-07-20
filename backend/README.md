@@ -44,6 +44,7 @@ https://groovy-lang.org/closures.html#closure-as-object
 https://docs.spring.io/spring-security/site/docs/5.2.0.RELEASE/reference/html/jc-erms.html
 https://stackoverflow.com/questions/51315378/reactivesecuritycontextholder-getcontext-is-empty-but-authenticationprincipal
 https://stackoverflow.com/questions/50015711/spring-security-webflux-body-with-authentication
+https://medium.com/javarevisited/spring-webflux-meets-passwordless-authentication-a4be6cab6bfe
 
 Make adapter for inmemory credentials or persistent
 Implement Testbutton for scripts

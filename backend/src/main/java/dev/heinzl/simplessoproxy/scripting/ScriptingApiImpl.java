@@ -11,6 +11,7 @@ import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
@@ -20,6 +21,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 
+import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
 import groovy.lang.Closure;
@@ -36,6 +38,7 @@ public class ScriptingApiImpl implements ScriptingApi {
     private final RepositoryFacade repositoryFacade;
     private final ReactiveAuthenticationManager authenticationManager;
     private final ServerSecurityContextRepository serverSecurityContextRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private WebClient client = WebClient.create();
 
@@ -102,25 +105,24 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public String getProxyUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    public String getProxyUsername(ServerWebExchange exchange) {
+        return jwtTokenProvider.getUsernameFromRequest(exchange.getRequest());
+    }
+
+    @Override
+    public String getProxyPassword(ServerWebExchange exchange) {
+        String username = jwtTokenProvider.getUsernameFromRequest(exchange.getRequest());
         return null;
     }
 
     @Override
-    public String getProxyPassword() {
+    public String getAppUsername(ServerWebExchange exchange) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String getAppUsername() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String getAppPassword() {
+    public String getAppPassword(ServerWebExchange exchange) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -148,16 +150,36 @@ public class ScriptingApiImpl implements ScriptingApi {
     @Override
     public void createGatewayFilter(Closure closure) {
         GatewayFilter gatewayFilter = new OrderedGatewayFilter((exchange, chain) -> {
-            Mono<SecurityContext> load = serverSecurityContextRepository.load(exchange);
-
-            load.flatMap(t -> {
-                log.info(t.getAuthentication().getPrincipal().toString());
-                return Mono.just(t);
-            });
 
             closure.call(exchange);
+
+            /*
+             * 
+             * serverSecurityContextRepository.load(exchange)
+             * .subscribe(c -> log.info(
+             * c.toString()));
+             * 
+             * exchange.getSession().subscribe(session -> {
+             * final SecurityContext context =
+             * session.getAttribute("simple-sso-proxy-security-context");
+             * /*
+             * 
+             * context.setAuthentication(token);
+             * serverSecurityContextRepository.save(exchange, context);
+             * log.info("TTTTTTTTTTTTTT");
+             *
+             * });
+             */
+            /*
+             * flatMap(session -> {
+             * final SecurityContext context =
+             * session.getAttribute("simple-sso-proxy-security-context");
+             * log.info("TTTTTTTTTTTTTT");
+             * return Mono.empty();
+             * });
+             */
             return chain.filter(exchange);
-        }, 0);
+        }, Integer.MAX_VALUE);
 
         gatewayFilterSpec.filter(gatewayFilter);
     }

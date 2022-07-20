@@ -75,56 +75,65 @@ public class SecurityConfig {
                                  * .addFilterAt(authenticationWebFilter(reactiveAuthenticationManager),
                                  * SecurityWebFiltersOrder.AUTHENTICATION)
                                  */
-                                .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider),
+                                .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider,
+                                                securityContextRepository()),
                                                 SecurityWebFiltersOrder.HTTP_BASIC)
 
                                 .build();
 
         }
-
-        private AuthenticationWebFilter authenticationWebFilter(
-                        ReactiveAuthenticationManager reactiveAuthenticationManager) {
-                AuthenticationWebFilter filter = new AuthenticationWebFilter(reactiveAuthenticationManager);
-
-                filter.setSecurityContextRepository(securityContextRepository());
-                filter.setAuthenticationConverter(jsonBodyAuthenticationConverter(reactiveAuthenticationManager));
-                filter.setAuthenticationSuccessHandler(new ServerAuthenticationSuccessHandler() {
-
-                        @Override
-                        public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange,
-                                        Authentication authentication) {
-                                System.out.println("arg0");
-                                return null;
-                        }
-
-                });
-                filter.setRequiresAuthenticationMatcher(
-                                ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST,
-                                                "/api/v1/auth/login"));
-
-                return filter;
-        }
-
-        private Function<ServerWebExchange, Mono<Authentication>> jsonBodyAuthenticationConverter(
-                        ReactiveAuthenticationManager reactiveAuthenticationManager) {
-                return exchange -> exchange
-                                .getRequest()
-                                .getBody()
-                                .next()
-                                .flatMap(body -> {
-                                        try {
-                                                AuthenticationRequest signInForm = mapper.readValue(
-                                                                body.asInputStream(), AuthenticationRequest.class);
-
-                                                return Mono.just(
-                                                                new UsernamePasswordAuthenticationToken(
-                                                                                signInForm.getUsername(),
-                                                                                signInForm.getPassword()));
-                                        } catch (IOException e) {
-                                                return Mono.error(e);
-                                        }
-                                });
-        }
+        /*
+         * private AuthenticationWebFilter authenticationWebFilter(
+         * ReactiveAuthenticationManager reactiveAuthenticationManager) {
+         * AuthenticationWebFilter filter = new
+         * AuthenticationWebFilter(reactiveAuthenticationManager);
+         * 
+         * filter.setSecurityContextRepository(securityContextRepository());
+         * filter.setAuthenticationConverter(jsonBodyAuthenticationConverter(
+         * reactiveAuthenticationManager));
+         * filter.setAuthenticationSuccessHandler(new
+         * ServerAuthenticationSuccessHandler() {
+         * 
+         * @Override
+         * public Mono<Void> onAuthenticationSuccess(WebFilterExchange
+         * webFilterExchange,
+         * Authentication authentication) {
+         * System.out.println("arg0");
+         * return null;
+         * }
+         * 
+         * });
+         * filter.setRequiresAuthenticationMatcher(
+         * ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST,
+         * "/api/v1/auth/login"));
+         * 
+         * return filter;
+         * }
+         * 
+         * private Function<ServerWebExchange, Mono<Authentication>>
+         * jsonBodyAuthenticationConverter(
+         * ReactiveAuthenticationManager reactiveAuthenticationManager) {
+         * return exchange -> exchange
+         * .getRequest()
+         * .getBody()
+         * .next()
+         * .flatMap(body -> {
+         * try {
+         * AuthenticationRequest signInForm = mapper.readValue(
+         * body.asInputStream(), AuthenticationRequest.class);
+         * 
+         * return Mono.just(
+         * new UsernamePasswordAuthenticationToken(
+         * signInForm.getUsername(),
+         * signInForm.getPassword()));
+         * } catch (IOException e) {
+         * return Mono.error(e);
+         * }
+         * });
+         * }
+         * 
+         * 
+         */
 
         @Bean
         public ServerSecurityContextRepository securityContextRepository() {
