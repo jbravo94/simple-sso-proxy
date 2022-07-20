@@ -34,6 +34,6 @@ public class CredentialDecorator extends Credential {
     @Override
     public void setSecret(String secret) {
         // TODO Fix if empty string
-        this.secretsRepository.setSecret(this.getId());
+        this.secretsRepository.setSecret(this.getId(), secret);
     }
 }

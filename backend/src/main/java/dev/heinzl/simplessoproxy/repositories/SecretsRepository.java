@@ -16,7 +16,7 @@ public class SecretsRepository {
             .build(
                     new CacheLoader<String, String>() {
                         public String load(String key) {
-                            return null;
+                            return "";
                         }
                     });
 
@@ -24,11 +24,11 @@ public class SecretsRepository {
         try {
             return this.secrets.get(identifier);
         } catch (ExecutionException e) {
-            return null;
+            return "";
         }
     }
 
-    public void setSecret(String identifier) {
-        this.setSecret(identifier);
+    public void setSecret(String identifier, String value) {
+        this.secrets.put(identifier, value);
     }
 }

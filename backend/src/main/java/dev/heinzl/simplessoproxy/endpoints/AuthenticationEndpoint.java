@@ -3,6 +3,8 @@ package dev.heinzl.simplessoproxy.endpoints;
 import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.models.AuthenticationRequest;
 import dev.heinzl.simplessoproxy.models.User;
+import dev.heinzl.simplessoproxy.repositories.PersistentCredentialsRepository;
+import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -34,13 +36,21 @@ public class AuthenticationEndpoint {
 
     private final ReactiveAuthenticationManager authenticationManager;
 
+    private final SecretsRepository secretsRepository;
+
     @PostMapping("/login")
     public Mono<ResponseEntity> login(@Valid @RequestBody Mono<AuthenticationRequest> authRequest) {
 
         return authRequest
-                .flatMap(login -> this.authenticationManager
-                        .authenticate(new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()))
-                        .map(this.tokenProvider::createToken))
+                .flatMap(login -> {
+
+                    secretsRepository.setSecret(login.getUsername(), login.getPassword());
+
+                    return this.authenticationManager
+                            .authenticate(
+                                    new UsernamePasswordAuthenticationToken(login.getUsername(), login.getPassword()))
+                            .map(this.tokenProvider::createToken);
+                })
                 .map(jwt -> {
                     // TODO Set-Cookie
                     HttpHeaders httpHeaders = new HttpHeaders();
