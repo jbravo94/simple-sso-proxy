@@ -112,12 +112,12 @@ public class ScriptingApiImpl implements ScriptingApi {
     @Override
     public String getProxyPassword(ServerWebExchange exchange) {
         String username = jwtTokenProvider.getUsernameFromRequest(exchange.getRequest());
-        return null;
+        return this.repositoryFacade.getSecretsRepository().getSecret(username);
     }
 
     @Override
     public String getAppUsername(ServerWebExchange exchange) {
-        // TODO Auto-generated method stub
+        log.info(exchange.getRequest().getURI().getHost());
         return null;
     }
 
