@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,7 +21,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.heinzl.simplessoproxy.models.App;
+import dev.heinzl.simplessoproxy.models.Credential;
+import dev.heinzl.simplessoproxy.models.User;
 import dev.heinzl.simplessoproxy.repositories.AppsRepository;
+import dev.heinzl.simplessoproxy.repositories.CredentialsRepository;
+import dev.heinzl.simplessoproxy.repositories.PersistentCredentialsRepository;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
 import dev.heinzl.simplessoproxy.services.GatewayRouteService;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +40,9 @@ public class AppsEndpoint {
 
     @Autowired
     AppsRepository appsRepository;
+
+    @Autowired
+    PersistentCredentialsRepository persistentCredentialsRepository;
 
     @Autowired
     UsersRepository users;
@@ -72,7 +78,8 @@ public class AppsEndpoint {
          */
         return getAuthenticatedContexts(context).flux()
                 .flatMap(f -> {
-                    User user = (User) f.getAuthentication().getPrincipal();
+                    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) f
+                            .getAuthentication().getPrincipal();
                     log.info(user.getUsername());
                     return Flux.fromIterable(appsRepository.findAll());
                 });
@@ -85,6 +92,33 @@ public class AppsEndpoint {
         gatewayRouteService.refreshRoutes();
 
         return Mono.just(createApp);
+    }
+
+    @GetMapping("/test")
+    public Mono<Credential> create3() {
+        // Credential credential = credentialsRepository.save(entity);
+        return ReactiveSecurityContextHolder.getContext()
+                .map(SecurityContext::getAuthentication)
+                .doOnNext(auth -> {
+                    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) auth
+                            .getPrincipal();
+                    String username = user.getUsername();
+
+                    User fetched = users.findByUsername(username).get(0);
+                    App app = appsRepository.findAll().get(0);
+
+                    Credential credential = Credential.builder().app(app).secret("password").user(fetched).build();
+
+                    persistentCredentialsRepository.save(credential);
+
+                    log.info(String.valueOf(auth));
+                })
+                .then(Mono.empty());
+    }
+
+    @GetMapping("/test2")
+    public Flux<Credential> create4() {
+        return Flux.fromIterable(persistentCredentialsRepository.findByAppId(appsRepository.findAll().get(0).getId()));
     }
 
     @PutMapping("/{id}")

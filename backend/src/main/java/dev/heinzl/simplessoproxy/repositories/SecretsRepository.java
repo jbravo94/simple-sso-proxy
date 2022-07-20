@@ -28,7 +28,7 @@ public class SecretsRepository {
         }
     }
 
-    public void putSecret(String identifier) {
-        this.putSecret(identifier);
+    public void setSecret(String identifier) {
+        this.setSecret(identifier);
     }
 }

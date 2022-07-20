@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.heinzl.simplessoproxy.configs.ApiPathRouteLocatorImpl;
 import dev.heinzl.simplessoproxy.repositories.AppsRepository;
-import dev.heinzl.simplessoproxy.repositories.CredentialsRepository;
+import dev.heinzl.simplessoproxy.repositories.PersistentCredentialsRepository;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
 import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;

@@ -3,6 +3,7 @@ package dev.heinzl.simplessoproxy.models;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,11 +16,11 @@ public class Credential {
     @Id
     private String id;
 
-    @DBRef
+    @DocumentReference(lazy = true)
     private User user;
 
-    @DBRef
-    private App name;
+    @DocumentReference(lazy = true)
+    private App app;
 
     private String secret;
 

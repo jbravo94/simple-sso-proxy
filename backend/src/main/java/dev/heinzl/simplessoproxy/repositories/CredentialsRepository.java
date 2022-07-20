@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 
 import dev.heinzl.simplessoproxy.models.Credential;
 
-@Component
 public interface CredentialsRepository extends MongoRepository<Credential, String> {
 
 }

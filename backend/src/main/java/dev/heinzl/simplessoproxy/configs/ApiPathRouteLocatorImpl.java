@@ -15,7 +15,6 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 
 import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.repositories.AppsRepository;
-import dev.heinzl.simplessoproxy.repositories.CredentialsRepository;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
 import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
