@@ -2,10 +2,14 @@ package dev.heinzl.simplessoproxy.endpoints;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.support.NotFoundException;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,13 +22,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.heinzl.simplessoproxy.models.App;
-import dev.heinzl.simplessoproxy.models.User;
 import dev.heinzl.simplessoproxy.repositories.AppsRepository;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
 import dev.heinzl.simplessoproxy.services.GatewayRouteService;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/apps")
@@ -41,6 +46,12 @@ public class AppsEndpoint {
 
     @Autowired
     GatewayRouteService gatewayRouteService;
+
+    private final Mono<SecurityContext> context = ReactiveSecurityContextHolder.getContext();
+
+    private Mono<SecurityContext> getAuthenticatedContexts(Mono<SecurityContext> context) {
+        return context.filter(c -> Objects.nonNull(c.getAuthentication()));
+    }
 
     @CrossOrigin
     @GetMapping("/all")
@@ -59,7 +70,12 @@ public class AppsEndpoint {
          * return Flux.just(this.users.save(user));
          * });
          */
-        return Flux.fromIterable(appsRepository.findAll());
+        return getAuthenticatedContexts(context).flux()
+                .flatMap(f -> {
+                    User user = (User) f.getAuthentication().getPrincipal();
+                    log.info(user.getUsername());
+                    return Flux.fromIterable(appsRepository.findAll());
+                });
     }
 
     @PostMapping

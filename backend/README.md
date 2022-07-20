@@ -41,6 +41,9 @@ https://medium.com/zero-equals-false/protect-rest-apis-with-spring-security-reac
 https://haris-zujo.medium.com/spring-cloud-gateway-request-filtering-and-redirection-9e4b6d559d1a
 https://runebook.dev/de/docs/http/headers/set-cookie#:~:text=Set%2DCookie-,Der%20Set%2DCookie%20HTTP%2DAntwortheader%20wird%20verwendet%2C%20um%20ein,in%20derselben%20Antwort%20gesendet%20werden.
 https://groovy-lang.org/closures.html#closure-as-object
+https://docs.spring.io/spring-security/site/docs/5.2.0.RELEASE/reference/html/jc-erms.html
+https://stackoverflow.com/questions/51315378/reactivesecuritycontextholder-getcontext-is-empty-but-authenticationprincipal
+https://stackoverflow.com/questions/50015711/spring-security-webflux-body-with-authentication
 
 Make adapter for inmemory credentials or persistent
 Implement Testbutton for scripts

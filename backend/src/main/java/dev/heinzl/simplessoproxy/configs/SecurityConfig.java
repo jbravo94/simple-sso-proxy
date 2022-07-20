@@ -1,6 +1,8 @@
 package dev.heinzl.simplessoproxy.configs;
 
+import java.io.IOException;
 import java.util.Collections;
+import java.util.function.Function;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,12 +28,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
+import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
+import org.springframework.security.web.server.context.ServerSecurityContextRepository;
+import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
+import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import org.springframework.web.server.ServerWebExchange;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dev.heinzl.simplessoproxy.models.AuthenticationRequest;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -41,142 +51,205 @@ import reactor.core.publisher.Mono;
 @EnableReactiveMethodSecurity
 public class SecurityConfig {
 
-    @Bean
-    SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
-            JwtTokenProvider tokenProvider,
-            ReactiveAuthenticationManager reactiveAuthenticationManager) {
-        final String PATH_POSTS = "/api/**";
+        ObjectMapper mapper = new ObjectMapper();
 
-        return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .cors(CorsSpec::disable)
-                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
-                .authenticationManager(reactiveAuthenticationManager)
-                .securityContextRepository(NoOpServerSecurityContextRepository.getInstance())
-                .authorizeExchange(it -> it
-                        .pathMatchers(HttpMethod.OPTIONS, PATH_POSTS).permitAll()
-                        .pathMatchers("/api/v1/auth/login").permitAll()
-                        .pathMatchers("/**").authenticated()
-                        .pathMatchers("/users/{user}/**").access(this::currentUserMatchesPath)
-                        .anyExchange().denyAll())
-                .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider), SecurityWebFiltersOrder.HTTP_BASIC)
-                .build();
+        @Bean
+        SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
+                        JwtTokenProvider tokenProvider,
+                        ReactiveAuthenticationManager reactiveAuthenticationManager) {
+                final String PATH_POSTS = "/api/**";
 
-    }
+                return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                                .cors(CorsSpec::disable)
+                                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+                                .authenticationManager(reactiveAuthenticationManager)
+                                .securityContextRepository(securityContextRepository())
+                                .authorizeExchange(it -> it
+                                                .pathMatchers(HttpMethod.OPTIONS, PATH_POSTS).permitAll()
+                                                .pathMatchers("/api/v1/auth/login").permitAll()
+                                                .pathMatchers("/**").authenticated()
+                                                .pathMatchers("/users/{user}/**").access(this::currentUserMatchesPath)
+                                                .anyExchange().denyAll())
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
+                                /*
+                                 * .addFilterAt(authenticationWebFilter(reactiveAuthenticationManager),
+                                 * SecurityWebFiltersOrder.AUTHENTICATION)
+                                 */
+                                .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider),
+                                                SecurityWebFiltersOrder.HTTP_BASIC)
 
-    private Mono<AuthorizationDecision> currentUserMatchesPath(Mono<Authentication> authentication,
-            AuthorizationContext context) {
+                                .build();
 
-        return authentication
-                .map(a -> context.getVariables().get("user").equals(a.getName()))
-                .map(AuthorizationDecision::new);
+        }
 
-    }
+        private AuthenticationWebFilter authenticationWebFilter(
+                        ReactiveAuthenticationManager reactiveAuthenticationManager) {
+                AuthenticationWebFilter filter = new AuthenticationWebFilter(reactiveAuthenticationManager);
 
-    @Bean
-    public ReactiveUserDetailsService userDetailsService(UsersRepository users) {
+                filter.setSecurityContextRepository(securityContextRepository());
+                filter.setAuthenticationConverter(jsonBodyAuthenticationConverter(reactiveAuthenticationManager));
+                filter.setAuthenticationSuccessHandler(new ServerAuthenticationSuccessHandler() {
 
-        return username -> Mono.just(users.findByUsername(username).stream()
-                .map(u -> User
-                        .withUsername(u.getUsername()).password(u.getPassword())
-                        .authorities(u.getRoles().toArray(new String[0]))
-                        .accountExpired(!u.isActive())
-                        .credentialsExpired(!u.isActive())
-                        .disabled(!u.isActive())
-                        .accountLocked(!u.isActive())
-                        .build())
-                .findFirst().get());
-    }
+                        @Override
+                        public Mono<Void> onAuthenticationSuccess(WebFilterExchange webFilterExchange,
+                                        Authentication authentication) {
+                                System.out.println("arg0");
+                                return null;
+                        }
 
-    @Bean
-    public ReactiveAuthenticationManager reactiveAuthenticationManager(ReactiveUserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) {
-        var authenticationManager = new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
-        authenticationManager.setPasswordEncoder(passwordEncoder);
-        return authenticationManager;
-    }
+                });
+                filter.setRequiresAuthenticationMatcher(
+                                ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST,
+                                                "/api/v1/auth/login"));
 
-    /*
-     * @Bean
-     * public SecurityWebFilterChain securityWebFilterChain(
-     * ServerHttpSecurity http) {
-     * return http
-     * .authorizeExchange()
-     * .pathMatchers("/api/v1/login")
-     * .permitAll()
-     * .pathMatchers("/**")
-     * .authenticated()
-     * .and()
-     * .httpBasic()
-     * .and()
-     * .csrf().disable()
-     * .addFilterAfter(authenticationWebFilter(),
-     * SecurityWebFiltersOrder.REACTOR_CONTEXT)
-     * .build();
-     * }
-     * 
-     * /*
-     * .csrf(csrf ->
-     * csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
-     * )
-     *
-     * 
-     * public AuthenticationWebFilter authenticationWebFilter() {
-     * return new AuthenticationWebFilter(resolver());
-     * }
-     * 
-     * public ReactiveAuthenticationManagerResolver<ServerWebExchange> resolver() {
-     * return exchange -> {
-     * return Mono.just(customersAuthenticationManager());
-     * };
-     * }
-     * 
-     * public ReactiveAuthenticationManager customersAuthenticationManager() {
-     * return authentication -> customer(authentication)
-     * .switchIfEmpty(Mono.error(new UsernameNotFoundException(authentication
-     * .getPrincipal()
-     * .toString())))
-     * .map(b -> new
-     * UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
-     * authentication.getCredentials(),
-     * Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))));
-     * }
-     * 
-     * public Mono<String> customer(Authentication authentication) {
-     * return Mono.justOrEmpty(authentication
-     * .getPrincipal()
-     * .toString()
-     * .startsWith("user")
-     * ? authentication
-     * .getPrincipal()
-     * .toString()
-     * : null);
-     * }
-     * 
-     * @Bean
-     * public MapReactiveUserDetailsService userDetailsService() {
-     * UserDetails user = User
-     * .withUsername("user")
-     * .password(passwordEncoder().encode("password"))
-     * .roles("USER")
-     * .build();
-     * 
-     * UserDetails admin = User
-     * .withUsername("admin")
-     * .password(passwordEncoder().encode("password"))
-     * .roles("ADMIN")
-     * .build();
-     * 
-     * return new MapReactiveUserDetailsService(user, admin);
-     * }
-     * 
-     * @Bean
-     * public PasswordEncoder passwordEncoder() {
-     * return new BCryptPasswordEncoder();
-     * }
-     */
+                return filter;
+        }
+
+        private Function<ServerWebExchange, Mono<Authentication>> jsonBodyAuthenticationConverter(
+                        ReactiveAuthenticationManager reactiveAuthenticationManager) {
+                return exchange -> exchange
+                                .getRequest()
+                                .getBody()
+                                .next()
+                                .flatMap(body -> {
+                                        try {
+                                                AuthenticationRequest signInForm = mapper.readValue(
+                                                                body.asInputStream(), AuthenticationRequest.class);
+
+                                                return Mono.just(
+                                                                new UsernamePasswordAuthenticationToken(
+                                                                                signInForm.getUsername(),
+                                                                                signInForm.getPassword()));
+                                        } catch (IOException e) {
+                                                return Mono.error(e);
+                                        }
+                                });
+        }
+
+        @Bean
+        public ServerSecurityContextRepository securityContextRepository() {
+                WebSessionServerSecurityContextRepository securityContextRepository = new WebSessionServerSecurityContextRepository();
+
+                securityContextRepository.setSpringSecurityContextAttrName("simple-sso-proxy-security-context");
+
+                return securityContextRepository;
+        }
+
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        }
+
+        private Mono<AuthorizationDecision> currentUserMatchesPath(Mono<Authentication> authentication,
+                        AuthorizationContext context) {
+
+                return authentication
+                                .map(a -> context.getVariables().get("user").equals(a.getName()))
+                                .map(AuthorizationDecision::new);
+
+        }
+
+        @Bean
+        public ReactiveUserDetailsService userDetailsService(UsersRepository users) {
+
+                return username -> Mono.just(users.findByUsername(username).stream()
+                                .map(u -> User
+                                                .withUsername(u.getUsername()).password(u.getPassword())
+                                                .authorities(u.getRoles().toArray(new String[0]))
+                                                .accountExpired(!u.isActive())
+                                                .credentialsExpired(!u.isActive())
+                                                .disabled(!u.isActive())
+                                                .accountLocked(!u.isActive())
+                                                .build())
+                                .findFirst().get());
+        }
+
+        @Bean
+        public ReactiveAuthenticationManager reactiveAuthenticationManager(
+                        ReactiveUserDetailsService userDetailsService,
+                        PasswordEncoder passwordEncoder) {
+                var authenticationManager = new UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService);
+                authenticationManager.setPasswordEncoder(passwordEncoder);
+                return authenticationManager;
+        }
+
+        /*
+         * @Bean
+         * public SecurityWebFilterChain securityWebFilterChain(
+         * ServerHttpSecurity http) {
+         * return http
+         * .authorizeExchange()
+         * .pathMatchers("/api/v1/login")
+         * .permitAll()
+         * .pathMatchers("/**")
+         * .authenticated()
+         * .and()
+         * .httpBasic()
+         * .and()
+         * .csrf().disable()
+         * .addFilterAfter(authenticationWebFilter(),
+         * SecurityWebFiltersOrder.REACTOR_CONTEXT)
+         * .build();
+         * }
+         * 
+         * /*
+         * .csrf(csrf ->
+         * csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+         * )
+         *
+         * 
+         * public AuthenticationWebFilter authenticationWebFilter() {
+         * return new AuthenticationWebFilter(resolver());
+         * }
+         * 
+         * public ReactiveAuthenticationManagerResolver<ServerWebExchange> resolver() {
+         * return exchange -> {
+         * return Mono.just(customersAuthenticationManager());
+         * };
+         * }
+         * 
+         * public ReactiveAuthenticationManager customersAuthenticationManager() {
+         * return authentication -> customer(authentication)
+         * .switchIfEmpty(Mono.error(new UsernameNotFoundException(authentication
+         * .getPrincipal()
+         * .toString())))
+         * .map(b -> new
+         * UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
+         * authentication.getCredentials(),
+         * Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))));
+         * }
+         * 
+         * public Mono<String> customer(Authentication authentication) {
+         * return Mono.justOrEmpty(authentication
+         * .getPrincipal()
+         * .toString()
+         * .startsWith("user")
+         * ? authentication
+         * .getPrincipal()
+         * .toString()
+         * : null);
+         * }
+         * 
+         * @Bean
+         * public MapReactiveUserDetailsService userDetailsService() {
+         * UserDetails user = User
+         * .withUsername("user")
+         * .password(passwordEncoder().encode("password"))
+         * .roles("USER")
+         * .build();
+         * 
+         * UserDetails admin = User
+         * .withUsername("admin")
+         * .password(passwordEncoder().encode("password"))
+         * .roles("ADMIN")
+         * .build();
+         * 
+         * return new MapReactiveUserDetailsService(user, admin);
+         * }
+         * 
+         * @Bean
+         * public PasswordEncoder passwordEncoder() {
+         * return new BCryptPasswordEncoder();
+         * }
+         */
 }

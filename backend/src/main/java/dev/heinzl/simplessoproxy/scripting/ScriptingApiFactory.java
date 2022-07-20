@@ -5,6 +5,7 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.stereotype.Component;
 
 import dev.heinzl.simplessoproxy.models.App;
@@ -23,10 +24,13 @@ public class ScriptingApiFactory {
     @Autowired
     ReactiveAuthenticationManager authenticationManager;
 
+    @Autowired
+    ServerSecurityContextRepository serverSecurityContextRepository;
+
     public ScriptingApi createScriptingApiObject(App app, GatewayFilterSpec gatewayFilterSpec) {
 
         ScriptingApi scriptingApi = new ScriptingApiImpl(app, gatewayFilterSpec, repositoryFacade,
-                authenticationManager);
+                authenticationManager, serverSecurityContextRepository);
 
         scriptEngine.applyScript(app.getProxyScript(), scriptingApi);
 

@@ -1,6 +1,7 @@
 package dev.heinzl.simplessoproxy.scripting;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 import org.slf4j.Logger;
@@ -10,6 +11,11 @@ import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
@@ -19,6 +25,7 @@ import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
 import groovy.lang.Closure;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import reactor.core.publisher.Mono;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,6 +35,7 @@ public class ScriptingApiImpl implements ScriptingApi {
     private final GatewayFilterSpec gatewayFilterSpec;
     private final RepositoryFacade repositoryFacade;
     private final ReactiveAuthenticationManager authenticationManager;
+    private final ServerSecurityContextRepository serverSecurityContextRepository;
 
     private WebClient client = WebClient.create();
 
@@ -95,6 +103,7 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     @Override
     public String getProxyUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return null;
     }
 
@@ -139,6 +148,13 @@ public class ScriptingApiImpl implements ScriptingApi {
     @Override
     public void createGatewayFilter(Closure closure) {
         GatewayFilter gatewayFilter = new OrderedGatewayFilter((exchange, chain) -> {
+            Mono<SecurityContext> load = serverSecurityContextRepository.load(exchange);
+
+            load.flatMap(t -> {
+                log.info(t.getAuthentication().getPrincipal().toString());
+                return Mono.just(t);
+            });
+
             closure.call(exchange);
             return chain.filter(exchange);
         }, 0);
