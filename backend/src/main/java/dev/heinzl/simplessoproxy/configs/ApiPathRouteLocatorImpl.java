@@ -3,6 +3,9 @@ package dev.heinzl.simplessoproxy.configs;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.route.Route;
@@ -38,11 +41,20 @@ public class ApiPathRouteLocatorImpl implements RouteLocator {
         .map(app -> routesBuilder.route(predicateSpec -> setPredicateSpec(app, predicateSpec)))
         .collectList().flatMapMany(builders -> routesBuilder.build()
             .getRoutes());
+
     return t;
   }
 
   private Buildable<Route> setPredicateSpec(App app, PredicateSpec predicateSpec) {
-    BooleanSpec booleanSpec = predicateSpec.alwaysTrue();
+    URI uri;
+
+    try {
+      uri = new URI(app.getProxyUrl());
+    } catch (URISyntaxException e) {
+      throw new IllegalStateException(e.getMessage());
+    }
+
+    BooleanSpec booleanSpec = predicateSpec.host(uri.getHost());
 
     booleanSpec.filters(gatewayFilterSpec -> {
       scriptingApiFactory.createScriptingApiObject(app, gatewayFilterSpec);

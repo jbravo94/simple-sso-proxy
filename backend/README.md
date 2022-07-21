@@ -62,6 +62,8 @@ def isOdd = {exchange ->
 
 scriptingApi.createGatewayFilter(isOdd);
 
+Add URL pattern check
+
 RXnx
 unit tests
 
