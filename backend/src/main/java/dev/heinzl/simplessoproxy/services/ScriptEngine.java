@@ -20,6 +20,7 @@ public class ScriptEngine {
     UsersRepository usersRepository;
 
     String template = """
+            import java.net.http.*
             import dev.heinzl.simplessoproxy.scripting.ScriptType
 
             def script(scriptingApi) {

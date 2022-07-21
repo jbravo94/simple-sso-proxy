@@ -1,5 +1,9 @@
 package dev.heinzl.simplessoproxy.scripting;
 
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
@@ -38,7 +42,11 @@ public interface ScriptingApi {
 
     RepositoryFacade getRepositoryFacade();
 
-    WebClient getWebClient();
+    String executeRequest(HttpRequest request);
+
+    String getBasicAuthenticationHeader(String username, String password);
+
+    JSONObject getJSONObjectFromString(String body);
 
     void createGatewayFilter(Closure closure);
 
@@ -46,7 +54,7 @@ public interface ScriptingApi {
 
     void setScript(String scriptType, Closure closure);
 
-    void executeScript(ScriptType scriptType);
+    void executeScript(ServerWebExchange exchange, ScriptType scriptType);
 
-    void executeScript(String scriptType);
+    void executeScript(ServerWebExchange exchange, String scriptType);
 }

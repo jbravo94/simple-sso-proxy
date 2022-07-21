@@ -46,12 +46,15 @@ https://stackoverflow.com/questions/51315378/reactivesecuritycontextholder-getco
 https://stackoverflow.com/questions/50015711/spring-security-webflux-body-with-authentication
 https://medium.com/javarevisited/spring-webflux-meets-passwordless-authentication-a4be6cab6bfe
 https://stackoverflow.com/questions/70050719/how-to-get-current-user-from-reactivesecuritycontextholder-in-webflux
+https://www.baeldung.com/java-9-http-client
 
 Make adapter for inmemory credentials or persistent
 Implement Testbutton for scripts
 store personal credentials
 
 Add URL pattern check
+
+JAVA_HOME=/opt/java/jdk-17.0.3+7 mvn compile
 
 RXnx
 unit tests
@@ -65,39 +68,29 @@ openmrs/ws/rest/v1/location?operator=ALL&s=byTags&tags=Login+Location&v=custom:(
 
 Testscript:
 
-
 def isOdd = {exchange ->
     scriptingApi.logInfo(exchange.getRequest().getURI().toString())
     def apps = scriptingApi.getRepositoryFacade().getAppsRepository().findAll().size();
-    scriptingApi.addProxyResponseHeaderIfNotPreset(exchange, "Johnny", "Johnny")
-    scriptingApi.logInfo(scriptingApi.executeScript(ScriptType.LOGIN))
+    scriptingApi.logInfo(scriptingApi.executeScript(exchange, ScriptType.LOGIN))
+
     scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user", "%22superman%22", "/")
     scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user.location", "%7B%22name%22%3A%22General%20Ward%22%2C%22uuid%22%3A%22baf7bd38-d225-11e4-9c67-080027b662ec%22%7D", "/")
-    scriptingApi.logInfo("JOHNNY " + apps)
+
     scriptingApi.logInfo(scriptingApi.getRepositoryFacade().getSecretsRepository().getSecret("user"));
-    scriptingApi.getAppUsername(exchange)
     }
 
 scriptingApi.createGatewayFilter(isOdd)
 
-def loginScript = {
+def loginScript = { exchange ->
     scriptingApi.logInfo("LOGINSCRIPT")
 
-    scriptingApi.getWebClient()
-    .get()
-    .headers(headers -> headers.setBasicAuth("superman", "Admin123"))
-    .cookie("JSESSIONID", "76887650DC3FBD39EB7BDADB1BFD63A4")
-    .cookie("reporting_session", "76887650DC3FBD39EB7BDADB1BFD63A4")
-    .uri("https://demo.mybahmni.org/openmrs/ws/rest/v1/session?v=custom:(uuid)")
-    .retrieve()
-    .bodyToMono(String.class)
-    .subscribe(c -> {
-        scriptingApi.logInfo(c)
-        scriptingApi.logInfo("LOGINSCRIPT2")
-    });
-  
+    def request = HttpRequest.newBuilder()
+                    .uri(new URI("https://demo.mybahmni.org/openmrs/ws/rest/v1/session?v=custom:(uuid)")).GET()
+                    .header("Authorization", scriptingApi.getBasicAuthenticationHeader(scriptingApi.getProxyUsername(exchange), scriptingApi.getProxyPassword(exchange)))
+                    .header("Cookie", "JSESSIONID=76887650DC3FBD39EB7BDADB1BFD63A4; reporting_session=76887650DC3FBD39EB7BDADB1BFD63A4").build();
 
-    //openmrs/ws/rest/v1/location?operator=ALL&s=byTags&tags=Login+Location&v=custom:(name,uuid)
+    scriptingApi.logInfo(scriptingApi.executeRequest(request))
+
 }
 
 scriptingApi.setScript(ScriptType.LOGIN, loginScript)

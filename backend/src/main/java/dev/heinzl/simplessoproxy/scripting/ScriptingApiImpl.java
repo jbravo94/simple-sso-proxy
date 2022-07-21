@@ -1,11 +1,16 @@
 package dev.heinzl.simplessoproxy.scripting;
 
+import java.io.IOException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.StringJoiner;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
@@ -13,23 +18,17 @@ import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 
 import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
+import dev.heinzl.simplessoproxy.utils.TestingUtils;
 import groovy.lang.Closure;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -44,7 +43,7 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     private Map<String, Closure> scriptClosures = new HashMap<>();
 
-    private WebClient client = WebClient.create();
+    private HttpClient httpClient = HttpClient.newHttpClient();
 
     @Override
     public void addProxyRequestHeaderIfNotPreset(ServerWebExchange exchange, String key, String value) {
@@ -76,7 +75,8 @@ public class ScriptingApiImpl implements ScriptingApi {
 
         List<HttpCookie> list = requestCookies.get(name);
 
-        if (list == null || list.size() == 0) {
+        if (list == null || list.size() == 0 || list.get(0).getValue() == null
+                || "null".equals(list.get(0).getValue())) {
             responseHeaders.add("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
         }
     }
@@ -147,11 +147,6 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public WebClient getWebClient() {
-        return this.client;
-    }
-
-    @Override
     public void setScript(ScriptType scriptType, Closure closure) {
         setScript(scriptType.name(), closure);
     }
@@ -162,17 +157,44 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public void executeScript(ScriptType scriptType) {
-        executeScript(scriptType.name());
+    public void executeScript(ServerWebExchange exchange, ScriptType scriptType) {
+        executeScript(exchange, scriptType.name());
     }
 
     @Override
-    public void executeScript(String scriptType) {
+    public void executeScript(ServerWebExchange exchange, String scriptType) {
         Closure closure = this.scriptClosures.get(scriptType);
 
         if (closure != null) {
-            closure.call();
+            closure.call(exchange);
         }
+    }
+
+    @Override
+    public String executeRequest(HttpRequest request) {
+
+        String body;
+
+        try {
+            HttpResponse<String> response = httpClient.send(request,
+                    BodyHandlers.ofString());
+            body = response.body();
+        } catch (IOException | InterruptedException e) {
+            throw new IllegalStateException(e.getMessage());
+        }
+
+        return body;
+    }
+
+    @Override
+    public String getBasicAuthenticationHeader(String username, String password) {
+        String valueToEncode = username + ":" + password;
+        return "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes());
+    }
+
+    @Override
+    public JSONObject getJSONObjectFromString(String body) {
+        return new JSONObject(body);
     }
 
     @Override
@@ -181,43 +203,9 @@ public class ScriptingApiImpl implements ScriptingApi {
 
             closure.call(exchange);
 
-            List<String> list = exchange.getResponse().getHeaders().get("Set-Cookie");
+            // Disable in production
+            TestingUtils.modifyBahmniCookie(exchange);
 
-            if (list != null && list.size() > 0) {
-
-                String value = list.get(0);
-
-                value = value.replace(" domain=demo.mybahmni.org;", "");
-                value = value.replace(" secure;", "");
-
-                exchange.getResponse().getHeaders().set("Set-Cookie", value);
-            }
-
-            /*
-             * 
-             * serverSecurityContextRepository.load(exchange)
-             * .subscribe(c -> log.info(
-             * c.toString()));
-             * 
-             * exchange.getSession().subscribe(session -> {
-             * final SecurityContext context =
-             * session.getAttribute("simple-sso-proxy-security-context");
-             * /*
-             * 
-             * context.setAuthentication(token);
-             * serverSecurityContextRepository.save(exchange, context);
-             * log.info("TTTTTTTTTTTTTT");
-             *
-             * });
-             */
-            /*
-             * flatMap(session -> {
-             * final SecurityContext context =
-             * session.getAttribute("simple-sso-proxy-security-context");
-             * log.info("TTTTTTTTTTTTTT");
-             * return Mono.empty();
-             * });
-             */
             return chain.filter(exchange);
         }, Integer.MAX_VALUE);
 

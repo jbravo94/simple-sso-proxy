@@ -5,3 +5,5 @@ server:
 spring:
   application:
     name: simple-sso-proxy
+
+secrets-repository-cache-timeout: 60
