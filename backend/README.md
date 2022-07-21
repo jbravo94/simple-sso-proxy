@@ -51,17 +51,6 @@ Make adapter for inmemory credentials or persistent
 Implement Testbutton for scripts
 store personal credentials
 
-scriptingApi.addProxyResponseHeaderIfNotPreset("Johnny", "Johnny")
-scriptingApi.addProxyResponseCookieIfNotPreset("bahmni.user", "%22superman%22", "/")
-
-def isOdd = {exchange ->
-    scriptingApi.logInfo(exchange.getRequest().getURI().toString())
-    def apps = scriptingApi.getRepositoryFacade().getAppsRepository().findAll().size();
-    scriptingApi.logInfo("JOHNNY " + apps) 
-    }
-
-scriptingApi.createGatewayFilter(isOdd);
-
 Add URL pattern check
 
 RXnx
@@ -71,3 +60,25 @@ Reactive
 HTTP
 Java
 Angular
+
+
+Testscript:
+
+def isOdd = {exchange ->
+    scriptingApi.logInfo(exchange.getRequest().getURI().toString())
+    def apps = scriptingApi.getRepositoryFacade().getAppsRepository().findAll().size();
+    scriptingApi.addProxyResponseHeaderIfNotPreset(exchange, "Johnny", "Johnny")
+    scriptingApi.logInfo(scriptingApi.executeScript(ScriptType.LOGIN))
+    scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user", "%22superman%22", "/")
+    scriptingApi.logInfo("JOHNNY " + apps)
+    scriptingApi.logInfo(scriptingApi.getRepositoryFacade().getSecretsRepository().getSecret("user"));
+    scriptingApi.getAppUsername(exchange)
+    }
+
+scriptingApi.createGatewayFilter(isOdd)
+
+def loginScript = {
+    scriptingApi.logInfo("LOGINSCRIPT")
+}
+
+scriptingApi.setScript(ScriptType.LOGIN, loginScript)

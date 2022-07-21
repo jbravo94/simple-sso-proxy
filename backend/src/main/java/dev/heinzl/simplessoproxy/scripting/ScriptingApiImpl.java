@@ -1,6 +1,8 @@
 package dev.heinzl.simplessoproxy.scripting;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
 
@@ -39,6 +41,8 @@ public class ScriptingApiImpl implements ScriptingApi {
     private final ReactiveAuthenticationManager authenticationManager;
     private final ServerSecurityContextRepository serverSecurityContextRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
+    private Map<String, Closure> scriptClosures = new HashMap<>();
 
     private WebClient client = WebClient.create();
 
@@ -145,6 +149,30 @@ public class ScriptingApiImpl implements ScriptingApi {
     @Override
     public WebClient getWebClient() {
         return this.client;
+    }
+
+    @Override
+    public void setScript(ScriptType scriptType, Closure closure) {
+        setScript(scriptType.name(), closure);
+    }
+
+    @Override
+    public void setScript(String scriptType, Closure closure) {
+        this.scriptClosures.put(scriptType, closure);
+    }
+
+    @Override
+    public void executeScript(ScriptType scriptType) {
+        executeScript(scriptType.name());
+    }
+
+    @Override
+    public void executeScript(String scriptType) {
+        Closure closure = this.scriptClosures.get(scriptType);
+
+        if (closure != null) {
+            closure.call();
+        }
     }
 
     @Override

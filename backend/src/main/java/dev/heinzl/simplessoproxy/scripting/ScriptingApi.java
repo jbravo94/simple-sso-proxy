@@ -41,4 +41,12 @@ public interface ScriptingApi {
     WebClient getWebClient();
 
     void createGatewayFilter(Closure closure);
+
+    void setScript(ScriptType scriptType, Closure closure);
+
+    void setScript(String scriptType, Closure closure);
+
+    void executeScript(ScriptType scriptType);
+
+    void executeScript(String scriptType);
 }
