@@ -66,31 +66,31 @@ Angular
 
 openmrs/ws/rest/v1/location?operator=ALL&s=byTags&tags=Login+Location&v=custom:(name,uuid)
 
+Same username / passwords
+subdomains
+same cookielength
+same baseurl for apps
+
 Testscript:
 
-def isOdd = {exchange ->
-    scriptingApi.logInfo(exchange.getRequest().getURI().toString())
-    def apps = scriptingApi.getRepositoryFacade().getAppsRepository().findAll().size();
+
+def gatewayFilter = { exchange ->
+
     scriptingApi.logInfo(scriptingApi.executeScript(exchange, ScriptType.LOGIN))
-
-    scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user", "%22superman%22", "/")
+    scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user", "%22" + scriptingApi.getProxyUsername(exchange) + "%22", "/")
     scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user.location", "%7B%22name%22%3A%22General%20Ward%22%2C%22uuid%22%3A%22baf7bd38-d225-11e4-9c67-080027b662ec%22%7D", "/")
+}
 
-    scriptingApi.logInfo(scriptingApi.getRepositoryFacade().getSecretsRepository().getSecret("user"));
-    }
-
-scriptingApi.createGatewayFilter(isOdd)
+scriptingApi.createGatewayFilter(gatewayFilter)
 
 def loginScript = { exchange ->
-    scriptingApi.logInfo("LOGINSCRIPT")
 
     def request = HttpRequest.newBuilder()
                     .uri(new URI("https://demo.mybahmni.org/openmrs/ws/rest/v1/session?v=custom:(uuid)")).GET()
                     .header("Authorization", scriptingApi.getBasicAuthenticationHeader(scriptingApi.getProxyUsername(exchange), scriptingApi.getProxyPassword(exchange)))
-                    .header("Cookie", "JSESSIONID=76887650DC3FBD39EB7BDADB1BFD63A4; reporting_session=76887650DC3FBD39EB7BDADB1BFD63A4").build();
+                    .header("Cookie", "JSESSIONID=76887650DC3FBD39EB7BDADB1BFD63A4; reporting_session=76887650DC3FBD39EB7BDADB1BFD63A4").build()
 
     scriptingApi.logInfo(scriptingApi.executeRequest(request))
-
 }
 
 scriptingApi.setScript(ScriptType.LOGIN, loginScript)
