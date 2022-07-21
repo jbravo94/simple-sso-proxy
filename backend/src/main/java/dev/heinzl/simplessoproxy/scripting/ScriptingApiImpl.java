@@ -77,7 +77,7 @@ public class ScriptingApiImpl implements ScriptingApi {
         List<HttpCookie> list = requestCookies.get(name);
 
         if (list == null || list.size() == 0) {
-            responseHeaders.set("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
+            responseHeaders.add("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
         }
     }
 
@@ -180,6 +180,18 @@ public class ScriptingApiImpl implements ScriptingApi {
         GatewayFilter gatewayFilter = new OrderedGatewayFilter((exchange, chain) -> {
 
             closure.call(exchange);
+
+            List<String> list = exchange.getResponse().getHeaders().get("Set-Cookie");
+
+            if (list != null && list.size() > 0) {
+
+                String value = list.get(0);
+
+                value = value.replace(" domain=demo.mybahmni.org;", "");
+                value = value.replace(" secure;", "");
+
+                exchange.getResponse().getHeaders().set("Set-Cookie", value);
+            }
 
             /*
              * 

@@ -61,8 +61,10 @@ HTTP
 Java
 Angular
 
+openmrs/ws/rest/v1/location?operator=ALL&s=byTags&tags=Login+Location&v=custom:(name,uuid)
 
 Testscript:
+
 
 def isOdd = {exchange ->
     scriptingApi.logInfo(exchange.getRequest().getURI().toString())
@@ -70,6 +72,7 @@ def isOdd = {exchange ->
     scriptingApi.addProxyResponseHeaderIfNotPreset(exchange, "Johnny", "Johnny")
     scriptingApi.logInfo(scriptingApi.executeScript(ScriptType.LOGIN))
     scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user", "%22superman%22", "/")
+    scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user.location", "%7B%22name%22%3A%22General%20Ward%22%2C%22uuid%22%3A%22baf7bd38-d225-11e4-9c67-080027b662ec%22%7D", "/")
     scriptingApi.logInfo("JOHNNY " + apps)
     scriptingApi.logInfo(scriptingApi.getRepositoryFacade().getSecretsRepository().getSecret("user"));
     scriptingApi.getAppUsername(exchange)
@@ -79,6 +82,22 @@ scriptingApi.createGatewayFilter(isOdd)
 
 def loginScript = {
     scriptingApi.logInfo("LOGINSCRIPT")
+
+    scriptingApi.getWebClient()
+    .get()
+    .headers(headers -> headers.setBasicAuth("superman", "Admin123"))
+    .cookie("JSESSIONID", "76887650DC3FBD39EB7BDADB1BFD63A4")
+    .cookie("reporting_session", "76887650DC3FBD39EB7BDADB1BFD63A4")
+    .uri("https://demo.mybahmni.org/openmrs/ws/rest/v1/session?v=custom:(uuid)")
+    .retrieve()
+    .bodyToMono(String.class)
+    .subscribe(c -> {
+        scriptingApi.logInfo(c)
+        scriptingApi.logInfo("LOGINSCRIPT2")
+    });
+  
+
+    //openmrs/ws/rest/v1/location?operator=ALL&s=byTags&tags=Login+Location&v=custom:(name,uuid)
 }
 
 scriptingApi.setScript(ScriptType.LOGIN, loginScript)
