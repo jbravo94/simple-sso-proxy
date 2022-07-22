@@ -1,7 +1,6 @@
 package dev.heinzl.simplessoproxy.repositories;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -11,7 +10,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 import com.google.common.collect.Lists;
 
 import dev.heinzl.simplessoproxy.models.Credential;
-import dev.heinzl.simplessoproxy.models.CredentialDecorator;
 import io.vavr.collection.Stream;
 import lombok.AllArgsConstructor;
 
@@ -24,37 +22,49 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
     private final InMemorySecretsRepository inMemorySecretsRepository;
 
     private Iterable<Credential> decorateCredentials(Iterable<Credential> credentials) {
-        return Stream.ofAll(credentials).map(c -> CredentialDecorator.from(c, this.inMemorySecretsRepository))
-                .collect(Collectors.toList());
+        return Stream.ofAll(credentials).map(this::decorateCredential).collect(Collectors.toList());
     }
 
-    private Credential prepareCredential(Credential credential) {
-        return credential instanceof CredentialDecorator
-                ? ((CredentialDecorator) credential).toCredentialWithoutSecret()
-                : credential;
+    private Credential decorateCredential(Credential credential) {
+
+        if (credential == null || credential.getId() == null) {
+            throw new IllegalStateException("Credential must not be null and provide an id.");
+        }
+
+        credential.setSecret(this.inMemorySecretsRepository.getSecret(credential.getId()));
+        return credential;
     }
 
     @Override
     public <S extends Credential> S save(S entity) {
-        Credential credential = this.prepareCredential(entity);
-        this.credentialsRepository.save(credential);
 
-        return entity;
+        if (entity == null) {
+            throw new IllegalStateException("Entity must not be null.");
+        }
+
+        S credential = (S) entity.withSecret(null);
+
+        S save = this.credentialsRepository.save(credential);
+
+        this.inMemorySecretsRepository.setSecret(save.getId(), entity.getSecret());
+
+        return save;
     }
 
     @Override
     public <S extends Credential> Iterable<S> saveAll(Iterable<S> entities) {
 
-        Collection<Credential> credentials = new ArrayList<>();
-
-        for (S entity : entities) {
-            Credential credential = this.prepareCredential(entity);
-            credentials.add(credential);
+        if (entities == null) {
+            throw new IllegalStateException("Entities must not be null.");
         }
 
-        this.credentialsRepository.saveAll(credentials);
+        List<S> credentials = new ArrayList<>();
 
-        return entities;
+        for (S entity : entities) {
+            credentials.add(this.save(entity));
+        }
+
+        return credentials;
     }
 
     @Override
@@ -63,7 +73,7 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
         Optional<Credential> findById = this.credentialsRepository.findById(id);
 
         if (findById.isPresent()) {
-            return Optional.of(CredentialDecorator.from(findById.get(), inMemorySecretsRepository));
+            return Optional.of(this.decorateCredential(findById.get()));
         } else {
             return Optional.empty();
         }
@@ -108,8 +118,8 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
 
         String id = entity.getId();
 
-        this.credentialsRepository.deleteById(id);
         this.inMemorySecretsRepository.removeSecret(id);
+        this.credentialsRepository.deleteById(id);
     }
 
     @Override
@@ -125,8 +135,8 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
         });
 
         ids.forEach(id -> {
-            this.credentialsRepository.deleteById(id);
             this.inMemorySecretsRepository.removeSecret(id);
+            this.credentialsRepository.deleteById(id);
         });
     }
 
@@ -145,8 +155,8 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
         entities.forEach(entity -> {
             String id = entity.getId();
 
-            this.credentialsRepository.deleteById(id);
             this.inMemorySecretsRepository.removeSecret(id);
+            this.credentialsRepository.deleteById(id);
         });
     }
 

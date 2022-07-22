@@ -94,7 +94,7 @@ public class AppsEndpoint {
 
                     Credential credential = Credential.builder().app(app).secret("password").user(fetched).build();
 
-                    // persistentCredentialsRepository.save(credential);
+                    credentialsRepository.save(credential);
 
                     log.info(String.valueOf(auth));
                 })

@@ -12,4 +12,4 @@ spring:
           useInsecureTrustManager: true
   
 secrets-cache-timeout: 60
-persist-app-secrets: true
+persist-app-secrets: false
