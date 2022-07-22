@@ -1,6 +1,20 @@
 def gatewayFilter = { exchange ->
 
     scriptingApi.logInfo(scriptingApi.executeScript(exchange, ScriptType.LOGIN))
+
+    scriptingApi.logInfo(exchange.getRequest().getPath().toString())
+
+    if ("/web/login".equals(exchange.getRequest().getPath().toString())) {
+
+        exchange.getResponse().getHeaders().add("Location", "/web")
+        exchange.getResponse().setRawStatusCode(303)
+    }
+
+    def locationHeader = exchange.getResponse().getHeaders().get("Location")
+
+    if (locationHeader != null && locationHeader.size() > 0 && "http://erp.health.local/web/login".equals(locationHeader.get(0))) {
+        exchange.getResponse().getHeaders().set("Location", "/web/login") 
+    }
 }
 
 scriptingApi.createGatewayFilter(gatewayFilter)
