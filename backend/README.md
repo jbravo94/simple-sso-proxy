@@ -70,3 +70,6 @@ Same username / passwords
 subdomains
 same cookielength
 same baseurl for apps
+intercept redirects
+
+change url to baseurl from app
