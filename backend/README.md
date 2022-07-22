@@ -82,6 +82,7 @@ echo -n | openssl s_client -connect demo.mybahmni.org:443 | sed -ne '/-BEGIN CER
 keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 
 -Djavax.net.ssl.trustStore=truststore.jks -Djavax.net.ssl.trustStorePassword=changeit
+-Dspring.profiles.active=dev
 
 https://cloud.spring.io/spring-cloud-gateway/multi/multi__tls_ssl.html
 https://stackoverflow.com/questions/47434877/how-to-generate-keystore-and-truststore

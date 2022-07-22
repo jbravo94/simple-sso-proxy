@@ -8,11 +8,9 @@ import org.springframework.security.authentication.ReactiveAuthenticationManager
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.stereotype.Component;
 
-import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
-import dev.heinzl.simplessoproxy.models.App;
-import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
+import dev.heinzl.simplessoproxy.apps.App;
+import dev.heinzl.simplessoproxy.configs.jwt.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
-import dev.heinzl.simplessoproxy.services.ScriptEngine;
 
 @Component
 public class ScriptingApiFactory {

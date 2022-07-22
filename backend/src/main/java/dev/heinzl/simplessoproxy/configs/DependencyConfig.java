@@ -4,12 +4,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import dev.heinzl.simplessoproxy.repositories.CredentialsRepository;
-import dev.heinzl.simplessoproxy.repositories.ExpiringSecretsRepository;
-import dev.heinzl.simplessoproxy.repositories.InMemoryCredentialsRepositoryDecorator;
-import dev.heinzl.simplessoproxy.repositories.InMemorySecretsRepository;
-import dev.heinzl.simplessoproxy.repositories.PersistentCredentialsRepository;
-import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
+import dev.heinzl.simplessoproxy.credentials.CredentialsRepository;
+import dev.heinzl.simplessoproxy.credentials.InMemoryCredentialsRepositoryDecorator;
+import dev.heinzl.simplessoproxy.credentials.PersistentCredentialsRepository;
+import dev.heinzl.simplessoproxy.secrets.ExpiringSecretsRepositoryImpl;
+import dev.heinzl.simplessoproxy.secrets.InMemorySecretsRepositoryImpl;
+import dev.heinzl.simplessoproxy.secrets.SecretsRepository;
 
 @Configuration
 public class DependencyConfig {
@@ -19,7 +19,7 @@ public class DependencyConfig {
     @Bean
     public CredentialsRepository credentialsRepository(@Value("${persist-app-secrets}") boolean persistAppSecrets,
             PersistentCredentialsRepository persistentCredentialsRepository,
-            InMemorySecretsRepository inMemorySecretsRepository) {
+            InMemorySecretsRepositoryImpl inMemorySecretsRepository) {
 
         if (persistAppSecrets) {
             return persistentCredentialsRepository;
@@ -30,7 +30,7 @@ public class DependencyConfig {
     }
 
     @Bean
-    public SecretsRepository secretsRepository(ExpiringSecretsRepository expiringSecretsRepository) {
+    public SecretsRepository secretsRepository(ExpiringSecretsRepositoryImpl expiringSecretsRepository) {
         return expiringSecretsRepository;
     }
 }

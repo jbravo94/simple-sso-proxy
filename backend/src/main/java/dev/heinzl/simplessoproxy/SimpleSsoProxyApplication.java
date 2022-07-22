@@ -9,8 +9,8 @@ import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RestController;
 
-import dev.heinzl.simplessoproxy.configs.ApiPathRouteLocatorImpl;
-import dev.heinzl.simplessoproxy.repositories.AppsRepository;
+import dev.heinzl.simplessoproxy.apps.AppsRepository;
+import dev.heinzl.simplessoproxy.configs.routing.ApiPathRouteLocatorImpl;
 import dev.heinzl.simplessoproxy.scripting.ScriptingApiFactory;
 
 @SpringBootApplication

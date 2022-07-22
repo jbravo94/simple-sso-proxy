@@ -10,8 +10,8 @@ import org.springframework.context.event.EventListener;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import dev.heinzl.simplessoproxy.models.User;
-import dev.heinzl.simplessoproxy.repositories.UsersRepository;
+import dev.heinzl.simplessoproxy.users.User;
+import dev.heinzl.simplessoproxy.users.UsersRepository;
 import reactor.core.publisher.Flux;
 
 import java.util.Arrays;

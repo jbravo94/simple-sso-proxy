@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.springframework.web.server.ServerWebExchange;
 
-import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
+import dev.heinzl.simplessoproxy.scripting.RepositoryFacade;
 import groovy.lang.Closure;
 
 public interface ScriptingApi {

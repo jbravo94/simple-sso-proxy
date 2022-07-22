@@ -23,13 +23,12 @@ import org.springframework.security.web.server.context.ServerSecurityContextRepo
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 
-import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
-import dev.heinzl.simplessoproxy.models.App;
-import dev.heinzl.simplessoproxy.models.Credential;
-import dev.heinzl.simplessoproxy.models.User;
-import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
+import dev.heinzl.simplessoproxy.apps.App;
+import dev.heinzl.simplessoproxy.configs.jwt.JwtTokenProvider;
+import dev.heinzl.simplessoproxy.credentials.Credential;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
+import dev.heinzl.simplessoproxy.users.User;
 import dev.heinzl.simplessoproxy.utils.TestingUtils;
 import groovy.lang.Closure;
 import lombok.RequiredArgsConstructor;
