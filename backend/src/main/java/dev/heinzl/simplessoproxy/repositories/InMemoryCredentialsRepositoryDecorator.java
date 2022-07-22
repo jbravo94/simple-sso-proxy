@@ -22,13 +22,13 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
     private final SecretsRepository secretsRepository;
 
     @Override
-    public Page<Credential> findAll(Pageable pageable) {
-        return this.credentialsRepository.findAll(pageable).;
-        pageable
+    public <S extends Credential> S save(S entity) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
-    public <S extends Credential> S save(S entity) {
+    public <S extends Credential> Iterable<S> saveAll(Iterable<S> entities) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -43,6 +43,12 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
     public boolean existsById(String id) {
         // TODO Auto-generated method stub
         return false;
+    }
+
+    @Override
+    public Iterable<Credential> findAll() {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     @Override
@@ -85,78 +91,6 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
     public void deleteAll() {
         // TODO Auto-generated method stub
 
-    }
-
-    @Override
-    public <S extends Credential> Optional<S> findOne(Example<S> example) {
-        // TODO Auto-generated method stub
-        return Optional.empty();
-    }
-
-    @Override
-    public <S extends Credential> Page<S> findAll(Example<S> example, Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Credential> long count(Example<S> example) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public <S extends Credential> boolean exists(Example<S> example) {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    @Override
-    public <S extends Credential, R> R findBy(Example<S> example, Function<FetchableFluentQuery<S>, R> queryFunction) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Credential> List<S> saveAll(Iterable<S> entities) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Credential> findAll() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public List<Credential> findAll(Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Credential> S insert(S entity) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Credential> List<S> insert(Iterable<S> entities) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Credential> List<S> findAll(Example<S> example) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public <S extends Credential> List<S> findAll(Example<S> example, Sort sort) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override

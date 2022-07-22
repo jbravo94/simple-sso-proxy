@@ -5,6 +5,11 @@ server:
 spring:
   application:
     name: simple-sso-proxy
-
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          useInsecureTrustManager: true
+  
 secrets-cache-timeout: 60
 persist-app-secrets: true
