@@ -1,13 +1,6 @@
 package dev.heinzl.simplessoproxy.models;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
-import org.springframework.data.mongodb.core.mapping.Document;
-
 import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
 
 public class CredentialDecorator extends Credential {
 

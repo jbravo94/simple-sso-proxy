@@ -1,11 +1,9 @@
-package dev.heinzl.simplessoproxy.scripting;
+package dev.heinzl.simplessoproxy.scripting.api;
 
-import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
 
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
@@ -35,6 +33,8 @@ public interface ScriptingApi {
     String getAppUsername(ServerWebExchange exchange);
 
     String getAppPassword(ServerWebExchange exchange);
+
+    String getAppBaseUrl();
 
     Logger getLogger();
 

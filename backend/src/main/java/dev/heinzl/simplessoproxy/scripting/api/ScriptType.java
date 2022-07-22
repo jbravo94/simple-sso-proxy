@@ -1,4 +1,4 @@
-package dev.heinzl.simplessoproxy.scripting;
+package dev.heinzl.simplessoproxy.scripting.api;
 
 public enum ScriptType {
     LOGIN,

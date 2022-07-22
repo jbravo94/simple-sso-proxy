@@ -1,16 +1,10 @@
 package dev.heinzl.simplessoproxy.configs;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.function.Function;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.authentication.ReactiveAuthenticationManagerResolver;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
@@ -19,31 +13,17 @@ import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity.CorsSpec;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.WebFilterExchange;
-import org.springframework.security.web.server.authentication.AuthenticationWebFilter;
-import org.springframework.security.web.server.authentication.ServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
-import org.springframework.security.web.server.context.NoOpServerSecurityContextRepository;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.security.web.server.context.WebSessionServerSecurityContextRepository;
-import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
-import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
-import org.springframework.web.server.ServerWebExchange;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dev.heinzl.simplessoproxy.models.AuthenticationRequest;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Configuration
@@ -70,70 +50,12 @@ public class SecurityConfig {
                                                 .pathMatchers("/**").authenticated()
                                                 .pathMatchers("/users/{user}/**").access(this::currentUserMatchesPath)
                                                 .anyExchange().denyAll())
-
-                                /*
-                                 * .addFilterAt(authenticationWebFilter(reactiveAuthenticationManager),
-                                 * SecurityWebFiltersOrder.AUTHENTICATION)
-                                 */
                                 .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider,
                                                 securityContextRepository()),
                                                 SecurityWebFiltersOrder.HTTP_BASIC)
 
                                 .build();
-
         }
-        /*
-         * private AuthenticationWebFilter authenticationWebFilter(
-         * ReactiveAuthenticationManager reactiveAuthenticationManager) {
-         * AuthenticationWebFilter filter = new
-         * AuthenticationWebFilter(reactiveAuthenticationManager);
-         * 
-         * filter.setSecurityContextRepository(securityContextRepository());
-         * filter.setAuthenticationConverter(jsonBodyAuthenticationConverter(
-         * reactiveAuthenticationManager));
-         * filter.setAuthenticationSuccessHandler(new
-         * ServerAuthenticationSuccessHandler() {
-         * 
-         * @Override
-         * public Mono<Void> onAuthenticationSuccess(WebFilterExchange
-         * webFilterExchange,
-         * Authentication authentication) {
-         * System.out.println("arg0");
-         * return null;
-         * }
-         * 
-         * });
-         * filter.setRequiresAuthenticationMatcher(
-         * ServerWebExchangeMatchers.pathMatchers(HttpMethod.POST,
-         * "/api/v1/auth/login"));
-         * 
-         * return filter;
-         * }
-         * 
-         * private Function<ServerWebExchange, Mono<Authentication>>
-         * jsonBodyAuthenticationConverter(
-         * ReactiveAuthenticationManager reactiveAuthenticationManager) {
-         * return exchange -> exchange
-         * .getRequest()
-         * .getBody()
-         * .next()
-         * .flatMap(body -> {
-         * try {
-         * AuthenticationRequest signInForm = mapper.readValue(
-         * body.asInputStream(), AuthenticationRequest.class);
-         * 
-         * return Mono.just(
-         * new UsernamePasswordAuthenticationToken(
-         * signInForm.getUsername(),
-         * signInForm.getPassword()));
-         * } catch (IOException e) {
-         * return Mono.error(e);
-         * }
-         * });
-         * }
-         * 
-         * 
-         */
 
         @Bean
         public ServerSecurityContextRepository securityContextRepository() {

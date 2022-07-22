@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
-import dev.heinzl.simplessoproxy.scripting.ScriptingApi;
+import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
 
 @Service
 public class ScriptEngine {
@@ -21,7 +21,9 @@ public class ScriptEngine {
 
     String template = """
             import java.net.http.*
-            import dev.heinzl.simplessoproxy.scripting.ScriptType
+            import org.apache.commons.lang3.*
+            import org.apache.commons.collections4.*
+            import dev.heinzl.simplessoproxy.scripting.api.*
 
             def script(scriptingApi) {
                 %s

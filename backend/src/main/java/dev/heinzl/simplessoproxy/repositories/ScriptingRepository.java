@@ -2,16 +2,10 @@ package dev.heinzl.simplessoproxy.repositories;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 import org.springframework.stereotype.Component;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-
-import dev.heinzl.simplessoproxy.scripting.ScriptingApi;
+import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
 
 @Component
 public class ScriptingRepository {

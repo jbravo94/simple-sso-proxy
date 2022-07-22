@@ -25,6 +25,8 @@ import org.springframework.web.server.ServerWebExchange;
 import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
+import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
+import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
 import dev.heinzl.simplessoproxy.utils.TestingUtils;
 import groovy.lang.Closure;
 import lombok.RequiredArgsConstructor;
@@ -37,8 +39,6 @@ public class ScriptingApiImpl implements ScriptingApi {
     private final App app;
     private final GatewayFilterSpec gatewayFilterSpec;
     private final RepositoryFacade repositoryFacade;
-    private final ReactiveAuthenticationManager authenticationManager;
-    private final ServerSecurityContextRepository serverSecurityContextRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     private Map<String, Closure> scriptClosures = new HashMap<>();
@@ -121,7 +121,7 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     @Override
     public String getAppUsername(ServerWebExchange exchange) {
-        log.info(exchange.getRequest().getURI().getHost());
+        // TODO Auto-generated method stub
         return null;
     }
 
@@ -134,6 +134,11 @@ public class ScriptingApiImpl implements ScriptingApi {
     @Override
     public Logger getLogger() {
         return log;
+    }
+
+    @Override
+    public String getAppBaseUrl() {
+        return this.app.getBaseUrl();
     }
 
     @Override

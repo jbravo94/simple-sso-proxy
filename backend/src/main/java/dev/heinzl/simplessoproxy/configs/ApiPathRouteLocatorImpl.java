@@ -21,9 +21,9 @@ import dev.heinzl.simplessoproxy.repositories.AppsRepository;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
 import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
-import dev.heinzl.simplessoproxy.scripting.ScriptingApi;
 import dev.heinzl.simplessoproxy.scripting.ScriptingApiFactory;
 import dev.heinzl.simplessoproxy.scripting.ScriptingApiImpl;
+import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
 import dev.heinzl.simplessoproxy.services.ScriptEngine;
 import reactor.core.publisher.Flux;
 

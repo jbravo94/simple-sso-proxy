@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.models.App;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
+import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
 import dev.heinzl.simplessoproxy.services.ScriptEngine;
 
 @Component
@@ -23,18 +24,11 @@ public class ScriptingApiFactory {
     RepositoryFacade repositoryFacade;
 
     @Autowired
-    ReactiveAuthenticationManager authenticationManager;
-
-    @Autowired
-    ServerSecurityContextRepository serverSecurityContextRepository;
-
-    @Autowired
     JwtTokenProvider jwtTokenProvider;
 
     public ScriptingApi createScriptingApiObject(App app, GatewayFilterSpec gatewayFilterSpec) {
 
-        ScriptingApi scriptingApi = new ScriptingApiImpl(app, gatewayFilterSpec, repositoryFacade,
-                authenticationManager, serverSecurityContextRepository, jwtTokenProvider);
+        ScriptingApi scriptingApi = new ScriptingApiImpl(app, gatewayFilterSpec, repositoryFacade, jwtTokenProvider);
 
         scriptEngine.applyScript(app.getProxyScript(), scriptingApi);
 
