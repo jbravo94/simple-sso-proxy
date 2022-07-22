@@ -3,7 +3,6 @@ package dev.heinzl.simplessoproxy.endpoints;
 import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.models.AuthenticationRequest;
 import dev.heinzl.simplessoproxy.models.User;
-import dev.heinzl.simplessoproxy.repositories.PersistentCredentialsRepository;
 import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;

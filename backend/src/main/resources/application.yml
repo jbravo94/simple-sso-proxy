@@ -6,4 +6,5 @@ spring:
   application:
     name: simple-sso-proxy
 
-secrets-repository-cache-timeout: 60
+secrets-cache-timeout: 60
+persist-app-secrets: true

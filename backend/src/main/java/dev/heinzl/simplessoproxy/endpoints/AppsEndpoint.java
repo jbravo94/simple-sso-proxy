@@ -25,7 +25,6 @@ import dev.heinzl.simplessoproxy.models.Credential;
 import dev.heinzl.simplessoproxy.models.User;
 import dev.heinzl.simplessoproxy.repositories.AppsRepository;
 import dev.heinzl.simplessoproxy.repositories.CredentialsRepository;
-import dev.heinzl.simplessoproxy.repositories.PersistentCredentialsRepository;
 import dev.heinzl.simplessoproxy.repositories.UsersRepository;
 import dev.heinzl.simplessoproxy.services.GatewayRouteService;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +41,7 @@ public class AppsEndpoint {
     AppsRepository appsRepository;
 
     @Autowired
-    PersistentCredentialsRepository persistentCredentialsRepository;
+    CredentialsRepository credentialsRepository;
 
     @Autowired
     UsersRepository users;
@@ -62,20 +61,6 @@ public class AppsEndpoint {
     @CrossOrigin
     @GetMapping("/all")
     public Flux<App> getAll() {
-
-        /*
-         * Flux.just("user", "admin").flatMap(username -> {
-         * List<String> roles = "user".equals(username) ? Arrays.asList("ROLE_USER")
-         * : Arrays.asList("ROLE_USER", "ROLE_ADMIN");
-         * User user = User.builder()
-         * .roles(roles)
-         * .username(username)
-         * .password(passwordEncoder.encode("password"))
-         * .email(username + "@example.com")
-         * .build();
-         * return Flux.just(this.users.save(user));
-         * });
-         */
         return getAuthenticatedContexts(context).flux()
                 .flatMap(f -> {
                     org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) f
@@ -109,7 +94,7 @@ public class AppsEndpoint {
 
                     Credential credential = Credential.builder().app(app).secret("password").user(fetched).build();
 
-                    persistentCredentialsRepository.save(credential);
+                    // persistentCredentialsRepository.save(credential);
 
                     log.info(String.valueOf(auth));
                 })
@@ -118,7 +103,7 @@ public class AppsEndpoint {
 
     @GetMapping("/test2")
     public Flux<Credential> create4() {
-        return Flux.fromIterable(persistentCredentialsRepository.findByAppId(appsRepository.findAll().get(0).getId()));
+        return Flux.fromIterable(credentialsRepository.findByAppId(appsRepository.findAll().get(0).getId()));
     }
 
     @PutMapping("/{id}")

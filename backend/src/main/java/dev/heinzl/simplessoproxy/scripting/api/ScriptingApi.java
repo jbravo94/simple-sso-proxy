@@ -30,9 +30,9 @@ public interface ScriptingApi {
 
     String getProxyPassword(ServerWebExchange exchange);
 
-    String getAppUsername(ServerWebExchange exchange);
+    String getAppCredential(ServerWebExchange exchange);
 
-    String getAppPassword(ServerWebExchange exchange);
+    void setAppCredential(ServerWebExchange exchange, String secret);
 
     String getAppBaseUrl();
 

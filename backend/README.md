@@ -74,3 +74,5 @@ intercept redirects
 
 change url to baseurl from app
 ssl cert
+default timeout session secrets
+do not store username

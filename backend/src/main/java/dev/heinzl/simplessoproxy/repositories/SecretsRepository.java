@@ -15,7 +15,7 @@ public class SecretsRepository {
 
     private final LoadingCache<String, String> secrets;
 
-    public SecretsRepository(@Value("${secrets-repository-cache-timeout}") Integer cacheTimeout) {
+    public SecretsRepository(@Value("${secrets-cache-timeout}") Integer cacheTimeout) {
         secrets = CacheBuilder.newBuilder()
                 .expireAfterWrite(cacheTimeout, TimeUnit.MINUTES)
                 .build(

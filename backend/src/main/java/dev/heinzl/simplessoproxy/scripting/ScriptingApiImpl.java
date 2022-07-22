@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -24,6 +25,8 @@ import org.springframework.web.server.ServerWebExchange;
 
 import dev.heinzl.simplessoproxy.configs.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.models.App;
+import dev.heinzl.simplessoproxy.models.Credential;
+import dev.heinzl.simplessoproxy.models.User;
 import dev.heinzl.simplessoproxy.repositories.RepositoryFacade;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
@@ -120,15 +123,25 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public String getAppUsername(ServerWebExchange exchange) {
-        // TODO Auto-generated method stub
+    public String getAppCredential(ServerWebExchange exchange) {
+        this.repositoryFacade.getCredentialsRepository();
         return null;
     }
 
     @Override
-    public String getAppPassword(ServerWebExchange exchange) {
-        // TODO Auto-generated method stub
-        return null;
+    public void setAppCredential(ServerWebExchange exchange, String secret) {
+
+        String proxyUsername = this.getProxyUsername(exchange);
+
+        List<User> findByUsername = this.repositoryFacade.getUsersRepository().findByUsername(proxyUsername);
+
+        if (CollectionUtils.isEmpty(findByUsername) || findByUsername.size() > 1) {
+            throw new IllegalStateException("Username not found");
+        }
+
+        Credential credential = Credential.builder().app(this.app).secret(secret).user(findByUsername.get(0)).build();
+
+        this.repositoryFacade.getCredentialsRepository().save(credential);
     }
 
     @Override

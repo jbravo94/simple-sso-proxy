@@ -8,24 +8,23 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
-import org.springframework.stereotype.Component;
 
 import dev.heinzl.simplessoproxy.models.Credential;
 import lombok.AllArgsConstructor;
 
+@NoRepositoryBean
 @AllArgsConstructor
-public class InMemoryCredentialsRepositoryDecorator
-        implements CredentialsRepository, MongoRepository<Credential, String> {
+public class InMemoryCredentialsRepositoryDecorator implements CredentialsRepository {
 
-    private final PersistentCredentialsRepository persistentCredentialsRepository;
+    private final CredentialsRepository credentialsRepository;
     private final SecretsRepository secretsRepository;
 
     @Override
     public Page<Credential> findAll(Pageable pageable) {
-        // TODO Auto-generated method stub
-        return null;
+        return this.credentialsRepository.findAll(pageable).;
+        pageable
     }
 
     @Override
@@ -156,6 +155,12 @@ public class InMemoryCredentialsRepositoryDecorator
 
     @Override
     public <S extends Credential> List<S> findAll(Example<S> example, Sort sort) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public List<Credential> findByAppId(String id) {
         // TODO Auto-generated method stub
         return null;
     }
