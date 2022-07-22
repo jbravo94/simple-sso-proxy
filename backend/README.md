@@ -76,6 +76,7 @@ change url to baseurl from app
 ssl cert
 default timeout session secrets
 do not store username
+dev profile
 
 echo -n | openssl s_client -connect demo.mybahmni.org:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > cert.pem
 keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
@@ -84,3 +85,4 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 
 https://cloud.spring.io/spring-cloud-gateway/multi/multi__tls_ssl.html
 https://stackoverflow.com/questions/47434877/how-to-generate-keystore-and-truststore
+https://adambien.blog/roller/abien/entry/how_to_connect_to_an

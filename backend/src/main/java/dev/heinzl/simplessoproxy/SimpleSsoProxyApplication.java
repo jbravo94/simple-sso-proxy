@@ -1,5 +1,6 @@
 package dev.heinzl.simplessoproxy;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
@@ -13,7 +14,6 @@ import dev.heinzl.simplessoproxy.repositories.AppsRepository;
 import dev.heinzl.simplessoproxy.scripting.ScriptingApiFactory;
 
 @SpringBootApplication
-@RestController
 @ConfigurationPropertiesScan
 public class SimpleSsoProxyApplication {
 

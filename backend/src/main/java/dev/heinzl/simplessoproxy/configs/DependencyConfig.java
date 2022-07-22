@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import dev.heinzl.simplessoproxy.repositories.CredentialsRepository;
+import dev.heinzl.simplessoproxy.repositories.ExpiringSecretsRepository;
 import dev.heinzl.simplessoproxy.repositories.PersistentCredentialsRepository;
+import dev.heinzl.simplessoproxy.repositories.SecretsRepository;
 
 @Configuration
 public class DependencyConfig {
@@ -21,5 +23,10 @@ public class DependencyConfig {
         } else {
             return null;
         }
+    }
+
+    @Bean
+    public SecretsRepository secretsRepository(ExpiringSecretsRepository expiringSecretsRepository) {
+        return expiringSecretsRepository;
     }
 }

@@ -46,7 +46,7 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     private Map<String, Closure> scriptClosures = new HashMap<>();
 
-    private HttpClient httpClient = HttpClient.newHttpClient();
+    private HttpClient httpClient = HttpClient.newBuilder().sslContext(TestingUtils.insecureContext()).build();
 
     @Override
     public void addProxyRequestHeaderIfNotPreset(ServerWebExchange exchange, String key, String value) {
