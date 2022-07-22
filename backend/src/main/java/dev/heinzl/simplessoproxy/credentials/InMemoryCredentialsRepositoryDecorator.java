@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 public class InMemoryCredentialsRepositoryDecorator implements CredentialsRepository {
 
     private final CredentialsRepository credentialsRepository;
-
     private final InMemorySecretsRepositoryImpl inMemorySecretsRepository;
 
     private Iterable<Credential> decorateCredentials(Iterable<Credential> credentials) {
