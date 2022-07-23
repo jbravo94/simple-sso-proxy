@@ -8,4 +8,6 @@ import org.springframework.data.repository.NoRepositoryBean;
 @NoRepositoryBean
 public interface CredentialsRepository extends CrudRepository<Credential, String> {
     List<Credential> findByAppId(String id);
+
+    List<Credential> findByAppIdAndUserId(String appId, String userId);
 }

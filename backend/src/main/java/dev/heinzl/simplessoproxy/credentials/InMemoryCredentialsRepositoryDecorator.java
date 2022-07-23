@@ -173,4 +173,11 @@ public class InMemoryCredentialsRepositoryDecorator implements CredentialsReposi
         return Lists.newArrayList(this.decorateCredentials(findByAppId));
     }
 
+    @Override
+    public List<Credential> findByAppIdAndUserId(String appId, String userId) {
+        List<Credential> findByAppIdAndUserId = this.credentialsRepository.findByAppIdAndUserId(appId, userId);
+
+        return Lists.newArrayList(this.decorateCredentials(findByAppIdAndUserId));
+    }
+
 }

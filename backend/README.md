@@ -84,6 +84,10 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 -Djavax.net.ssl.trustStore=truststore.jks -Djavax.net.ssl.trustStorePassword=changeit
 -Dspring.profiles.active=dev
 
+make in memory with redis
+
 https://cloud.spring.io/spring-cloud-gateway/multi/multi__tls_ssl.html
 https://stackoverflow.com/questions/47434877/how-to-generate-keystore-and-truststore
 https://adambien.blog/roller/abien/entry/how_to_connect_to_an
+https://nurkiewicz.com/2013/01/cacheable-overhead-in-spring.html
+https://devtut.github.io/spring/caching-with-redis-using-spring-boot-for-mongodb.html#the-basic-system

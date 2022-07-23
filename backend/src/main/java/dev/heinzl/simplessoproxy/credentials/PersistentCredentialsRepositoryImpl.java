@@ -9,4 +9,7 @@ public interface PersistentCredentialsRepositoryImpl
         extends CredentialsRepository, MongoRepository<Credential, String> {
     @Query(value = "{ 'app._id' : ObjectId(?0) }")
     public List<Credential> findByAppId(String id);
+
+    @Query(value = "{ 'app._id' : ObjectId(?0), 'user._id' : ObjectId(?1) }")
+    public List<Credential> findByAppIdAndUserId(String appId, String userId);
 }

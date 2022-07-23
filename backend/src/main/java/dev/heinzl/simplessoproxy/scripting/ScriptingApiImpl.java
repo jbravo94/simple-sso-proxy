@@ -18,8 +18,6 @@ import org.springframework.cloud.gateway.filter.OrderedGatewayFilter;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.ReactiveAuthenticationManager;
-import org.springframework.security.web.server.context.ServerSecurityContextRepository;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -123,8 +121,15 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     @Override
     public String getAppCredential(ServerWebExchange exchange) {
-        this.repositoryFacade.getCredentialsRepository();
-        return null;
+
+        String username = this.getProxyUsername(exchange);
+
+        User user = this.repositoryFacade.getUsersRepository().findByUsername(username).get(0);
+
+        List<Credential> findByAppIdAndUserId = this.repositoryFacade.getCredentialsRepository()
+                .findByAppIdAndUserId(app.getId(), user.getId());
+
+        return findByAppIdAndUserId.get(0).getSecret();
     }
 
     @Override

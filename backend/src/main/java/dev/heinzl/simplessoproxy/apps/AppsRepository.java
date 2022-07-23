@@ -6,4 +6,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 public interface AppsRepository extends MongoRepository<App, String> {
     List<App> findByName(String name);
+
+    List<App> findByBaseUrl(String baseUrl);
 }
