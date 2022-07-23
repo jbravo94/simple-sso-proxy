@@ -129,7 +129,7 @@ public class ScriptingApiImpl implements ScriptingApi {
         List<Credential> findByAppIdAndUserId = this.repositoryFacade.getCredentialsRepository()
                 .findByAppIdAndUserId(app.getId(), user.getId());
 
-        return findByAppIdAndUserId.get(0).getSecret();
+        return !CollectionUtils.isEmpty(findByAppIdAndUserId) ? findByAppIdAndUserId.get(0).getSecret() : null;
     }
 
     @Override
