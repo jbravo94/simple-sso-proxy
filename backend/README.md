@@ -2,22 +2,40 @@
 
 ## Introduction
 
-The main idea is to enable single sign on (SSO) of different application without modifying them.
+The main idea is to enable single sign on (SSO) of different applications as they are in their default configuration.
 
-The author understands that there exist better technologies like OIDC or SAML. 
-therefore this project rather should demonstrate the successful application of different technologies in a single application.
+It is clear that there exist better technologies like OIDC or SAML for proper SSO,
+therefore this project rather demonstrates the successful application of different technologies.
 
 Nevertheless, this project can enable SSO for different application where there is no possibility for modern 
 SSO technologies like OIDC or SAML and the possibility to store passwords in the browser is not an option.
 
+The proxy application is composed of a custom user interface and backend plus several services wired together emphasizing microservice architecture. 
+
 The core concept is that this project is a proxy for all requests to the targeted applications.
-It is composed of a custom user interface and backend plus several services wired together emphasizing microservice architecture. 
+
+SSO is performed via a central login which retrieves the targeted application secrets and modifies subsequent requests
+with the authentication parameters.
+
+## Assumptions
+
+* Username and Password is the same on all applications including the proxy itself
+* The secret timeout (e.g. session cookie) is the same on all applications including the proxy
+
+## Dataflow
+
+* The user enters the username and the password
+* The password is stored temorarily within the proxy application
+* The proxy intercepts the HTTP requests and applies custom groovy scripts created in the proxy with its UI
+* The proxy logs into the targeted applications and stores the secrets
+* The proxy modifies subsequent requests and applies authentication which enables SSO
 
 ## User Interface
 
 As user interface serves the purpose to present a central login screen and the capability to configure targeted applications.
 I consists of a login screen, applications dashboard for quick links, the menu to list and modify applications.
 Furthermore it has a scripting API which offers the capability to write scripts which can intercept http traffic as gateway filters.
+These scripts need to be created via reverse engineering the login process with browser developer tools.
 
 ### Applied Technologies
 
@@ -116,8 +134,15 @@ The whole environment is set up in a declarative way via docker-compose which de
 * Microservice Architecture
 * Declarative Programming
 
+# Next Steps
+
+* Store secret and skip login
+* Timeout
+* Login Animation
+
 # TODO
 
+* UML Flow
 * Cypress Frontend e2e tests
 * Unit tests
 * Integration testing
