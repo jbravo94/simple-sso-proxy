@@ -142,6 +142,8 @@ The whole environment is set up in a declarative way via docker-compose which de
 
 # TODO
 
+* Fix multiple credentials for same user and app
+* Exception Handling
 * UML Flow
 * Cypress Frontend e2e tests
 * Unit tests

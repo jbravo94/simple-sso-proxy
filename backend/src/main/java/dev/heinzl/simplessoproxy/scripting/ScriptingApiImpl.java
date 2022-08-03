@@ -130,7 +130,11 @@ public class ScriptingApiImpl implements ScriptingApi {
         List<Credential> findByAppIdAndUserId = this.repositoryFacade.getCredentialsRepository()
                 .findByAppIdAndUserId(app.getId(), user.getId());
 
-        return !CollectionUtils.isEmpty(findByAppIdAndUserId) ? findByAppIdAndUserId.get(0).getSecret() : null;
+        // TODO Fix multiple credentials for same user and app
+
+        return !CollectionUtils.isEmpty(findByAppIdAndUserId)
+                ? findByAppIdAndUserId.get(findByAppIdAndUserId.size() - 1).getSecret()
+                : null;
     }
 
     @Override
@@ -199,9 +203,10 @@ public class ScriptingApiImpl implements ScriptingApi {
         try {
             HttpResponse<String> response = httpClient.send(request,
                     BodyHandlers.ofString());
-            log.debug(String.format("Response code is %d", response.statusCode()));
-            log.debug(String.format("Response headers are %s", response.headers().toString()));
-            log.debug(String.format("Response body is %s", response.body()));
+            log.info(String.format("Request headers are %s", request.headers().toString()));
+            log.info(String.format("Response code is %d", response.statusCode()));
+            log.info(String.format("Response headers are %s", response.headers().toString()));
+            log.info(String.format("Response body is %s", response.body()));
 
             return response;
 
