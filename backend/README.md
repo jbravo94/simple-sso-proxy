@@ -26,6 +26,7 @@ Furthermore it has a scripting API which offers the capability to write scripts 
 * Material Design, Flex, CSS
 * Angular Link router
 * JWT for authentication and authorization (user and roles)
+* Monaco Editor from VS Code
 
 ### Applied Knowledge
 
