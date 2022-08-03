@@ -45,7 +45,7 @@ def loginScript = { exchange ->
                     .header("Cookie", "session_id=" + sessionId)
                     .build()
 
-    scriptingApi.logInfo(scriptingApi.executeRequest(request))
+    scriptingApi.executeRequest(request)
 }
 
 scriptingApi.setScript(ScriptType.LOGIN, loginScript)
