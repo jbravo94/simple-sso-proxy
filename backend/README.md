@@ -125,6 +125,7 @@ The whole environment is set up in a declarative way via docker-compose which de
 * Backup Restore
 * O(n)
 * Defensive Programming
+* (Multithreading)
 
 # Notes
 
