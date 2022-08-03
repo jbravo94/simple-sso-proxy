@@ -1,3 +1,131 @@
+# Simple SSO Proxy
+
+## Introduction
+
+The main idea is to enable single sign on (SSO) of different application without modifying them.
+
+The author understands that there exist better technologies like OIDC or SAML. 
+therefore this project rather should demonstrate the successful application of different technologies in a single application.
+
+Nevertheless, this project can enable SSO for different application where there is no possibility for modern 
+SSO technologies like OIDC or SAML and the possibility to store passwords in the browser is not an option.
+
+The core concept is that this project is a proxy for all requests to the targeted applications.
+It is composed of a custom user interface and backend plus several services wired together emphasizing microservice architecture. 
+
+## User Interface
+
+As user interface serves the purpose to present a central login screen and the capability to configure targeted applications.
+I consists of a login screen, applications dashboard for quick links, the menu to list and modify applications.
+Furthermore it has a scripting API which offers the capability to write scripts which can intercept http traffic as gateway filters.
+
+### Applied Technologies
+
+* Angular, HTML
+* JavaScript, Typescript
+* Material Design, Flex, CSS
+* Angular Link router
+* JWT for authentication and authorization (user and roles)
+
+### Applied Knowledge
+
+* Component based architecture
+* Dependency Injection
+* Basic Navigation (sidebar, header, grid layout)
+* Responsive Design emphasized
+* Role based authentication (RBAC) with Angular Guards
+* HTTP Cookies as proxy token
+
+## Backend
+
+### Applied Technologies
+
+* Spring Boot inclusive Webflux and Cloud Gateway modules
+* Maven as dependency management and build automation
+* Integration of a groovy scripting engine
+* MongoDB ORM Mapper
+* HTTP Filters
+* JWT Token
+* Spring Security
+
+### Applied Knowledge
+
+* Reactive programming for regular REST endpoints
+* HTTP request modification (method, header, cookie, body, etc.)
+* Private / Public Cryptography with SSL
+* Directly implemented programming pattern 
+    * Strategy - to select in-memory or persistent credentials repository
+    * Decorator - decorates the credentials repository to apply different handling for secrets
+    * Factory - to create scripting API objects
+    * Facade - to create single point of access for repositories in scripts
+* Indirectly used programming pattern
+    * Builder - provided via Lombok for POJOs
+    * Dependency Injection - via Spring Boot
+    * Observer - via Webflux
+    * Proxy - via automatic implementation of Spring repositories
+* Datastructures
+    * HashMap
+    * List
+
+## Build automation
+
+The backend build automation is performed via Maven.
+The frontend build automation is performed via NodeJS.
+Each the artifacts of each service (frontend, backend) are bundled within Docker container.
+
+### Applied Technologies
+
+* Maven
+* NPM
+* Docker
+
+### Applied Knowledge
+
+* Build automation and DevOps
+* Containerization
+
+## Setup
+
+The setup encourages microservice architecture.
+Therefore the frontend and the backend are built as independent containers in order to enable indiviual devops.
+
+The architecture consists of 3 tiers.
+
+The client tier as GUI provided by this project.
+The application tier as business logic provided by this project.
+The data tier provided via MongoDB.
+
+Since the GUI (presentation layer) and the application tier (proxy and logic) must be wired together also for the client,
+nginx is used as reverse proxy.
+
+In order to route the HTTP requests accordingly to each application, DNS unique subdomain entries should be created, 
+pointing at the proxy service. (Hosts entries serve the purpose while testing)
+
+The whole environment is set up in a declarative way via docker-compose which describes the desired state.
+
+### Applied Technologies
+
+* Docker and docker-compose
+
+### Applied Knowledge
+
+* 3 Tier Architecture
+* Reverse Proxying
+* Basic Networking and Domain Names
+* Microservice Architecture
+* Declarative Programming
+
+# TODO
+
+* Cypress Frontend e2e tests
+* Unit tests
+* Integration testing
+* Measuring Coverage
+* CORS
+* Backup Restore
+* O(n)
+* Defensive Programming
+
 # Notes
 
 https://github.com/eugenp/tutorials/tree/master/persistence-modules/spring-data-mongodb
