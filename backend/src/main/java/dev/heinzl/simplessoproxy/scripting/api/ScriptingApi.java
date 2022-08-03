@@ -1,6 +1,7 @@
 package dev.heinzl.simplessoproxy.scripting.api;
 
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -42,7 +43,7 @@ public interface ScriptingApi {
 
     RepositoryFacade getRepositoryFacade();
 
-    String executeRequest(HttpRequest request);
+    HttpResponse<String> executeRequest(HttpRequest request);
 
     String getBasicAuthenticationHeader(String username, String password);
 
@@ -57,4 +58,6 @@ public interface ScriptingApi {
     void executeScript(ServerWebExchange exchange, ScriptType scriptType);
 
     void executeScript(ServerWebExchange exchange, String scriptType);
+
+    String getValueOfSetCookieHeader(HttpResponse<String> response);
 }

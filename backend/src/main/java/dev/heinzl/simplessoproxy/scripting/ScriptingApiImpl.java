@@ -27,6 +27,7 @@ import dev.heinzl.simplessoproxy.credentials.Credential;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
 import dev.heinzl.simplessoproxy.users.User;
+import dev.heinzl.simplessoproxy.utils.CookieUtils;
 import dev.heinzl.simplessoproxy.utils.TestingUtils;
 import groovy.lang.Closure;
 import lombok.RequiredArgsConstructor;
@@ -193,19 +194,26 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public String executeRequest(HttpRequest request) {
-
-        String body;
+    public HttpResponse<String> executeRequest(HttpRequest request) {
 
         try {
             HttpResponse<String> response = httpClient.send(request,
                     BodyHandlers.ofString());
-            body = response.body();
+            log.debug(String.format("Response code is %d", response.statusCode()));
+            log.debug(String.format("Response headers are %s", response.headers().toString()));
+            log.debug(String.format("Response body is %s", response.body()));
+
+            return response;
+
         } catch (IOException | InterruptedException e) {
             throw new IllegalStateException(e.getMessage());
         }
+    }
 
-        return body;
+    @Override
+    public String getValueOfSetCookieHeader(HttpResponse<String> response) {
+        return CookieUtils.getValueFromSetCookieHeader(response.headers().firstValue("set-cookie")
+                .orElseThrow(() -> new IllegalStateException("Set-Cookie header not present.")));
     }
 
     @Override
