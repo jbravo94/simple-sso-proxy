@@ -248,3 +248,16 @@ https://stackoverflow.com/questions/47434877/how-to-generate-keystore-and-trusts
 https://adambien.blog/roller/abien/entry/how_to_connect_to_an
 https://nurkiewicz.com/2013/01/cacheable-overhead-in-spring.html
 https://devtut.github.io/spring/caching-with-redis-using-spring-boot-for-mongodb.html#the-basic-system
+
+@Configuration
+@EnableCaching
+public class CacheConfig {
+
+    @Bean
+    public CacheManager cacheManager() {
+        final SimpleCacheManager cacheManager = new SimpleCacheManager();
+        cacheManager.setCaches(Arrays.asList(new ConcurrentMapCache("users"), new ConcurrentMapCache("apps"),
+                new ConcurrentMapCache("credentials")));
+        return cacheManager;
+    }
+}

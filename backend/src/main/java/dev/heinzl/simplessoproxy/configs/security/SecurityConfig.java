@@ -52,8 +52,7 @@ public class SecurityConfig {
                                                 .pathMatchers("/**").authenticated()
                                                 .pathMatchers("/users/{user}/**").access(this::currentUserMatchesPath)
                                                 .anyExchange().denyAll())
-                                .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider,
-                                                securityContextRepository()),
+                                .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider),
                                                 SecurityWebFiltersOrder.HTTP_BASIC)
 
                                 .build();
@@ -106,83 +105,4 @@ public class SecurityConfig {
                 return authenticationManager;
         }
 
-        /*
-         * @Bean
-         * public SecurityWebFilterChain securityWebFilterChain(
-         * ServerHttpSecurity http) {
-         * return http
-         * .authorizeExchange()
-         * .pathMatchers("/api/v1/login")
-         * .permitAll()
-         * .pathMatchers("/**")
-         * .authenticated()
-         * .and()
-         * .httpBasic()
-         * .and()
-         * .csrf().disable()
-         * .addFilterAfter(authenticationWebFilter(),
-         * SecurityWebFiltersOrder.REACTOR_CONTEXT)
-         * .build();
-         * }
-         * 
-         * /*
-         * .csrf(csrf ->
-         * csrf.csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
-         * )
-         *
-         * 
-         * public AuthenticationWebFilter authenticationWebFilter() {
-         * return new AuthenticationWebFilter(resolver());
-         * }
-         * 
-         * public ReactiveAuthenticationManagerResolver<ServerWebExchange> resolver() {
-         * return exchange -> {
-         * return Mono.just(customersAuthenticationManager());
-         * };
-         * }
-         * 
-         * public ReactiveAuthenticationManager customersAuthenticationManager() {
-         * return authentication -> customer(authentication)
-         * .switchIfEmpty(Mono.error(new UsernameNotFoundException(authentication
-         * .getPrincipal()
-         * .toString())))
-         * .map(b -> new
-         * UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
-         * authentication.getCredentials(),
-         * Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))));
-         * }
-         * 
-         * public Mono<String> customer(Authentication authentication) {
-         * return Mono.justOrEmpty(authentication
-         * .getPrincipal()
-         * .toString()
-         * .startsWith("user")
-         * ? authentication
-         * .getPrincipal()
-         * .toString()
-         * : null);
-         * }
-         * 
-         * @Bean
-         * public MapReactiveUserDetailsService userDetailsService() {
-         * UserDetails user = User
-         * .withUsername("user")
-         * .password(passwordEncoder().encode("password"))
-         * .roles("USER")
-         * .build();
-         * 
-         * UserDetails admin = User
-         * .withUsername("admin")
-         * .password(passwordEncoder().encode("password"))
-         * .roles("ADMIN")
-         * .build();
-         * 
-         * return new MapReactiveUserDetailsService(user, admin);
-         * }
-         * 
-         * @Bean
-         * public PasswordEncoder passwordEncoder() {
-         * return new BCryptPasswordEncoder();
-         * }
-         */
 }

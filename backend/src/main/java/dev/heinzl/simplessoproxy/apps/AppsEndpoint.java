@@ -1,7 +1,5 @@
 package dev.heinzl.simplessoproxy.apps;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -75,33 +73,6 @@ public class AppsEndpoint {
         gatewayRouteService.refreshRoutes();
 
         return Mono.just(createApp);
-    }
-
-    @GetMapping("/test")
-    public Mono<Credential> create3() {
-        // Credential credential = credentialsRepository.save(entity);
-        return ReactiveSecurityContextHolder.getContext()
-                .map(SecurityContext::getAuthentication)
-                .doOnNext(auth -> {
-                    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) auth
-                            .getPrincipal();
-                    String username = user.getUsername();
-
-                    User fetched = users.findByUsername(username).get(0);
-                    App app = appsRepository.findAll().get(0);
-
-                    Credential credential = Credential.builder().app(app).secret("password").user(fetched).build();
-
-                    credentialsRepository.save(credential);
-
-                    log.info(String.valueOf(auth));
-                })
-                .then(Mono.empty());
-    }
-
-    @GetMapping("/test2")
-    public Flux<Credential> create4() {
-        return Flux.fromIterable(credentialsRepository.findByAppId(appsRepository.findAll().get(0).getId()));
     }
 
     @PutMapping("/{id}")

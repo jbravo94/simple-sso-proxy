@@ -12,9 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.validation.constraints.Email;
 
-/**
- * @author hantsy
- */
 @Data
 @Builder
 @NoArgsConstructor
