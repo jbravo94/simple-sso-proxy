@@ -73,6 +73,8 @@ These scripts need to be created via reverse engineering the login process with 
 * HTTP request modification (method, header, cookie, body, etc.)
 * Private / Public Cryptography with SSL
 * Generics for Validator
+* Mocks, Unit and Integration tests
+* Positive and negative testing
 * Directly implemented programming pattern 
     * Strategy - to select in-memory or persistent credentials repository
     * Decorator - decorates the credentials repository to apply different handling for secrets
@@ -88,6 +90,7 @@ These scripts need to be created via reverse engineering the login process with 
 * Datastructures
     * HashMap
     * List
+    * Deque
 
 ## Build automation
 
@@ -157,6 +160,8 @@ The whole environment is set up in a declarative way via docker-compose which de
 * O(n)
 * Defensive Programming
 * (Multithreading)
+
+* Sets
 
 # Notes
 
@@ -275,3 +280,6 @@ class SimpleSsoProxyApplicationTests {
 }
 
 https://www.baeldung.com/java-balanced-brackets-algorithm
+
+blocking used for better control in gatewayfilter instead of reactive calls
+https://www.guru99.com/positive-and-negative-testing.html

@@ -49,14 +49,13 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     @Override
     public void addProxyRequestHeaderIfNotPreset(ServerWebExchange exchange, String key, String value) {
-        // TODO Fix
-        exchange.getRequest().getHeaders().set(key, value);
+        exchange.getRequest().getHeaders().addIfAbsent(key, value);
     }
 
     @Override
     public void addProxyResponseHeaderIfNotPreset(ServerWebExchange exchange, String key, String value) {
         // TODO Fix
-        exchange.getResponse().getHeaders().set(key, value);
+        exchange.getResponse().getHeaders().addIfAbsent(key, value);
     }
 
     @Override
