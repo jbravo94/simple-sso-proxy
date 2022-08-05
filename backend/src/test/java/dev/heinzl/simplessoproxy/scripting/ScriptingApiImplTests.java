@@ -35,6 +35,7 @@ import org.codehaus.groovy.runtime.MethodClosure;
 
 import dev.heinzl.simplessoproxy.apps.App;
 import dev.heinzl.simplessoproxy.configs.jwt.JwtTokenProvider;
+import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
 import dev.heinzl.simplessoproxy.secrets.SecretsRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -142,7 +143,7 @@ public class ScriptingApiImplTests {
     void positiveTestAddProxyRequestCookieIfNotPreset() {
         prepareRequest();
 
-        scriptingApiImpl.addProxyRequestCookieIfNotPreset(exchange, "KEY", "value");
+        scriptingApiImpl.addProxyRequestCookieIfNotPreset(exchange, "key", "value");
 
         assertTrue(exchange.getRequest().getCookies().get("key").stream()
                 .anyMatch(cookie -> "value".equals(cookie.getValue())));
@@ -282,13 +283,13 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void positiveTestSetScript() {
-        scriptingApiImpl.setScript("LOGIN", new MethodClosure(this, "none"));
+    void testSetScript() {
+        scriptingApiImpl.setScript("ANY", new MethodClosure(this, "none"));
     }
 
     @Test
-    void negativeTestSetScript() {
-        fail();
+    void testSetScriptWithType() {
+        scriptingApiImpl.setScript(ScriptType.LOGIN, new MethodClosure(this, "none"));
     }
 
 }
