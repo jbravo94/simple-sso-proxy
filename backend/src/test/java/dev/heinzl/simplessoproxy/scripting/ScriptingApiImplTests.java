@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.slf4j.Logger;
+import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
@@ -32,11 +33,14 @@ import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
 import org.json.JSONObject;
 import org.codehaus.groovy.runtime.MethodClosure;
+import org.mockito.ArgumentCaptor;
+import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 
 import dev.heinzl.simplessoproxy.apps.App;
 import dev.heinzl.simplessoproxy.configs.jwt.JwtTokenProvider;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
 import dev.heinzl.simplessoproxy.secrets.SecretsRepository;
+import groovy.lang.Closure;
 
 @ExtendWith(MockitoExtension.class)
 // FIX This
@@ -65,13 +69,6 @@ public class ScriptingApiImplTests {
                 jwtTokenProvider);
     }
 
-    @Test
-    void testGetProxyUsername() {
-        when(jwtTokenProvider.getUsernameFromRequest(any())).thenReturn("username");
-
-        assertEquals("username", scriptingApiImpl.getProxyUsername(exchange));
-    }
-
     void prepareRequest() {
         ServerHttpRequest request = mock(ServerHttpRequest.class);
         when(exchange.getRequest()).thenReturn(request);
@@ -96,7 +93,14 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void positiveTestAddProxyRequestHeaderIfNotPreset() {
+    void testGetProxyUsername() {
+        when(jwtTokenProvider.getUsernameFromRequest(any())).thenReturn("username");
+
+        assertEquals("username", scriptingApiImpl.getProxyUsername(exchange));
+    }
+
+    @Test
+    void testAddProxyRequestHeaderIfNotPreset() {
 
         prepareRequest();
 
@@ -106,7 +110,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void negativeTestAddProxyRequestHeaderIfNotPreset() {
+    void testAddProxyRequestHeaderIfNotPresetForDuplicateHandling() {
 
         prepareRequest();
 
@@ -118,7 +122,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void positiveTestAddProxyResponseHeaderIfNotPreset() {
+    void testAddProxyResponseHeaderIfNotPreset() {
 
         prepareResponse();
 
@@ -128,7 +132,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void negativeTestAddProxyResponseHeaderIfNotPreset() {
+    void testAddProxyResponseHeaderIfNotPresetForDuplicateHandling() {
 
         prepareResponse();
 
@@ -140,7 +144,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void positiveTestAddProxyRequestCookieIfNotPreset() {
+    void testAddProxyRequestCookieIfNotPreset() {
         prepareRequest();
 
         scriptingApiImpl.addProxyRequestCookieIfNotPreset(exchange, "key", "value");
@@ -151,7 +155,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void negativeTestAddProxyRequestCookieIfNotPreset() {
+    void testAddProxyRequestCookieIfNotPresetForDuplicateHandling() {
         prepareRequest();
 
         scriptingApiImpl.addProxyRequestCookieIfNotPreset(exchange, "key", "value_1");
@@ -164,7 +168,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void positiveTestAddProxyResponseSetCookieIfNotPresentInRequest() {
+    void testAddProxyResponseSetCookieIfNotPresentInRequest() {
         prepareRequest();
         prepareResponse();
 
@@ -175,7 +179,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void negativeTestAddProxyResponseSetCookieIfNotPresentInRequest() {
+    void testAddProxyResponseSetCookieIfNotPresentInRequestForDuplicateHandling() {
         prepareRequest();
         prepareResponse();
 
@@ -188,7 +192,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void negativeTestAddProxyResponseSetCookieIfNotPresentInRequestWithOtherSetCookieHeader() {
+    void testAddProxyResponseSetCookieIfNotPresentInRequestWithOtherSetCookieHeader() {
         prepareRequest();
         prepareResponse();
 
@@ -202,7 +206,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void negativeTestAddProxyResponseSetCookieIfNotPresentInRequestWithNullCookieValue() {
+    void testAddProxyResponseSetCookieIfNotPresentInRequestWithNullCookieValue() {
         prepareRequest();
         prepareResponse();
 
@@ -215,7 +219,7 @@ public class ScriptingApiImplTests {
     }
 
     @Test
-    void negativeTestAddProxyResponseSetCookieIfNotPresentInRequestWithNullStringCookieValue() {
+    void testAddProxyResponseSetCookieIfNotPresentInRequestWithNullStringCookieValue() {
         prepareRequest();
         prepareResponse();
 
@@ -292,4 +296,72 @@ public class ScriptingApiImplTests {
         scriptingApiImpl.setScript(ScriptType.LOGIN, new MethodClosure(this, "none"));
     }
 
+    @Test
+    void testGetBasicAuthenticationHeader() {
+        String basicEncodedCredentials = scriptingApiImpl.getBasicAuthenticationHeader("username", "password");
+        assertEquals("Basic dXNlcm5hbWU6cGFzc3dvcmQ=", basicEncodedCredentials);
+    }
+
+    @Test
+    void testGetBasicAuthenticationHeaderWithVaryingNulledParameter() {
+        assertThrows(NullPointerException.class, () -> {
+            scriptingApiImpl.getBasicAuthenticationHeader(null, "password");
+        });
+        assertThrows(NullPointerException.class, () -> {
+            scriptingApiImpl.getBasicAuthenticationHeader("username", null);
+        });
+        assertThrows(NullPointerException.class, () -> {
+            scriptingApiImpl.getBasicAuthenticationHeader(null, null);
+        });
+    }
+
+    @Test
+    void testExecuteScript() {
+        Closure closure = mock(Closure.class);
+
+        scriptingApiImpl.setScript(ScriptType.LOGIN, closure);
+
+        scriptingApiImpl.executeScript(exchange, ScriptType.LOGIN);
+
+        verify(closure, times(1)).call(exchange);
+    }
+
+    @Test
+    void testExecuteScriptWithNotLoadedScript() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            scriptingApiImpl.executeScript(exchange, ScriptType.LOGIN);
+        });
+    }
+
+    @Test
+    void testGetAppBaseUrl() {
+        String url = "http://example.com";
+
+        app.setBaseUrl(url);
+
+        String appBaseUrl = scriptingApiImpl.getAppBaseUrl();
+
+        assertEquals(url, appBaseUrl);
+    }
+
+    @Test
+    void testCreateGatewayFilter() {
+        prepareRequest();
+        prepareResponse();
+
+        Closure closure = mock(Closure.class);
+        GatewayFilterChain chain = mock(GatewayFilterChain.class);
+
+        ArgumentCaptor<GatewayFilter> argument = ArgumentCaptor.forClass(GatewayFilter.class);
+
+        scriptingApiImpl.createGatewayFilter(closure);
+
+        verify(gatewayFilterSpec, times(1)).filter(argument.capture());
+
+        GatewayFilter gatewayFilter = argument.getValue();
+        gatewayFilter.filter(exchange, chain);
+
+        verify(closure, times(1)).call(exchange);
+        verify(chain, times(1)).filter(exchange);
+    }
 }

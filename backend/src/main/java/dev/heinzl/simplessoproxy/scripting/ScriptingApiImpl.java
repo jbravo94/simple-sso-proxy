@@ -180,6 +180,8 @@ public class ScriptingApiImpl implements ScriptingApi {
 
         if (closure != null) {
             closure.call(exchange);
+        } else {
+            throw new IllegalArgumentException("Script not loaded!");
         }
     }
 
@@ -202,13 +204,7 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public String getValueOfSetCookieHeader(HttpResponse<String> response) {
-        return CookieUtils.getValueFromSetCookieHeader(response.headers().firstValue("set-cookie")
-                .orElseThrow(() -> new IllegalStateException("Set-Cookie header not present.")));
-    }
-
-    @Override
-    public String getBasicAuthenticationHeader(String username, String password) {
+    public String getBasicAuthenticationHeader(@NonNull String username, @NonNull String password) {
         String valueToEncode = username + ":" + password;
         return "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes());
     }
@@ -224,7 +220,7 @@ public class ScriptingApiImpl implements ScriptingApi {
 
             closure.call(exchange);
 
-            // Disable in production
+            // Fix this - Disable in production
             TestingUtils.modifyBahmniCookie(exchange);
 
             return chain.filter(exchange);
@@ -232,6 +228,4 @@ public class ScriptingApiImpl implements ScriptingApi {
 
         gatewayFilterSpec.filter(gatewayFilter);
     }
-
-    // add HTTP build and function for content extraction
 }

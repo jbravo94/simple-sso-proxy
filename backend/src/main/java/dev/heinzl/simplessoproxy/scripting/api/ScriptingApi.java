@@ -57,6 +57,4 @@ public interface ScriptingApi {
     void executeScript(ServerWebExchange exchange, ScriptType scriptType);
 
     void executeScript(ServerWebExchange exchange, String scriptType);
-
-    String getValueOfSetCookieHeader(HttpResponse<String> response);
 }
