@@ -22,9 +22,9 @@ public interface ScriptingApi {
     void addProxyResponseSetCookieIfNotPresentInRequest(ServerWebExchange exchange, String name, String value,
             String path);
 
-    void addPermanentProxyRequestHeaderIfNotPreset(String key, String value);
+    void addPermanentProxyRequestHeader(String key, String value);
 
-    void addPermanentProxyResponseHeaderIfNotPreset(String key, String value);
+    void addPermanentProxyResponseHeader(String key, String value);
 
     String getProxyUsername(ServerWebExchange exchange);
 

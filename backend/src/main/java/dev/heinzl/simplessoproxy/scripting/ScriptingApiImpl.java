@@ -86,15 +86,13 @@ public class ScriptingApiImpl implements ScriptingApi {
     }
 
     @Override
-    public void addPermanentProxyRequestHeaderIfNotPreset(String key, String value) {
-        // TODO Fix
-        gatewayFilterSpec.setRequestHeader(key, value);
+    public void addPermanentProxyRequestHeader(String key, String value) {
+        gatewayFilterSpec.addRequestHeader(key, value);
     }
 
     @Override
-    public void addPermanentProxyResponseHeaderIfNotPreset(String key, String value) {
-        // TODO Fix
-        gatewayFilterSpec.setRequestHeader(key, value);
+    public void addPermanentProxyResponseHeader(String key, String value) {
+        gatewayFilterSpec.addResponseHeader(key, value);
     }
 
     @Override
