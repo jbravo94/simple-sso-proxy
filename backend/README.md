@@ -273,3 +273,5 @@ class SimpleSsoProxyApplicationTests {
 	}
 
 }
+
+https://www.baeldung.com/java-balanced-brackets-algorithm

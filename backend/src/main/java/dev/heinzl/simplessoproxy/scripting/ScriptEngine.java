@@ -37,6 +37,7 @@ public class ScriptEngine {
             System.out.println(result);
         } catch (NoSuchMethodException | ScriptException e) {
             e.printStackTrace();
+            throw new IllegalStateException("The script threw an error. Refer to the logs.", e);
         }
     }
 }

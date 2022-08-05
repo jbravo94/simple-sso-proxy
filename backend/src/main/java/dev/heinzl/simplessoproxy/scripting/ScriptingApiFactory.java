@@ -1,5 +1,7 @@
 package dev.heinzl.simplessoproxy.scripting;
 
+import java.util.IllegalFormatException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.stereotype.Component;
@@ -22,9 +24,15 @@ public class ScriptingApiFactory {
 
     public ScriptingApi createScriptingApiObject(App app, GatewayFilterSpec gatewayFilterSpec) {
 
+        String proxyScript = app.getProxyScript();
+
+        if (!ScriptValidator.getInstance().isValid(proxyScript)) {
+            throw new IllegalArgumentException("Script is not valid!");
+        }
+
         ScriptingApi scriptingApi = new ScriptingApiImpl(app, gatewayFilterSpec, repositoryFacade, jwtTokenProvider);
 
-        scriptEngine.applyScript(app.getProxyScript(), scriptingApi);
+        scriptEngine.applyScript(proxyScript, scriptingApi);
 
         return scriptingApi;
     }
