@@ -17,15 +17,14 @@ public interface ScriptingApi {
 
     void addProxyRequestCookieIfNotPreset(ServerWebExchange exchange, String name, String value);
 
-    void addProxyResponseCookieIfNotPreset(ServerWebExchange exchange, String name, String value, String path);
+    void addProxyResponseSetCookieIfNotPresentInRequest(ServerWebExchange exchange, String name, String value);
+
+    void addProxyResponseSetCookieIfNotPresentInRequest(ServerWebExchange exchange, String name, String value,
+            String path);
 
     void addPermanentProxyRequestHeaderIfNotPreset(String key, String value);
 
     void addPermanentProxyResponseHeaderIfNotPreset(String key, String value);
-
-    void addPermanentProxyRequestCookieIfNotPreset(String name, String value);
-
-    void addPermanentProxyResponseCookieIfNotPreset(String name, String value, String path);
 
     String getProxyUsername(ServerWebExchange exchange);
 

@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
@@ -30,6 +31,7 @@ import dev.heinzl.simplessoproxy.users.User;
 import dev.heinzl.simplessoproxy.utils.CookieUtils;
 import dev.heinzl.simplessoproxy.utils.TestingUtils;
 import groovy.lang.Closure;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -54,31 +56,32 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     @Override
     public void addProxyResponseHeaderIfNotPreset(ServerWebExchange exchange, String key, String value) {
-        // TODO Fix
         exchange.getResponse().getHeaders().addIfAbsent(key, value);
     }
 
     @Override
     public void addProxyRequestCookieIfNotPreset(ServerWebExchange exchange, String name, String value) {
-        // TODO Fix
-        exchange.getRequest().getHeaders().set("Cookie", String.format("%s=%s", name, value));
+        exchange.getRequest().getCookies().addIfAbsent(name, new HttpCookie(name, value));
     }
 
     @Override
-    public void addProxyResponseCookieIfNotPreset(ServerWebExchange exchange, String name, String value, String path) {
+    public void addProxyResponseSetCookieIfNotPresentInRequest(ServerWebExchange exchange, String name, String value) {
+        addProxyResponseSetCookieIfNotPresentInRequest(exchange, name, value, "/");
+    }
 
-        if (path == null) {
-            path = "/";
-        }
+    @Override
+    public void addProxyResponseSetCookieIfNotPresentInRequest(ServerWebExchange exchange, String name, String value,
+            @NonNull String path) {
 
         MultiValueMap<String, HttpCookie> requestCookies = exchange.getRequest().getCookies();
         HttpHeaders responseHeaders = exchange.getResponse().getHeaders();
 
         List<HttpCookie> list = requestCookies.get(name);
 
-        if (list == null || list.size() == 0 || list.get(0).getValue() == null
-                || "null".equals(list.get(0).getValue())) {
-            responseHeaders.add("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
+        if (CollectionUtils.isEmpty(list)
+                || list.stream().allMatch(
+                        cookie -> StringUtils.isAllEmpty(cookie.getValue()) || cookie.getValue().equals("null"))) {
+            responseHeaders.add(HttpHeaders.SET_COOKIE, String.format("%s=%s; Path=%s", name, value, path));
         }
     }
 
@@ -92,21 +95,6 @@ public class ScriptingApiImpl implements ScriptingApi {
     public void addPermanentProxyResponseHeaderIfNotPreset(String key, String value) {
         // TODO Fix
         gatewayFilterSpec.setRequestHeader(key, value);
-    }
-
-    @Override
-    public void addPermanentProxyRequestCookieIfNotPreset(String name, String value) {
-        // TODO Fix
-        gatewayFilterSpec.setRequestHeader("Cookie", String.format("%s=%s", name, value));
-    }
-
-    @Override
-    public void addPermanentProxyResponseCookieIfNotPreset(String name, String value, String path) {
-        if (path == null) {
-            path = "/";
-        }
-
-        gatewayFilterSpec.addResponseHeader("Set-Cookie", String.format("%s=%s; Path=%s", name, value, path));
     }
 
     @Override

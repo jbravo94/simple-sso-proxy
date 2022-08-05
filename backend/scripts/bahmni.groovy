@@ -1,7 +1,7 @@
 def gatewayFilter = { exchange ->
 
-    scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user", "%22" + scriptingApi.getProxyUsername(exchange) + "%22", "/")
-    scriptingApi.addProxyResponseCookieIfNotPreset(exchange, "bahmni.user.location", "%7B%22name%22%3A%22General%20Ward%22%2C%22uuid%22%3A%22baf7bd38-d225-11e4-9c67-080027b662ec%22%7D", "/")
+    scriptingApi.addProxyResponseSetCookieIfNotPresentInRequest(exchange, "bahmni.user", "%22" + scriptingApi.getProxyUsername(exchange) + "%22", "/")
+    scriptingApi.addProxyResponseSetCookieIfNotPresentInRequest(exchange, "bahmni.user.location", "%7B%22name%22%3A%22General%20Ward%22%2C%22uuid%22%3A%22baf7bd38-d225-11e4-9c67-080027b662ec%22%7D", "/")
 
     scriptingApi.logInfo(scriptingApi.executeScript(exchange, ScriptType.LOGIN))
 }
