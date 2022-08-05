@@ -44,6 +44,7 @@ public class ScriptingApiImpl implements ScriptingApi {
 
     private Map<String, Closure> scriptClosures = new HashMap<>();
 
+    // Fix this
     private HttpClient httpClient = HttpClient.newBuilder().sslContext(TestingUtils.insecureContext()).build();
 
     @Override

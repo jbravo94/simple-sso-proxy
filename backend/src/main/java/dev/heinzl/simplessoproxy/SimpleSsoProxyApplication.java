@@ -10,11 +10,13 @@ import org.springframework.context.annotation.Bean;
 import dev.heinzl.simplessoproxy.apps.AppsRepository;
 import dev.heinzl.simplessoproxy.configs.routing.ApiPathRouteLocatorImpl;
 import dev.heinzl.simplessoproxy.scripting.ScriptingApiFactory;
+import lombok.Generated;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
 public class SimpleSsoProxyApplication {
 
+	@Generated
 	public static void main(String[] args) {
 		SpringApplication.run(SimpleSsoProxyApplication.class, args);
 	}

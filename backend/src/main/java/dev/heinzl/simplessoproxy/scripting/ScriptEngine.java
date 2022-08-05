@@ -4,20 +4,15 @@ import javax.script.Invocable;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
-import dev.heinzl.simplessoproxy.users.UsersRepository;
 
 @Service
 public class ScriptEngine {
 
     ScriptEngineManager factory = new ScriptEngineManager();
     javax.script.ScriptEngine engine = factory.getEngineByName("groovy");
-
-    @Autowired
-    UsersRepository usersRepository;
 
     String template = """
             import java.net.http.*

@@ -13,6 +13,7 @@ import org.springframework.cloud.gateway.route.builder.PredicateSpec;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 
 import dev.heinzl.simplessoproxy.apps.App;
+import dev.heinzl.simplessoproxy.apps.AppValidator;
 import dev.heinzl.simplessoproxy.apps.AppsRepository;
 import dev.heinzl.simplessoproxy.scripting.ScriptingApiFactory;
 import reactor.core.publisher.Flux;
@@ -27,6 +28,7 @@ public class ApiPathRouteLocatorImpl implements RouteLocator {
   public Flux<Route> getRoutes() {
     RouteLocatorBuilder.Builder routesBuilder = routeLocatorBuilder.routes();
     var t = Flux.fromIterable(appsRepository.findAll())
+        .filter(app -> AppValidator.getInstance().isValid(app))
         .map(app -> routesBuilder.route(predicateSpec -> setPredicateSpec(app, predicateSpec)))
         .collectList().flatMapMany(builders -> routesBuilder.build()
             .getRoutes());
@@ -35,13 +37,7 @@ public class ApiPathRouteLocatorImpl implements RouteLocator {
   }
 
   private Buildable<Route> setPredicateSpec(App app, PredicateSpec predicateSpec) {
-    URI uri;
-
-    try {
-      uri = new URI(app.getProxyUrl());
-    } catch (URISyntaxException e) {
-      throw new IllegalStateException(e.getMessage());
-    }
+    URI uri = URI.create(app.getProxyUrl());
 
     BooleanSpec booleanSpec = predicateSpec.host(uri.getHost());
 

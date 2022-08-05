@@ -72,11 +72,14 @@ These scripts need to be created via reverse engineering the login process with 
 * Reactive programming for regular REST endpoints
 * HTTP request modification (method, header, cookie, body, etc.)
 * Private / Public Cryptography with SSL
+* Generics for Validator
 * Directly implemented programming pattern 
     * Strategy - to select in-memory or persistent credentials repository
     * Decorator - decorates the credentials repository to apply different handling for secrets
     * Factory - to create scripting API objects
     * Facade - to create single point of access for repositories in scripts
+    * Singleton - to validate App POJOs
+    * Visitor - used to validate
 * Indirectly used programming pattern
     * Builder - provided via Lombok for POJOs
     * Dependency Injection - via Spring Boot
@@ -260,4 +263,13 @@ public class CacheConfig {
                 new ConcurrentMapCache("credentials")));
         return cacheManager;
     }
+}
+
+@SpringBootTest
+class SimpleSsoProxyApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
 }
