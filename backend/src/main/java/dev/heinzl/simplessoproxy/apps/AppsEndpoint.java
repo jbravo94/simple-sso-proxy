@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.heinzl.simplessoproxy.configs.routing.GatewayRouteService;
-import dev.heinzl.simplessoproxy.credentials.Credential;
 import dev.heinzl.simplessoproxy.credentials.CredentialsRepository;
-import dev.heinzl.simplessoproxy.users.User;
 import dev.heinzl.simplessoproxy.users.UsersRepository;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;

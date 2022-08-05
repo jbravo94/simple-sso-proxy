@@ -3,7 +3,6 @@ package dev.heinzl.simplessoproxy.configs.routing;
 import lombok.AllArgsConstructor;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.springframework.cloud.gateway.route.Route;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -28,7 +27,7 @@ public class ApiPathRouteLocatorImpl implements RouteLocator {
   public Flux<Route> getRoutes() {
     RouteLocatorBuilder.Builder routesBuilder = routeLocatorBuilder.routes();
     var t = Flux.fromIterable(appsRepository.findAll())
-        .filter(app -> AppValidator.getInstance().isValid(app))
+        .filter(app -> !AppValidator.getInstance().isValid(app))
         .map(app -> routesBuilder.route(predicateSpec -> setPredicateSpec(app, predicateSpec)))
         .collectList().flatMapMany(builders -> routesBuilder.build()
             .getRoutes());
