@@ -6,12 +6,18 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+
+import java.net.URI;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,15 +37,24 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.server.ServerWebExchange;
+
+import com.google.common.collect.Lists;
+
 import org.json.JSONObject;
+import org.apache.groovy.parser.antlr4.util.StringUtils;
+import org.assertj.core.util.Arrays;
 import org.codehaus.groovy.runtime.MethodClosure;
 import org.mockito.ArgumentCaptor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 
 import dev.heinzl.simplessoproxy.apps.App;
 import dev.heinzl.simplessoproxy.configs.jwt.JwtTokenProvider;
+import dev.heinzl.simplessoproxy.credentials.Credential;
+import dev.heinzl.simplessoproxy.credentials.CredentialsRepository;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
 import dev.heinzl.simplessoproxy.secrets.SecretsRepository;
+import dev.heinzl.simplessoproxy.users.User;
+import dev.heinzl.simplessoproxy.users.UsersRepository;
 import groovy.lang.Closure;
 
 @ExtendWith(MockitoExtension.class)
@@ -363,5 +378,174 @@ public class ScriptingApiImplTests {
 
         verify(closure, times(1)).call(exchange);
         verify(chain, times(1)).filter(exchange);
+    }
+
+    @Test
+    void testExecuteRequest() {
+        HttpRequest request = HttpRequest.newBuilder(URI.create("http://example.com")).GET().build();
+
+        HttpResponse<String> response = scriptingApiImpl.executeRequest(request);
+
+        assertEquals(200, response.statusCode());
+        assertFalse(StringUtils.isEmpty(response.body()));
+        assertTrue(response.headers().firstValue("content-type").isPresent());
+    }
+
+    @Test
+    void testExecuteRequestExpectFailure() {
+        HttpRequest request = HttpRequest.newBuilder(URI.create("http://nothing.nothing/nothing")).GET().build();
+
+        assertThrows(IllegalStateException.class, () -> {
+            scriptingApiImpl.executeRequest(request);
+        });
+    }
+
+    @Test
+    void testSetAppSecret() {
+
+        ScriptingApiImpl spiedScriptingApiImpl = spy(scriptingApiImpl);
+
+        User user = User.builder().username("username").build();
+        Credential credential = Credential.builder().build();
+
+        doReturn("username").when(spiedScriptingApiImpl).getProxyUsername(exchange);
+        doReturn(user).when(spiedScriptingApiImpl).getProxyUser("username");
+        doReturn(credential).when(spiedScriptingApiImpl).getAppCredential(user);
+        doReturn(credential).when(spiedScriptingApiImpl).updateAppCredential(credential, user, "secret");
+
+        spiedScriptingApiImpl.setAppSecret(exchange, "secret");
+
+        verify(spiedScriptingApiImpl, times(1)).updateAppCredential(credential, user, "secret");
+    }
+
+    @Test
+    void testGetProxyUser() {
+        User originalUser = User.builder().username("username").build();
+        UsersRepository usersRepository = mock(UsersRepository.class);
+        when(usersRepository.findByUsername("username")).thenReturn(originalUser);
+        when(repositoryFacade.getUsersRepository()).thenReturn(usersRepository);
+
+        User user = scriptingApiImpl.getProxyUser("username");
+
+        assert originalUser == user;
+    }
+
+    @Test
+    void testUpdateAppCredential() {
+        User user = User.builder().build();
+        Credential originalCredential = Credential.builder().app(app).user(user).secret("oldsecret").build();
+
+        CredentialsRepository credentialRepository = mock(CredentialsRepository.class);
+
+        when(credentialRepository.save(originalCredential)).thenReturn(originalCredential);
+        when(repositoryFacade.getCredentialsRepository()).thenReturn(credentialRepository);
+
+        Credential credential = scriptingApiImpl.updateAppCredential(originalCredential, user, "secret");
+
+        assert app == credential.getApp();
+        assert user == credential.getUser();
+        assert "secret" == credential.getSecret();
+    }
+
+    @Test
+    void testUpdateAppCredentialIfCredentialIsNull() {
+        User user = User.builder().build();
+
+        CredentialsRepository credentialRepository = mock(CredentialsRepository.class);
+
+        when(credentialRepository.save(any())).thenAnswer(returnsFirstArg());
+        when(repositoryFacade.getCredentialsRepository()).thenReturn(credentialRepository);
+
+        Credential credential = scriptingApiImpl.updateAppCredential(null, user, "secret");
+
+        assert app == credential.getApp();
+        assert user == credential.getUser();
+        assert "secret" == credential.getSecret();
+    }
+
+    @Test
+    void testGetAppSecret() {
+        ScriptingApiImpl spiedScriptingApiImpl = spy(scriptingApiImpl);
+
+        Credential credential = Credential.builder().secret("secret").build();
+        doReturn(credential).when(spiedScriptingApiImpl).getAppCredential(exchange);
+
+        String secret = spiedScriptingApiImpl.getAppSecret(exchange);
+
+        assertEquals("secret", secret);
+    }
+
+    @Test
+    void testGetAppSecretIfCredentialIsNull() {
+        ScriptingApiImpl spiedScriptingApiImpl = spy(scriptingApiImpl);
+
+        doReturn(null).when(spiedScriptingApiImpl).getAppCredential(exchange);
+
+        String secret = spiedScriptingApiImpl.getAppSecret(exchange);
+
+        assertNull(secret);
+    }
+
+    @Test
+    void testGetAppCredential() {
+
+        ScriptingApiImpl spiedScriptingApiImpl = spy(scriptingApiImpl);
+
+        Credential credential = Credential.builder().build();
+        User user = User.builder().username("username").build();
+
+        doReturn("username").when(spiedScriptingApiImpl).getProxyUsername(exchange);
+        doReturn(user).when(spiedScriptingApiImpl).getProxyUser("username");
+        doReturn(credential).when(spiedScriptingApiImpl).getAppCredential(user);
+
+        assert credential == spiedScriptingApiImpl.getAppCredential(exchange);
+    }
+
+    @Test
+    void testGetAppCredentialForUser() {
+
+        User user = User.builder().build();
+        Credential originalCredential = Credential.builder().secret("secret").build();
+        CredentialsRepository credentialRepository = mock(CredentialsRepository.class);
+
+        when(credentialRepository.findByAppIdAndUserId(app.getId(), user.getId()))
+                .thenReturn(Lists.newArrayList(originalCredential));
+
+        when(repositoryFacade.getCredentialsRepository()).thenReturn(credentialRepository);
+
+        Credential credential = scriptingApiImpl.getAppCredential(user);
+
+        assertEquals(originalCredential.getSecret(), credential.getSecret());
+    }
+
+    @Test
+    void testGetAppCredentialForUserIfNoneSaved() {
+        User user = User.builder().build();
+        CredentialsRepository credentialRepository = mock(CredentialsRepository.class);
+
+        when(credentialRepository.findByAppIdAndUserId(app.getId(), user.getId()))
+                .thenReturn(Lists.newArrayList());
+
+        when(repositoryFacade.getCredentialsRepository()).thenReturn(credentialRepository);
+
+        Credential credential = scriptingApiImpl.getAppCredential(user);
+
+        assertNull(credential);
+    }
+
+    @Test
+    void testGetAppCredentialForUserIfMultipleCredentialsFound() {
+        User user = User.builder().build();
+        Credential credential = Credential.builder().secret("secret").build();
+        CredentialsRepository credentialRepository = mock(CredentialsRepository.class);
+
+        when(credentialRepository.findByAppIdAndUserId(app.getId(), user.getId()))
+                .thenReturn(Lists.newArrayList(credential, credential));
+
+        when(repositoryFacade.getCredentialsRepository()).thenReturn(credentialRepository);
+
+        assertThrows(IllegalStateException.class, () -> {
+            scriptingApiImpl.getAppCredential(user);
+        });
     }
 }

@@ -106,37 +106,56 @@ public class ScriptingApiImpl implements ScriptingApi {
         return this.repositoryFacade.getSecretsRepository().getSecret(username);
     }
 
-    @Override
-    public String getAppCredential(ServerWebExchange exchange) {
-
+    Credential getAppCredential(ServerWebExchange exchange) {
         String username = this.getProxyUsername(exchange);
+        User user = this.getProxyUser(username);
+        return getAppCredential(user);
+    }
 
-        User user = this.repositoryFacade.getUsersRepository().findByUsername(username).get(0);
+    @Override
+    public String getAppSecret(ServerWebExchange exchange) {
+        Credential credential = getAppCredential(exchange);
+
+        return credential == null ? null : credential.getSecret();
+    }
+
+    Credential getAppCredential(User user) {
 
         List<Credential> findByAppIdAndUserId = this.repositoryFacade.getCredentialsRepository()
                 .findByAppIdAndUserId(app.getId(), user.getId());
 
-        // TODO Fix multiple credentials for same user and app
+        if (CollectionUtils.isEmpty(findByAppIdAndUserId)) {
+            return null;
+        }
 
-        return !CollectionUtils.isEmpty(findByAppIdAndUserId)
-                ? findByAppIdAndUserId.get(findByAppIdAndUserId.size() - 1).getSecret()
-                : null;
+        if (findByAppIdAndUserId.size() > 1) {
+            throw new IllegalStateException("More than one App credential found. Manual fix needed!");
+        }
+
+        return findByAppIdAndUserId.get(0);
     }
 
     @Override
-    public void setAppCredential(ServerWebExchange exchange, String secret) {
+    public void setAppSecret(ServerWebExchange exchange, String secret) {
+        String username = this.getProxyUsername(exchange);
+        User user = this.getProxyUser(username);
+        Credential credential = this.getAppCredential(user);
+        updateAppCredential(credential, user, secret);
+    }
 
-        String proxyUsername = this.getProxyUsername(exchange);
+    User getProxyUser(String username) {
+        return this.repositoryFacade.getUsersRepository().findByUsername(username);
+    }
 
-        List<User> findByUsername = this.repositoryFacade.getUsersRepository().findByUsername(proxyUsername);
+    Credential updateAppCredential(Credential credential, User user, String secret) {
 
-        if (CollectionUtils.isEmpty(findByUsername) || findByUsername.size() > 1) {
-            throw new IllegalStateException("Username not found");
+        if (credential == null) {
+            credential = Credential.builder().app(this.app).secret(secret).user(user).build();
+        } else {
+            credential.setSecret(secret);
         }
 
-        Credential credential = Credential.builder().app(this.app).secret(secret).user(findByUsername.get(0)).build();
-
-        this.repositoryFacade.getCredentialsRepository().save(credential);
+        return this.repositoryFacade.getCredentialsRepository().save(credential);
     }
 
     @Override
@@ -191,6 +210,7 @@ public class ScriptingApiImpl implements ScriptingApi {
         try {
             HttpResponse<String> response = httpClient.send(request,
                     BodyHandlers.ofString());
+
             log.info(String.format("Request headers are %s", request.headers().toString()));
             log.info(String.format("Response code is %d", response.statusCode()));
             log.info(String.format("Response headers are %s", response.headers().toString()));

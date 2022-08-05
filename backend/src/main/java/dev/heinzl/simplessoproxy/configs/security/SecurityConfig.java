@@ -1,5 +1,7 @@
 package dev.heinzl.simplessoproxy.configs.security;
 
+import java.util.stream.Stream;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -84,7 +86,7 @@ public class SecurityConfig {
         @Bean
         public ReactiveUserDetailsService userDetailsService(UsersRepository users) {
 
-                return username -> Mono.just(users.findByUsername(username).stream()
+                return username -> Mono.just(Stream.of(users.findByUsername(username))
                                 .map(u -> User
                                                 .withUsername(u.getUsername()).password(u.getPassword())
                                                 .authorities(u.getRoles().toArray(new String[0]))
