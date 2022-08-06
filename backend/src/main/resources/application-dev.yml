@@ -8,3 +8,8 @@ spring:
 httpclient:
   ssl:
     useInsecureContext: true
+logging:
+  level:
+    dev:
+      heinzl:
+        simplessoproxy: DEBUG

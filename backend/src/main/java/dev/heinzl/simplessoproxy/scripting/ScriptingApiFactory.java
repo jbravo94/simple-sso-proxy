@@ -2,7 +2,6 @@ package dev.heinzl.simplessoproxy.scripting;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpClient.Builder;
-import java.util.IllegalFormatException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,7 @@ import dev.heinzl.simplessoproxy.utils.LogExecutionTime;
 @Component
 public class ScriptingApiFactory {
 
-    @Value("${httpclient.ssl.useInsecureContext}")
+    @Value("${httpclient.ssl.useInsecureContext:false}")
     boolean useInsecureContext;
 
     @Autowired

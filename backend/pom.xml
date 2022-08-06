@@ -110,6 +110,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.9.9.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.9.1</version>
+		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -148,6 +158,45 @@
 						<phase>prepare-package</phase>
 						<goals>
 							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>aspectj-maven-plugin</artifactId>
+				<version>1.14.0</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjrt</artifactId>
+						<version>1.9.9.1</version>
+					</dependency>
+					<dependency>
+						<groupId>org.aspectj</groupId>
+						<artifactId>aspectjweaver</artifactId>
+						<version>1.9.9.1</version>
+					</dependency>
+				</dependencies>
+				<configuration>
+					<complianceLevel>16</complianceLevel>
+					<source>16</source>
+					<target>16</target>
+					<showWeaveInfo>true</showWeaveInfo>
+					<verbose>true</verbose>
+					<Xlint>ignore</Xlint>
+					<encoding>UTF-8</encoding>
+					<forceAjcCompile>true</forceAjcCompile>
+					<sources /> <!-- this is important!-->
+					<weaveDirectories>
+						<weaveDirectory>${project.build.directory}/classes</weaveDirectory>
+					</weaveDirectories>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>compile</goal>
 						</goals>
 					</execution>
 				</executions>

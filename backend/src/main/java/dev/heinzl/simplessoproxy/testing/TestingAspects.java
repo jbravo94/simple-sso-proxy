@@ -1,32 +1,28 @@
 package dev.heinzl.simplessoproxy.testing;
 
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpRequest.BodyPublishers;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Profile("dev")
 @Slf4j
 @Aspect
-@Component
 public class TestingAspects {
 
-    @Around("@annotation(dev.heinzl.simplessoproxy.utils.LogExecutionTime)")
-    public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
-        final StopWatch stopWatch = new StopWatch();
+    @AfterReturning(value = "execution(* *..ScriptingApiImpl.executeRequest(..)) && args(request)", returning = "response")
+    public void afterAdvice(JoinPoint joinPoint, HttpRequest request, HttpResponse<String> response) throws Throwable {
 
-        stopWatch.start();
+        log.debug("Request Method: " + request.method());
+        log.debug("Request Headers: " + request.headers().toString());
+        log.debug("Request Body: " + request.bodyPublisher().orElse(BodyPublishers.noBody()).toString());
 
-        Object proceed = joinPoint.proceed();
-
-        stopWatch.stop();
-
-        log.info("\"{}\" executed in {} ms", joinPoint.getSignature(), stopWatch.getTotalTimeMillis());
-
-        return proceed;
+        log.debug("Response Statuscode: " + response.statusCode());
+        log.debug("Response Headers: " + response.headers().toString());
+        log.debug("Response Body: " + response.body().toString());
     }
 }
