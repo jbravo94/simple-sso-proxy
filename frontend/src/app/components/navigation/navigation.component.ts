@@ -39,5 +39,6 @@ export class NavigationComponent implements OnInit {
 
   onClickSettings() {
     this.router.navigate(['/settings']);
+    this.isSidebarOpen = false;
   }
 }
