@@ -66,6 +66,7 @@ These scripts need to be created via reverse engineering the login process with 
 * HTTP Filters
 * JWT Token
 * Spring Security
+* Spring AOP and AspectJ
 
 ### Applied Knowledge
 
