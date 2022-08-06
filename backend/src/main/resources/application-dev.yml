@@ -5,3 +5,6 @@ spring:
       httpclient:
         ssl:
           useInsecureTrustManager: true
+httpclient:
+  ssl:
+    useInsecureContext: true

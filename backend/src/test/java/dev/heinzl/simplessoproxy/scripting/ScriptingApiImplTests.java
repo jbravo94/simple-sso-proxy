@@ -16,6 +16,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
@@ -53,6 +54,7 @@ import dev.heinzl.simplessoproxy.credentials.Credential;
 import dev.heinzl.simplessoproxy.credentials.CredentialsRepository;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
 import dev.heinzl.simplessoproxy.secrets.SecretsRepository;
+import dev.heinzl.simplessoproxy.testing.TestingUtils;
 import dev.heinzl.simplessoproxy.users.User;
 import dev.heinzl.simplessoproxy.users.UsersRepository;
 import groovy.lang.Closure;
@@ -80,8 +82,10 @@ public class ScriptingApiImplTests {
     @BeforeEach
     void prepareBeforeEach() {
         app = App.builder().build();
+        HttpClient httpClient = HttpClient.newBuilder().sslContext(TestingUtils.insecureContext()).build();
+
         scriptingApiImpl = new ScriptingApiImpl(app, gatewayFilterSpec, repositoryFacade,
-                jwtTokenProvider);
+                jwtTokenProvider, httpClient);
     }
 
     void prepareRequest() {

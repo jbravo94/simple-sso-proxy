@@ -28,8 +28,6 @@ import dev.heinzl.simplessoproxy.credentials.Credential;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptType;
 import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
 import dev.heinzl.simplessoproxy.users.User;
-import dev.heinzl.simplessoproxy.utils.CookieUtils;
-import dev.heinzl.simplessoproxy.utils.TestingUtils;
 import groovy.lang.Closure;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
@@ -43,11 +41,9 @@ public class ScriptingApiImpl implements ScriptingApi {
     private final GatewayFilterSpec gatewayFilterSpec;
     private final RepositoryFacade repositoryFacade;
     private final JwtTokenProvider jwtTokenProvider;
+    private final HttpClient httpClient;
 
     private Map<String, Closure> scriptClosures = new HashMap<>();
-
-    // Fix this
-    private HttpClient httpClient = HttpClient.newBuilder().sslContext(TestingUtils.insecureContext()).build();
 
     @Override
     public void addProxyRequestHeaderIfNotPreset(ServerWebExchange exchange, String key, String value) {
@@ -208,16 +204,7 @@ public class ScriptingApiImpl implements ScriptingApi {
     public HttpResponse<String> executeRequest(HttpRequest request) {
 
         try {
-            HttpResponse<String> response = httpClient.send(request,
-                    BodyHandlers.ofString());
-
-            log.info(String.format("Request headers are %s", request.headers().toString()));
-            log.info(String.format("Response code is %d", response.statusCode()));
-            log.info(String.format("Response headers are %s", response.headers().toString()));
-            log.info(String.format("Response body is %s", response.body()));
-
-            return response;
-
+            return httpClient.send(request, BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new IllegalStateException(e.getMessage());
         }
@@ -239,9 +226,6 @@ public class ScriptingApiImpl implements ScriptingApi {
         GatewayFilter gatewayFilter = new OrderedGatewayFilter((exchange, chain) -> {
 
             closure.call(exchange);
-
-            // Fix this - Disable in production => Move this to own gatewayfilter
-            TestingUtils.modifyBahmniCookie(exchange);
 
             return chain.filter(exchange);
         }, Integer.MAX_VALUE);

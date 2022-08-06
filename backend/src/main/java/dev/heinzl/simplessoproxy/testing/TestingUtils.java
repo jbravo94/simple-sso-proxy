@@ -1,4 +1,4 @@
-package dev.heinzl.simplessoproxy.utils;
+package dev.heinzl.simplessoproxy.testing;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;

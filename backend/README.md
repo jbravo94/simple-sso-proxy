@@ -294,3 +294,6 @@ aspect
 profile
 
 -Dspring.profiles.active=dev
+
+https://medium.com/@KosteRico/spring-aop-in-2021-level-up-your-logging-8d1498242ba2
+https://www.javainuse.com/spring/spring-boot-aop
