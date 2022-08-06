@@ -26,13 +26,13 @@ public class ApiPathRouteLocatorImpl implements RouteLocator {
   @Override
   public Flux<Route> getRoutes() {
     RouteLocatorBuilder.Builder routesBuilder = routeLocatorBuilder.routes();
-    var t = Flux.fromIterable(appsRepository.findAll())
+    var routes = Flux.fromIterable(appsRepository.findAll())
         .filter(app -> !AppValidator.getInstance().isValid(app))
         .map(app -> routesBuilder.route(predicateSpec -> setPredicateSpec(app, predicateSpec)))
         .collectList().flatMapMany(builders -> routesBuilder.build()
             .getRoutes());
 
-    return t;
+    return routes;
   }
 
   private Buildable<Route> setPredicateSpec(App app, PredicateSpec predicateSpec) {

@@ -30,10 +30,10 @@ export class AuthService {
   login(username: string, password: string) {
 
     this.http.post<any>(BACKEND_URL + '/api/v1/auth/login', { username: username, password: password }, { observe: 'response' }).subscribe((response) => {
-      const bearerToken = response.headers.get('Authorization');
+      const bearerToken = response.body.access_token;
 
       if (bearerToken) {
-        this.localTokenService.setProxyCookie(bearerToken.split(' ')[1]);
+        this.localTokenService.setProxyCookie(bearerToken);
         if (this.redirectUrl) {
           this.router.navigate([this.redirectUrl]);
           this.redirectUrl = '';
