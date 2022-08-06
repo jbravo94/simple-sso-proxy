@@ -240,7 +240,7 @@ public class ScriptingApiImpl implements ScriptingApi {
 
             closure.call(exchange);
 
-            // Fix this - Disable in production
+            // Fix this - Disable in production => Move this to own gatewayfilter
             TestingUtils.modifyBahmniCookie(exchange);
 
             return chain.filter(exchange);

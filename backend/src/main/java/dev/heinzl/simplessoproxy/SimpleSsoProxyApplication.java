@@ -6,6 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 import dev.heinzl.simplessoproxy.apps.AppsRepository;
 import dev.heinzl.simplessoproxy.configs.routing.ApiPathRouteLocatorImpl;
@@ -14,6 +15,7 @@ import lombok.Generated;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class SimpleSsoProxyApplication {
 
 	@Generated
