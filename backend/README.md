@@ -288,3 +288,9 @@ https://stackoverflow.com/questions/3555472/mockito-verify-method-arguments
 Dev Tools > Application > Storage > Tick all options after "Clear Site Data" button > Clear Site Data
 
 Test setCredentials
+
+
+aspect
+profile
+
+-Dspring.profiles.active=dev

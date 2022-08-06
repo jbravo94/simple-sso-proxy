@@ -16,6 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpCookie;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
@@ -36,7 +37,9 @@ public class JwtTokenProvider {
 
     private static final String AUTHORITIES_KEY = "roles";
     public static final String HEADER_PREFIX = "Bearer ";
-    public static final String COOKIE_KEY = "simple-sso-proxy-token";
+    
+    @Value("${proxyCookieKey}")
+    String cookieKey;
 
     private final JwtProperties jwtProperties;
 
@@ -137,7 +140,7 @@ public class JwtTokenProvider {
     }
 
     private String resolveTokenFromCookie(ServerHttpRequest request) {
-        HttpCookie bearerTokenCookie = request.getCookies().getFirst(COOKIE_KEY);
+        HttpCookie bearerTokenCookie = request.getCookies().getFirst(cookieKey);
         if (bearerTokenCookie != null && StringUtils.hasText(bearerTokenCookie.getValue())) {
             return bearerTokenCookie.getValue();
         }
