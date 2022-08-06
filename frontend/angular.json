@@ -100,7 +100,19 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "codeCoverage": true,
+            "codeCoverageExclude": [
+              "/src/app/*.ts",
+              "/src/app/models/*.ts",
+              "/src/app/dialogs/**/*.ts",
+              "/src/app/services/**/*.ts",
+              "/src/app/guards/**/*.ts",
+              "/src/app/components/apps/*.ts",
+              "/src/app/components/home/*.ts",
+              "/src/app/components/login/*.ts",
+              "/src/app/components/settings/*.ts"
+            ]
           }
         }
       }

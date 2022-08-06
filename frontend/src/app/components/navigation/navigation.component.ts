@@ -16,6 +16,10 @@ export class NavigationComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getIsSidebarOpen() {
+    return this.isSidebarOpen;
+  }
+
   toggleSidebarState() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }

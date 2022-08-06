@@ -9,7 +9,7 @@
 </mat-toolbar>
 <mat-drawer-container class="example-container" autosize>
     <mat-drawer #drawer class="example-sidenav" mode="over" [opened]="isSidebarOpen" (closedStart)="onSidebarClose()"
-        *ngIf="isLoggedIn()" position="end">
+        *ngIf="isLoggedIn()" position="end" id="sidebar">
 
         <button mat-raised-button class="sidebar-button" *ngIf="isLoggedIn() && isAdmin()" (click)="onClickSettings()"
             color="primary" id="sidebar-settings-button">
