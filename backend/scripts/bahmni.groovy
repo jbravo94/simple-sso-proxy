@@ -44,7 +44,7 @@ def loginScript = { exchange ->
                     .uri(new URI(baseUrl + "/openmrs/ws/rest/v1/session?v=custom:(uuid)"))
                     .GET()
                     .header("Authorization", scriptingApi.getBasicAuthenticationHeader(username, password))
-                    .header("Cookie", "JSESSIONID=" + reportingSessionId + "; reporting_session=" + reportingSessionId)
+                    .header("Cookie", "JSESSIONID=" + jSessionId + "; reporting_session=" + reportingSessionId)
                     .build()
 
     scriptingApi.executeRequest(loginRequest)
