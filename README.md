@@ -24,11 +24,37 @@ with the authentication parameters.
 
 ## Dataflow
 
-* The user enters the username and the password
-* The password is stored temorarily within the proxy application
-* The proxy intercepts the HTTP requests and applies custom groovy scripts created in the proxy with its UI
-* The proxy logs into the targeted applications and stores the secrets
-* The proxy modifies subsequent requests and applies authentication which enables SSO
+![Dataflow](misc/dataflow.png?raw=true "Dataflow")
+
+```
+@startuml
+User -> Proxy: Enters the username and the password
+Proxy -> Proxy: Stores password temorarily
+Proxy -> Application: Logs into the targeted applications 
+Proxy -> Proxy: Optionally stores application secrets
+User -> Application: Proxy intercepts the HTTP requests / responses and \n\
+applies custom groovy scripts created in the proxy with its UI. \n\
+This enables authentication which enables SSO
+@enduml
+```
+
+## Architecture
+
+![Architecture](misc/architecture.png?raw=true "Architecture")
+
+```
+@startuml
+[Reverse Proxy] as ReverseProxy
+[Frontend] as Frontend
+[Backend] as Backend
+[Database] as Database
+
+User -> ReverseProxy
+ReverseProxy --> Frontend
+ReverseProxy --> Backend
+Backend --> Database
+@enduml
+```
 
 ## User Interface
 
@@ -54,6 +80,12 @@ These scripts need to be created via reverse engineering the login process with 
 * Responsive Design emphasized
 * Role based authentication (RBAC) with Angular Guards
 * HTTP Cookies as proxy token
+
+### Testing
+
+This sections shows the result of the applied unit testing.
+
+![Frontend Coverage Overview](misc/frontend-coverage-overview.png?raw=true "Frontend Coverage Overview")
 
 ## Backend
 
@@ -92,6 +124,13 @@ These scripts need to be created via reverse engineering the login process with 
     * HashMap
     * List
     * Deque
+
+### Testing
+
+This sections shows the results of the applied unit testing.
+
+![Backend Coverage Overview](misc/backend-coverage-overview.png?raw=true "Backend Coverage Overview")
+![Backend Coverage](misc/backend-coverage.png?raw=true "Backend Coverage")
 
 ## Build automation
 
@@ -142,7 +181,5 @@ The whole environment is set up in a declarative way via docker-compose which de
 * Declarative Programming
 
 # TODO
-* Draft UML Flow
 * Create Docker-compose
 * Video
-* Coverage Reports
