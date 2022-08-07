@@ -303,3 +303,5 @@ https://github.com/peterhuba/maven-lombok-with-aspectj
 AspectJ Bytecode weaving needs package phase because of postprocessing after lombok
 
 JAVA_HOME=/opt/java/jdk-17.0.3+7 mvn clean package -Dmaven.test.skip=true
+
+reactive mongo
