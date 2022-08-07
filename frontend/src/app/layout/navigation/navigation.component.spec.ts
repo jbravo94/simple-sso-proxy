@@ -6,7 +6,7 @@ import { Location } from '@angular/common';
 
 import { NavigationComponent } from './navigation.component';
 import { Router } from '@angular/router';
-import { routes } from 'src/app/app-routing.module';
+import { routes } from 'src/app/routing/app-routing.module';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;

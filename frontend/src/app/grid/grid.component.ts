@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Service } from 'src/app/grid/service';
+import { GridElement } from './grid-element';
 
 @Component({
   selector: 'app-grid',
@@ -9,7 +9,7 @@ import { Service } from 'src/app/grid/service';
 export class GridComponent implements OnInit {
 
   @Input()
-  services: Service[] = [];
+  services: GridElement[] = [];
 
   constructor() { }
 

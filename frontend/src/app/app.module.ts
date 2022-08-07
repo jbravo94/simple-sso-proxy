@@ -2,19 +2,19 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { AppRoutingModule } from './app-routing.module';
-import { ElevationDirective } from './directives/elevation/elevation.directive';
+import { AppRoutingModule } from './routing/app-routing.module';
+import { ElevationDirective } from './elevation/elevation.directive';
 import { MonacoEditorModule } from '@materia-ui/ngx-monaco-editor';
 import { FormsModule } from '@angular/forms';
 
 // Components
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './navigation/navigation.component';
+import { NavigationComponent } from './layout/navigation/navigation.component';
 import { LoginComponent } from './authentication/login.component';
-import { HomeComponent } from './home/home.component';
-import { SettingsComponent } from './settings/settings.component'
+import { HomeComponent } from './layout/home/home.component';
+import { SettingsComponent } from './layout/settings/settings.component'
 import { AppsComponent } from './apps/apps.component';
-import { AppDialog } from './dialogs/app/app.dialog';
+import { AppDialog } from './apps/app.dialog';
 
 // Material Components
 import { MatInputModule } from '@angular/material/input';

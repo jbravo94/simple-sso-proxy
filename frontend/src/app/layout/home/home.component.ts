@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { App } from 'src/app/apps/app';
-import { Service } from 'src/app/grid/service';
 import { AppsService } from 'src/app/apps/apps.service';
+import { GridElement } from '../../grid/grid-element';
 
 @Component({
   selector: 'app-home',
@@ -10,13 +10,13 @@ import { AppsService } from 'src/app/apps/apps.service';
 })
 export class HomeComponent implements OnInit {
 
-  services: Service[] = [new Service('Reset Password', 'Click here to reset your password.', '/home')];
+  services: GridElement[] = [new GridElement('Reset Password', 'Click here to reset your password.', '/home')];
 
   constructor(private appsService: AppsService) { }
 
   ngOnInit(): void {
     this.appsService.getApps().subscribe((apps: App[]) => {
-      apps.forEach((app: App) => this.services.push(new Service(app.name, 'Click here to access this app.', app.proxyUrl, false)));
+      apps.forEach((app: App) => this.services.push(new GridElement(app.name, 'Click here to access this app.', app.proxyUrl, false)));
     });
   }
 

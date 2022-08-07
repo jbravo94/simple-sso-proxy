@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { convertFromBase64, convertToBase64 } from 'src/app/globalFunctions';
-import { BACKEND_URL } from 'src/app/globals';
+import { convertFromBase64, convertToBase64 } from 'src/app/globals/globalFunctions';
+import { BACKEND_URL } from 'src/app/globals/globalConstants';
 import { JwtToken } from 'src/app/token/jwtToken';
 import { LocalTokenService } from 'src/app/token/local-token.service';
 

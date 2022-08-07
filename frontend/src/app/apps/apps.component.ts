@@ -4,7 +4,7 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { App } from 'src/app/apps/app';
 import { AppsService } from 'src/app/apps/apps.service';
 import { MatDialog } from '@angular/material/dialog';
-import { AppDialog, DialogType } from 'src/app/dialogs/app/app.dialog';
+import { AppDialog, DialogType } from 'src/app/apps/app.dialog';
 
 @Component({
   selector: 'app-apps',

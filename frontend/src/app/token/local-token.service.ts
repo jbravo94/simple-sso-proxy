@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { COOKIE_NAME } from 'src/app/globals';
+import { COOKIE_NAME } from 'src/app/globals/globalConstants';
 
 @Injectable({
   providedIn: 'root'

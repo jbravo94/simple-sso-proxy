@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Service } from 'src/app/grid/service';
+import { GridElement } from '../../grid/grid-element';
 
 @Component({
   selector: 'app-settings',
@@ -8,7 +8,7 @@ import { Service } from 'src/app/grid/service';
 })
 export class SettingsComponent implements OnInit {
 
-  services: Service[] = [new Service('Manage Apps', 'Click here to add or remove apps', '/settings/apps')];
+  services: GridElement[] = [new GridElement('Manage Apps', 'Click here to add or remove apps', '/settings/apps')];
 
   constructor() { }
 

@@ -1,4 +1,4 @@
-export class Service {
+export class GridElement {
 
     title: string;
     description: string;
