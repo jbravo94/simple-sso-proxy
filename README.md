@@ -2,6 +2,8 @@
 
 ## Introduction
 
+[![Simple SSO Proxy](misc/preview.png?raw=true)](https://youtu.be/3G6M-R20uFk "Simple SSO Proxy")
+
 The main idea is to enable single sign on (SSO) of different applications as they are in their default configuration.
 
 It is clear that there exist better technologies like OIDC or SAML for proper SSO,
