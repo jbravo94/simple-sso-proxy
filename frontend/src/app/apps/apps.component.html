@@ -1,0 +1,68 @@
+<div align="end">
+    <button mat-raised-button (click)="addApp()" class="mat-raised-button mat-primary" color="primary">Add App</button>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+    <!-- Base URL Column -->
+    <ng-container matColumnDef="baseUrl">
+        <th mat-header-cell *matHeaderCellDef>Base URL</th>
+        <td mat-cell *matCellDef="let element">{{element.baseUrl}}</td>
+    </ng-container>
+
+    <!-- Proxy URL Column -->
+    <ng-container matColumnDef="proxyUrl">
+        <th mat-header-cell *matHeaderCellDef>Proxy URL</th>
+        <td mat-cell *matCellDef="let element">{{element.proxyUrl}}</td>
+    </ng-container>
+
+    <!-- Login Script Column -->
+    <ng-container matColumnDef="loginScript">
+        <th mat-header-cell *matHeaderCellDef>Login Script</th>
+        <td mat-cell *matCellDef="let element">{{element.loginScript}}</td>
+    </ng-container>
+
+    <!-- Logout Script Column -->
+    <ng-container matColumnDef="logoutScript">
+        <th mat-header-cell *matHeaderCellDef>Logout Script</th>
+        <td mat-cell *matCellDef="let element">{{element.logoutScript}}</td>
+    </ng-container>
+
+    <!-- Reset Script Column -->
+    <ng-container matColumnDef="resetScript">
+        <th mat-header-cell *matHeaderCellDef>Reset Script</th>
+        <td mat-cell *matCellDef="let element">{{element.resetScript}}</td>
+    </ng-container>
+
+    <!-- Proxy Script Column -->
+    <ng-container matColumnDef="proxyScript">
+        <th mat-header-cell *matHeaderCellDef>Proxy Script</th>
+        <td mat-cell *matCellDef="let element">{{element.proxyScript}}</td>
+    </ng-container>
+
+    <!-- Options Column -->
+    <ng-container matColumnDef="options">
+        <th mat-header-cell *matHeaderCellDef class="end-column">Options</th>
+        <td mat-cell *matCellDef="let element" class="end-column">
+            <button id="more-options-button" mat-icon-button [matMenuTriggerFor]="menu" class="mat-icon-button">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="editApp(element)">
+                    <span>Edit</span>
+                </button>
+                <button mat-menu-item (click)="deleteApp(element)">
+                    <span>Remove</span>
+                </button>
+            </mat-menu>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

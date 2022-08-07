@@ -1,0 +1,19 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: simple-sso-proxy
+
+  data:
+    mongodb:
+      authenticationDatabase: admin
+      username: root
+      password: example
+      database: test
+      port: 27017
+      host: localhost
+
+proxyCookieKey: simple-sso-proxy-token
+secrets-cache-timeout: 60
+credentials-repository-strategy: INMEMORY_SECRETS

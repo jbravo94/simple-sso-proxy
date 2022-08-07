@@ -1,0 +1,31 @@
+.nav-container {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+}
+
+.nav-sidenav-content {
+    height: 100%;
+    margin-top: 5%;
+    margin-right: 5%;
+    margin-left: 5%;
+}
+
+.nav-sidenav {
+    width: 25%;
+    padding: 20px;
+}
+
+.nav-spacer {
+    flex: 1 1 auto;
+}
+
+.sidebar-button {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}

@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          useInsecureTrustManager: true
+
+httpclient:
+  ssl:
+    useInsecureContext: true
+
+logging:
+  level:
+    dev:
+      heinzl:
+        simplessoproxy: DEBUG
