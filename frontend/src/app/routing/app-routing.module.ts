@@ -12,7 +12,10 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'settings', component: SettingsComponent, canActivate: [AuthGuard, AdminGuard] },
-  { path: 'settings/apps', component: AppsComponent, canActivate: [AuthGuard, AdminGuard] }
+  {
+    path: 'settings/apps',
+    loadChildren: () => import('../apps/apps.module').then(m => m.AppsModule)
+  }
 ];
 
 @NgModule({

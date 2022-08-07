@@ -13,7 +13,6 @@ import { NavigationComponent } from './layout/navigation/navigation.component';
 import { LoginComponent } from './authentication/login.component';
 import { HomeComponent } from './layout/home/home.component';
 import { SettingsComponent } from './layout/settings/settings.component'
-import { AppsComponent } from './apps/apps.component';
 import { AppDialog } from './apps/app.dialog';
 
 // Material Components
@@ -23,7 +22,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
@@ -40,7 +38,6 @@ const MATERIAL_MODULES = [
   MatButtonModule,
   MatFormFieldModule,
   MatInputModule,
-  MatGridListModule,
   MatCardModule,
   MatTableModule,
   MatMenuModule,
@@ -55,7 +52,6 @@ const MATERIAL_MODULES = [
     HomeComponent,
     SettingsComponent,
     ElevationDirective,
-    AppsComponent,
     AppDialog,
     ScriptingComponent,
     GridComponent

@@ -1,3 +1,5 @@
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 .demo-table {
     width: 100%;
     margin-top: 10px;
@@ -5,4 +7,8 @@
 
 .end-column {
     text-align: right;
+}
+
+#more-options-button {
+    padding-top: 5px;
 }
