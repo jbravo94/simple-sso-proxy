@@ -57,7 +57,7 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 * Dev Tools > Application > Storage > Tick all options after "Clear Site Data" button > Clear Site Data
 * Enable Profile via `-Dspring.profiles.active=dev`
 * AspectJ Bytecode weaving needs package phase because of postprocessing after lombok
-* Caching example for maybe future
+* Caching example for future maybe
 ```
 @Configuration
 @EnableCaching
@@ -71,6 +71,55 @@ public class CacheConfig {
         return cacheManager;
     }
 }
+```
+* Mongo DB Sharded Example for future maybe
+```
+version: '2'
+
+services:
+  mongodb-sharded:
+    image: docker.io/bitnami/mongodb-sharded:5.0
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-sharded
+      - MONGODB_SHARDING_MODE=mongos
+      - MONGODB_CFG_PRIMARY_HOST=mongodb-cfg
+      - MONGODB_CFG_REPLICA_SET_NAME=cfgreplicaset
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_ROOT_PASSWORD=password123
+    ports:
+      - "27017:27017"
+
+  mongodb-shard0:
+    image: docker.io/bitnami/mongodb-sharded:5.0
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-shard0
+      - MONGODB_SHARDING_MODE=shardsvr
+      - MONGODB_MONGOS_HOST=mongodb-sharded
+      - MONGODB_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_REPLICA_SET_NAME=shard0
+    volumes:
+      - 'shard0_data:/bitnami'
+
+  mongodb-cfg:
+    image: docker.io/bitnami/mongodb-sharded:5.0
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb-cfg
+      - MONGODB_SHARDING_MODE=configsvr
+      - MONGODB_ROOT_PASSWORD=password123
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGODB_REPLICA_SET_NAME=cfgreplicaset
+    volumes:
+      - 'cfg_data:/bitnami'
+
+volumes:
+  shard0_data:
+    driver: local
+  cfg_data:
+    driver: local
+
 ```
 
 # Links
@@ -127,3 +176,8 @@ https://gist.github.com/mwrouse/05d8c11cd3872c19c684bd1904a2202e
 https://stackoverflow.com/questions/61217446/how-can-i-get-suggestions-registercompletionitemprovider-to-show-between-curly
 https://codecraft.tv/courses/angular/unit-testing/routing/
 https://juristr.com/blog/2021/02/common-chunk-lazy-loading-angular-cli/
+
+## Setup
+https://hub.docker.com/r/bitnami/mongodb-sharded/
+https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Docker-Nginx-reverse-proxy-setup-example
+https://unix.stackexchange.com/questions/236084/how-do-i-create-a-service-for-a-shell-script-so-i-can-start-and-stop-it-like-a-d

@@ -180,6 +180,8 @@ The whole environment is set up in a declarative way via docker-compose which de
 * Microservice Architecture
 * Declarative Programming
 
-# TODO
-* Create Docker-compose
-* Video
+# Open TODOs
+
+* Add Video
+* Finalize Docker-compose
+* Add example for setup
