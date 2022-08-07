@@ -1,0 +1,48 @@
+<h1 mat-dialog-title>App</h1>
+<div mat-dialog-content>
+    <p>Enter or modify app details here:</p>
+    <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput [(ngModel)]="app.name">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Base Url</mat-label>
+        <input matInput [(ngModel)]="app.baseUrl">
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Proxy Url</mat-label>
+        <input matInput [(ngModel)]="app.proxyUrl">
+    </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always" *ngIf="false">
+        <mat-label>Login Script</mat-label>
+        <div class="template-function">{{'def script(scriptingApi) {'}}</div>
+        <app-scripting [(code)]="app.loginScript"></app-scripting>
+        <input matInput hidden [(ngModel)]="app.loginScript">
+        <div class="template-function">{{'}'}}</div>
+    </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always" *ngIf="false">
+        <mat-label>Logout Script</mat-label>
+        <div class="template-function">{{'def script(scriptingApi) {'}}</div>
+        <app-scripting [(code)]="app.logoutScript"></app-scripting>
+        <input matInput hidden [(ngModel)]="app.logoutScript">
+        <div class="template-function">{{'}'}}</div>
+    </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always" *ngIf="false">
+        <mat-label>Reset Script</mat-label>
+        <div class="template-function">{{'def script(scriptingApi) {'}}</div>
+        <app-scripting [(code)]="app.resetScript"></app-scripting>
+        <input matInput hidden [(ngModel)]="app.resetScript">
+        <div class="template-function">{{'}'}}</div>
+    </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Proxy Script</mat-label>
+        <div class="template-function">{{'def script(scriptingApi) {'}}</div>
+        <app-scripting [(code)]="app.proxyScript"></app-scripting>
+        <input matInput hidden [(ngModel)]="app.proxyScript">
+        <div class="template-function">{{'}'}}</div>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial (click)="onClick()">{{type}}</button>
+</div>

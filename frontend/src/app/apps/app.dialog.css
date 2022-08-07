@@ -1,0 +1,13 @@
+mat-form-field {
+    width: 100%;
+}
+
+.template-function {
+    font-family: Menlo, Monaco, "Courier New", monospace;
+    font-weight: normal;
+    font-size: 12px;
+    letter-spacing: 0px;
+    line-height: 18px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

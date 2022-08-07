@@ -1,0 +1,29 @@
+<mat-toolbar color="primary">
+    <a routerLink="/home"><span>Login Portal</span></a>
+    <span class="nav-spacer"></span>
+    <button mat-icon-button class="nav-icon"
+        (click)="toggleSidebarState()" *ngIf="isLoggedIn()" id="sidebar-menu-button">
+        <mat-icon *ngIf="!isSidebarOpen">menu</mat-icon>
+        <mat-icon *ngIf="isSidebarOpen">close</mat-icon>
+    </button>
+</mat-toolbar>
+<mat-drawer-container class="nav-container" autosize>
+    <mat-drawer #drawer class="nav-sidenav" mode="over" [opened]="isSidebarOpen" (closedStart)="onSidebarClose()"
+        *ngIf="isLoggedIn()" position="end" id="sidebar">
+
+        <button mat-raised-button class="sidebar-button" *ngIf="isLoggedIn() && isAdmin()" (click)="onClickSettings()"
+            color="primary" id="sidebar-settings-button">
+            <mat-icon>settings</mat-icon>
+            Settings
+        </button>
+        <button mat-raised-button class="sidebar-button" (click)="logout()" color="primary" id="sidebar-logout-button">
+            <mat-icon>logout</mat-icon>
+            Logout
+        </button>
+    </mat-drawer>
+
+    <div class="nav-sidenav-content">
+        <router-outlet></router-outlet>
+    </div>
+
+</mat-drawer-container>
