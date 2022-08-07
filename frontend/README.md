@@ -76,3 +76,6 @@ check for example
 
 routing
 grid
+
+module
+https://juristr.com/blog/2021/02/common-chunk-lazy-loading-angular-cli/

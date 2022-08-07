@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { App } from 'src/app/apps/app';
-import { Service } from 'src/app/models/service';
+import { Service } from 'src/app/grid/service';
 import { AppsService } from 'src/app/apps/apps.service';
-import { AuthService } from 'src/app/authentication/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -11,19 +10,14 @@ import { AuthService } from 'src/app/authentication/auth.service';
 })
 export class HomeComponent implements OnInit {
 
-  apps: Service[] = [];
   services: Service[] = [new Service('Reset Password', 'Click here to reset your password.', '/home')];
 
-  constructor(private authService: AuthService, private appsService: AppsService) { }
+  constructor(private appsService: AppsService) { }
 
   ngOnInit(): void {
     this.appsService.getApps().subscribe((apps: App[]) => {
-      apps.forEach((app: App) => this.apps.push(new Service(app.name, 'Click here to access this app.', app.proxyUrl)));
+      apps.forEach((app: App) => this.services.push(new Service(app.name, 'Click here to access this app.', app.proxyUrl, false)));
     });
-  }
-
-  isLoggedIn() {
-    return this.authService.getLoggedIn();
   }
 
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Service } from 'src/app/models/service';
-import { AuthService } from 'src/app/authentication/auth.service';
+import { Service } from 'src/app/grid/service';
 
 @Component({
   selector: 'app-settings',
@@ -11,13 +10,9 @@ export class SettingsComponent implements OnInit {
 
   services: Service[] = [new Service('Manage Apps', 'Click here to add or remove apps', '/settings/apps')];
 
-  constructor(private authService: AuthService) { }
+  constructor() { }
 
   ngOnInit(): void {
-  }
-
-  isLoggedIn() {
-    return this.authService.getLoggedIn();
   }
 
 }

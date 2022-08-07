@@ -31,6 +31,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ScriptingComponent } from './scripting/scripting.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BearerTokenInterceptor } from './token/bearer-token.interceptor';
+import { GridComponent } from './grid/grid.component';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -56,7 +57,8 @@ const MATERIAL_MODULES = [
     ElevationDirective,
     AppsComponent,
     AppDialog,
-    ScriptingComponent
+    ScriptingComponent,
+    GridComponent
   ],
   imports: [
     BrowserModule,
