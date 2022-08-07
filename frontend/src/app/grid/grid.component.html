@@ -1,7 +1,7 @@
-<div class="example-container">
-    <div *ngFor="let service of services;" class="example-card-container">
+<div class="grid-container">
+    <div *ngFor="let service of services;" class="grid-card-container">
         <a [routerLink]="[service.url]" routerLinkActive="page">
-            <mat-card appMaterialElevation class="example-card">
+            <mat-card appMaterialElevation class="grid-card">
                 <mat-card-title>{{service.title}}</mat-card-title>
                 <mat-card-content>
                     <p>{{service.description}}</p>

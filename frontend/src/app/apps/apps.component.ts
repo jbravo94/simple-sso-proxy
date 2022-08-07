@@ -15,7 +15,7 @@ export class AppsComponent implements OnInit {
 
   displayedColumns: string[] = ['name', 'baseUrl', 'proxyUrl', 'options'];
 
-  dataSource = new ExampleDataSource([]);
+  dataSource = new TableDataSource([]);
 
   constructor(private appsService: AppsService, public dialog: MatDialog) {
     this.refresh();
@@ -59,7 +59,7 @@ export class AppsComponent implements OnInit {
 }
 
 
-class ExampleDataSource extends DataSource<App> {
+class TableDataSource extends DataSource<App> {
   private _dataStream = new ReplaySubject<App[]>();
 
   constructor(initialData: App[]) {

@@ -1,14 +1,14 @@
-.example-card {
+.grid-card {
     max-width: 400px;
     margin: auto;
     height: 200px;
 }
 
-.example-card-container {
+.grid-card-container {
     margin: 10px;
 }
 
-.example-container {
+.grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }

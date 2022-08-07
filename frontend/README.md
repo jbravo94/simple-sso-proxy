@@ -72,10 +72,8 @@ Update scripting api
 unit test
 docker build
 ngrx
-check for example
 
+mention:
 routing
-grid
-
 module
 https://juristr.com/blog/2021/02/common-chunk-lazy-loading-angular-cli/
