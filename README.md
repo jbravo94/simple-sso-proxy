@@ -305,3 +305,54 @@ AspectJ Bytecode weaving needs package phase because of postprocessing after lom
 JAVA_HOME=/opt/java/jdk-17.0.3+7 mvn clean package -Dmaven.test.skip=true
 
 reactive mongo
+
+
+Frontend:
+
+https://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/
+https://stackoverflow.com/questions/44593237/elevate-md-card-in-angular-material
+
+* Add forget password
+
+* App login with multiple promises to create progressbar
+
+* Add theming
+* Add breadcrumbs
+
+* Add Dialogs forms with pristine
+* Adds App in sidebar
+
+* Patterns
+* Algorithms
+* Datastructures
+
+Groovy Editor
+https://github.com/materiahq/ngx-monaco-editor
+https://gist.github.com/Ruminat/42364312e90ba5d71875697ede66990e
+
+* Factory for service testing
+* Confirmation for Deletion
+* Top Left Toast with autoclose
+
+https://stackoverflow.com/questions/35327929/angular-2-ngmodel-in-child-component-updates-parent-component-property
+https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage
+https://ngrx.io/
+https://stackoverflow.com/questions/6182315/how-can-i-do-base64-encoding-in-node-js
+https://medium.com/angular-shots/shot-3-how-to-add-http-headers-to-every-request-in-angular-fab3d10edc26
+
+Mention here Chrome CORS Plugin: Moesif Origin & CORS Changer
+https://gist.github.com/mwrouse/05d8c11cd3872c19c684bd1904a2202e
+https://stackoverflow.com/questions/61217446/how-can-i-get-suggestions-registercompletionitemprovider-to-show-between-curly
+
+Change setting cookie via javascript to set cookie via HTTP Set-Cookie and maybe redirect
+https://codecraft.tv/courses/angular/unit-testing/routing/
+
+Update scripting api
+unit test
+docker build
+ngrx
+
+mention:
+routing
+module
+https://juristr.com/blog/2021/02/common-chunk-lazy-loading-angular-cli/
