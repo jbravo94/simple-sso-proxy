@@ -9,11 +9,11 @@ import { FormsModule } from '@angular/forms';
 
 // Components
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
-import { LoginComponent } from './components/login/login.component';
-import { HomeComponent } from './components/home/home.component';
-import { SettingsComponent } from './components/settings/settings.component'
-import { AppsComponent } from './components/apps/apps.component';
+import { NavigationComponent } from './navigation/navigation.component';
+import { LoginComponent } from './authentication/login.component';
+import { HomeComponent } from './home/home.component';
+import { SettingsComponent } from './settings/settings.component'
+import { AppsComponent } from './apps/apps.component';
 import { AppDialog } from './dialogs/app/app.dialog';
 
 // Material Components
@@ -28,9 +28,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ScriptingComponent } from './components/scripting/scripting.component';
+import { ScriptingComponent } from './scripting/scripting.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { BearerTokenInterceptor } from './interceptors/bearer-token.interceptor';
+import { BearerTokenInterceptor } from './token/bearer-token.interceptor';
 
 const MATERIAL_MODULES = [
   MatIconModule,

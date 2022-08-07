@@ -1,7 +1,7 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { AuthService } from 'src/app/authentication/auth.service';
 import { Location } from '@angular/common';
 
 import { NavigationComponent } from './navigation.component';

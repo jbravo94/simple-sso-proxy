@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, ReplaySubject } from 'rxjs';
-import { App } from 'src/app/models/app';
-import { AppsService } from 'src/app/services/apps/apps.service';
+import { App } from 'src/app/apps/app';
+import { AppsService } from 'src/app/apps/apps.service';
 import { MatDialog } from '@angular/material/dialog';
 import { AppDialog, DialogType } from 'src/app/dialogs/app/app.dialog';
 

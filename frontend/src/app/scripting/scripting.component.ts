@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ScriptingService } from 'src/app/services/scripting/scripting.service';
+import { ScriptingService } from 'src/app/scripting/scripting.service';
 
 @Component({
   selector: 'app-scripting',

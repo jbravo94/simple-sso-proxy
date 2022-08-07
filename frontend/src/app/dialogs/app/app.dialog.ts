@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { App } from 'src/app/models/app';
-import { AppsService } from 'src/app/services/apps/apps.service';
+import { App } from 'src/app/apps/app';
+import { AppsService } from 'src/app/apps/apps.service';
 
 export enum DialogType {
   CREATE = "Create",

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LocalTokenService } from '../services/local-token/local-token.service';
+import { LocalTokenService } from 'src/app/token/local-token.service';
 
 @Injectable()
 export class BearerTokenInterceptor implements HttpInterceptor {
