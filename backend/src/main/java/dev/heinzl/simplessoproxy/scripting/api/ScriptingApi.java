@@ -11,7 +11,8 @@ import dev.heinzl.simplessoproxy.scripting.RepositoryFacade;
 import groovy.lang.Closure;
 
 public interface ScriptingApi {
-    void addProxyRequestHeaderIfNotPreset(ServerWebExchange exchange, String key, String value);
+    void addProxyRequestHeaderIfNotPreset(ServerWebExchange exchange, String key,
+            String value);
 
     void addProxyResponseHeaderIfNotPreset(ServerWebExchange exchange, String key, String value);
 
