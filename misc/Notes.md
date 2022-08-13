@@ -61,6 +61,7 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 * Jacoco directory => target/site/jacoco
 * License Update: mvn license:format
 * Javadoc: mvn javadoc:javadoc => target/site/apidocs
+* Generate Ui Examples: mvn exec:java -Dexec.mainClass="dev.heinzl.simplessoproxy.utils.UiSuggestionGenerator" -Dexec.args="../frontend/src/app/scripting"
 * Caching example for future maybe
 ```
 @Configuration

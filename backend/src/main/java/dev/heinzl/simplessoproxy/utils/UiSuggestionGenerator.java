@@ -3,6 +3,9 @@ package dev.heinzl.simplessoproxy.utils;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,10 +22,25 @@ public class UiSuggestionGenerator {
 
     @Generated
     public static void main(String[] args) throws IOException {
-        UiSuggestionGenerator.generate();
+
+        String errorMessage = "Provide absolute valid path as first argument";
+
+        if (args.length == 0) {
+            throw new IllegalStateException(errorMessage);
+        }
+
+        String directory = args[0];
+
+        Path path = Paths.get(directory);
+
+        if (!Files.exists(path)) {
+            throw new IllegalStateException(errorMessage);
+        }
+
+        UiSuggestionGenerator.generate(directory);
     }
 
-    public static void generate() throws IOException {
+    public static void generate(String directory) throws IOException {
 
         String fileName = "scripting-api-suggestions.ts";
 
@@ -53,7 +71,8 @@ public class UiSuggestionGenerator {
 
         String fileContent = "export const scriptingApiSuggestions = " + sanitizedJSONString + ";";
 
-        File file = new File(fileName);
+        File file = Paths.get(directory).resolve(fileName).toFile();
+
         FileUtils.writeStringToFile(file, fileContent, Charsets.UTF_8);
     }
 }
