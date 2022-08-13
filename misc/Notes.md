@@ -167,6 +167,7 @@ https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
 https://github.com/spring-projects/spring-boot/issues/384
 https://www.baeldung.com/executable-jar-with-maven
 https://maven.apache.org/plugins/maven-shade-plugin/examples/includes-excludes.html
+https://stackoverflow.com/questions/37671125/how-to-configure-spring-security-to-allow-swagger-url-to-be-accessed-without-aut
 
 ## Frontend
 https://github.com/materiahq/ngx-monaco-editor
