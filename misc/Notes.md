@@ -58,6 +58,7 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 * Enable Profile via `-Dspring.profiles.active=dev`
 * AspectJ Bytecode weaving needs package phase because of postprocessing after lombok
 * Swagger UI: http://localhost:8084/swagger-ui/
+* License Update: mvn license:format
 * Caching example for future maybe
 ```
 @Configuration
@@ -163,6 +164,9 @@ https://medium.com/@KosteRico/spring-aop-in-2021-level-up-your-logging-8d1498242
 https://www.javainuse.com/spring/spring-boot-aop
 https://github.com/peterhuba/maven-lombok-with-aspectj
 https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+https://github.com/spring-projects/spring-boot/issues/384
+https://www.baeldung.com/executable-jar-with-maven
+https://maven.apache.org/plugins/maven-shade-plugin/examples/includes-excludes.html
 
 ## Frontend
 https://github.com/materiahq/ngx-monaco-editor
