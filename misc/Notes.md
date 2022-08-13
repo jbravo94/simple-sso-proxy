@@ -161,6 +161,7 @@ https://stackoverflow.com/questions/3555472/mockito-verify-method-arguments
 https://medium.com/@KosteRico/spring-aop-in-2021-level-up-your-logging-8d1498242ba2
 https://www.javainuse.com/spring/spring-boot-aop
 https://github.com/peterhuba/maven-lombok-with-aspectj
+https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
 
 ## Frontend
 https://github.com/materiahq/ngx-monaco-editor
