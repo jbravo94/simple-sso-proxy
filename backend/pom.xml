@@ -219,6 +219,27 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+			<groupId>com.mycila</groupId>
+			<artifactId>license-maven-plugin</artifactId>
+			<version>4.1</version>
+			<configuration>
+				<properties>
+				<owner>Johannes HEINZL</owner>
+				<email>jh.heinzl@gmail.com</email>
+				</properties>
+				<licenseSets>
+				<licenseSet>
+					<header>MIT.txt</header>
+					<excludes>
+					<exclude>**/README</exclude>
+					<exclude>src/test/resources/**</exclude>
+					<exclude>src/main/resources/**</exclude>
+					</excludes>
+				</licenseSet>
+				</licenseSets>
+			</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
