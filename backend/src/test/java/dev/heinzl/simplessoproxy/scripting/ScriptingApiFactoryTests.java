@@ -24,21 +24,19 @@ package dev.heinzl.simplessoproxy.scripting;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import javax.script.ScriptException;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
+import org.springframework.test.context.ActiveProfiles;
 
 import dev.heinzl.simplessoproxy.apps.App;
 
+@ActiveProfiles(profiles = "h2")
 @SpringBootTest
 public class ScriptingApiFactoryTests {
 

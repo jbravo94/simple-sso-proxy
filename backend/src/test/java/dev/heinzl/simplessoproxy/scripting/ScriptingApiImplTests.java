@@ -65,7 +65,6 @@ import com.google.common.collect.Lists;
 
 import org.json.JSONObject;
 import org.apache.groovy.parser.antlr4.util.StringUtils;
-import org.assertj.core.util.Arrays;
 import org.codehaus.groovy.runtime.MethodClosure;
 import org.mockito.ArgumentCaptor;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;

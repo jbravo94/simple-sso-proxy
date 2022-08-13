@@ -55,7 +55,7 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 ```
 * blocking used for better control in gatewayfilter instead of reactive calls
 * Dev Tools > Application > Storage > Tick all options after "Clear Site Data" button > Clear Site Data
-* Enable Profile via `-Dspring.profiles.active=dev`
+* Enable Profile via `-Dspring.profiles.active=dev` or `-Dspring.profiles.active=dev,h2`
 * AspectJ Bytecode weaving needs package phase because of postprocessing after lombok
 * Swagger UI: http://localhost:8084/swagger-ui/
 * Jacoco directory => target/site/jacoco
@@ -171,6 +171,8 @@ https://github.com/spring-projects/spring-boot/issues/384
 https://www.baeldung.com/executable-jar-with-maven
 https://maven.apache.org/plugins/maven-shade-plugin/examples/includes-excludes.html
 https://stackoverflow.com/questions/37671125/how-to-configure-spring-security-to-allow-swagger-url-to-be-accessed-without-aut
+https://www.baeldung.com/maven-java-main-method
+https://www.baeldung.com/spring-boot-h2-database
 
 ## Frontend
 https://github.com/materiahq/ngx-monaco-editor
