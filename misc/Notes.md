@@ -58,7 +58,9 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 * Enable Profile via `-Dspring.profiles.active=dev`
 * AspectJ Bytecode weaving needs package phase because of postprocessing after lombok
 * Swagger UI: http://localhost:8084/swagger-ui/
+* Jacoco directory => target/site/jacoco
 * License Update: mvn license:format
+* Javadoc: mvn javadoc:javadoc => target/site/apidocs
 * Caching example for future maybe
 ```
 @Configuration
