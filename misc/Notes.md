@@ -57,6 +57,7 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 * Dev Tools > Application > Storage > Tick all options after "Clear Site Data" button > Clear Site Data
 * Enable Profile via `-Dspring.profiles.active=dev`
 * AspectJ Bytecode weaving needs package phase because of postprocessing after lombok
+* Swagger UI: http://localhost:8084/swagger-ui/
 * Caching example for future maybe
 ```
 @Configuration

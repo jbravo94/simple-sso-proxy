@@ -4,6 +4,7 @@ import java.util.stream.Stream;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UserDetailsRepositoryReactiveAuthenticationManager;
@@ -40,20 +41,36 @@ public class SecurityConfig {
         @Bean
         SecurityWebFilterChain springWebFilterChain(ServerHttpSecurity http,
                         JwtTokenProvider tokenProvider,
-                        ReactiveAuthenticationManager reactiveAuthenticationManager) {
+                        ReactiveAuthenticationManager reactiveAuthenticationManager,
+                        Environment env) {
                 final String PATH_POSTS = "/api/**";
+
+                boolean isDevProfile = Stream.of(env.getActiveProfiles()).anyMatch(profile -> profile.equals("dev"));
+
+                final String[] swaggerPaths = new String[] { "/v2/api-docs",
+                                "/configuration/ui",
+                                "/swagger-resources/**",
+                                "/configuration/security",
+                                "/swagger-ui.html",
+                                "/webjars/**" };
 
                 return http.csrf(ServerHttpSecurity.CsrfSpec::disable)
                                 .cors(CorsSpec::disable)
                                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                                 .authenticationManager(reactiveAuthenticationManager)
                                 .securityContextRepository(securityContextRepository())
-                                .authorizeExchange(it -> it
-                                                .pathMatchers(HttpMethod.OPTIONS, PATH_POSTS).permitAll()
-                                                .pathMatchers("/api/v1/auth/login").permitAll()
-                                                .pathMatchers("/**").authenticated()
-                                                .pathMatchers("/users/{user}/**").access(this::currentUserMatchesPath)
-                                                .anyExchange().denyAll())
+                                .authorizeExchange(it -> {
+                                        if (isDevProfile) {
+                                                it.pathMatchers(swaggerPaths).permitAll();
+                                        }
+
+                                        it.pathMatchers(HttpMethod.OPTIONS, PATH_POSTS).permitAll()
+                                                        .pathMatchers("/api/v1/auth/login").permitAll()
+                                                        .pathMatchers("/**").authenticated()
+                                                        .pathMatchers("/users/{user}/**")
+                                                        .access(this::currentUserMatchesPath)
+                                                        .anyExchange().denyAll();
+                                })
                                 .addFilterAt(new JwtTokenAuthenticationFilter(tokenProvider),
                                                 SecurityWebFiltersOrder.HTTP_BASIC)
 
