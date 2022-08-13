@@ -17,7 +17,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import dev.heinzl.simplessoproxy.apps.AppsRepository;
 import dev.heinzl.simplessoproxy.configs.routing.ApiPathRouteLocatorImpl;
 import dev.heinzl.simplessoproxy.scripting.ScriptingApiFactory;
-import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
 import lombok.Generated;
 
 @SpringBootApplication

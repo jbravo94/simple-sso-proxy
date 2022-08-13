@@ -1,20 +1,32 @@
 package dev.heinzl.simplessoproxy.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.commons.io.FileUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.google.common.base.Charsets;
+
 import dev.heinzl.simplessoproxy.scripting.api.ScriptingApi;
+import lombok.Generated;
 
 public class UiSuggestionGenerator {
-    public static void generate() {
 
-        List<String> suggestions = new ArrayList<>();
+    @Generated
+    public static void main(String[] args) throws IOException {
+        UiSuggestionGenerator.generate();
+    }
+
+    public static void generate() throws IOException {
+
+        String fileName = "scripting-api-suggestions.ts";
+
+        JSONArray suggestions = new JSONArray();
 
         for (Method m : ScriptingApi.class.getDeclaredMethods()) {
 
@@ -33,15 +45,15 @@ public class UiSuggestionGenerator {
             jsonObject.put("detail", preview);
             jsonObject.put("insertText", suggestion);
 
-            String str = jsonObject.toString(4);
-
-            String replaceAll = str.replaceAll("1", "monaco.languages.CompletionItemKind.Function");
-
-            suggestions.add(replaceAll);
+            suggestions.put(jsonObject);
         }
 
-        String r = "[\n" + suggestions.stream().collect(Collectors.joining(",\n")) + "\n]";
+        String sanitizedJSONString = suggestions.toString(4).replaceAll("1",
+                "monaco.languages.CompletionItemKind.Function");
 
-        System.out.print(r);
+        String fileContent = "export const scriptingApiSuggestions = " + sanitizedJSONString + ";";
+
+        File file = new File(fileName);
+        FileUtils.writeStringToFile(file, fileContent, Charsets.UTF_8);
     }
 }
