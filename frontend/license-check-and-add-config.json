@@ -1,10 +1,15 @@
 {
-    "ignore": [
-        "*.txt",
-        "**/!(text_file_to_not_ignore).txt",
-        "sub_directory/sub_sub_directory_to_ignore"
-    ],
     "license": "MIT.txt",
+    "licenseFormats": {
+        "html|xml|svg": {
+            "prepend": "<!--",
+            "append": "-->"
+        },
+        "js|ts|css|scss|less": {
+            "prepend": "/*",
+            "append": "*/"
+        }
+    },
     "trailingWhitespace": "TRIM",
     "regexIdentifier": "##"
 }
