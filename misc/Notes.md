@@ -207,3 +207,4 @@ https://www.testcontainers.org/modules/docker_compose/#local-compose-mode
 https://hub.docker.com/r/bitnami/mongodb-sharded/
 https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Docker-Nginx-reverse-proxy-setup-example
 https://unix.stackexchange.com/questions/236084/how-do-i-create-a-service-for-a-shell-script-so-i-can-start-and-stop-it-like-a-d
+https://www.serverlab.ca/tutorials/linux/web-servers-linux/how-to-configure-nginx-for-angular-and-reactjs/
