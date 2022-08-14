@@ -131,8 +131,7 @@ volumes:
 
 ## Frontend
 
-* license-check-and-add add -f license-check-and-add-config.json -r 2022 "Johannes HEINZL"
-
+* npx license-check-and-add add -f license-check-and-add-config.json -r 2022 "Johannes HEINZL"
 
 # Links
 
