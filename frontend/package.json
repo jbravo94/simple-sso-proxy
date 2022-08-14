@@ -23,6 +23,7 @@
     "@materia-ui/ngx-monaco-editor": "^6.0.0",
     "@ngrx/store": "^14.1.0",
     "buffer": "^6.0.3",
+    "license-check-and-add": "^4.0.5",
     "monaco-editor": "^0.33.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
