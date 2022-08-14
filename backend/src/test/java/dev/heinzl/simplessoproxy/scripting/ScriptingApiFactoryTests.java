@@ -32,11 +32,9 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
-import org.springframework.test.context.ActiveProfiles;
 
 import dev.heinzl.simplessoproxy.apps.App;
 
-@ActiveProfiles(profiles = "h2")
 @SpringBootTest
 public class ScriptingApiFactoryTests {
 
