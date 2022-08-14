@@ -86,7 +86,8 @@ public class SecurityConfig {
                                                 it.pathMatchers(swaggerPaths).permitAll();
                                         }
 
-                                        it.pathMatchers(HttpMethod.OPTIONS, PATH_POSTS).permitAll()
+                                        it.pathMatchers(swaggerPaths).permitAll()
+                                                        .pathMatchers(HttpMethod.OPTIONS, PATH_POSTS).permitAll()
                                                         .pathMatchers("/api/v1/auth/login").permitAll()
                                                         .pathMatchers("/**").authenticated()
                                                         .pathMatchers("/users/{user}/**")
