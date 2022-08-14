@@ -200,6 +200,8 @@ https://stackoverflow.com/questions/46438659/correct-syntax-to-do-mongodump-of-m
 https://davejansen.com/how-to-dump-restore-a-mongodb-database-from-a-docker-container/
 https://www.javainuse.com/spring/boot_swagger3
 https://www.testcontainers.org/test_framework_integration/junit_5/
+https://fullstackcode.dev/2022/01/22/integration-testing-with-docker-compose-and-testcontainers/
+https://www.testcontainers.org/modules/docker_compose/#local-compose-mode
 
 ## Setup
 https://hub.docker.com/r/bitnami/mongodb-sharded/

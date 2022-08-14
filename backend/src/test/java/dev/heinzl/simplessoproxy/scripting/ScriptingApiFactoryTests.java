@@ -31,6 +31,7 @@ import java.time.Duration;
 import javax.script.ScriptException;
 
 import org.junit.ClassRule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 
@@ -56,8 +59,14 @@ public class ScriptingApiFactoryTests {
     @ClassRule
     public static DockerComposeContainer environment = new DockerComposeContainer(
             new File("integration-testing/database/mongodb-docker-compose.yml"))
-            .withExposedService("mongo_1", 27018,
-                    Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(30)));
+            .withExposedService("mongo_1", 27017,
+                    Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(15)))
+            .withLocalCompose(true);
+
+    @BeforeAll
+    public static void prepare() {
+        environment.start();
+    }
 
     @Test
     void testSuccessfulSetup() {
