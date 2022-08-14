@@ -25,16 +25,25 @@ package dev.heinzl.simplessoproxy.scripting;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.io.File;
+import java.time.Duration;
+
 import javax.script.ScriptException;
 
+import org.junit.ClassRule;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.gateway.route.builder.GatewayFilterSpec;
+import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.DockerComposeContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
 
 import dev.heinzl.simplessoproxy.apps.App;
 
+@ActiveProfiles("test")
 @SpringBootTest
 public class ScriptingApiFactoryTests {
 
@@ -43,6 +52,12 @@ public class ScriptingApiFactoryTests {
 
     @Mock
     GatewayFilterSpec gatewayFilterSpec;
+
+    @ClassRule
+    public static DockerComposeContainer environment = new DockerComposeContainer(
+            new File("integration-testing/database/mongodb-docker-compose.yml"))
+            .withExposedService("mongo_1", 27018,
+                    Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(30)));
 
     @Test
     void testSuccessfulSetup() {
