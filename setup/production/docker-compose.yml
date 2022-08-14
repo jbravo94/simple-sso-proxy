@@ -32,6 +32,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     volumes:
       - mongodb-data:/data/db
+    #  - ./mongorestore.sh:/docker-entrypoint-initdb.d/mongorestore.sh
+    #  - ./dumps/test:/home/test
 
 volumes:
   mongodb-data:
