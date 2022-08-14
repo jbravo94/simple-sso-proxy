@@ -181,13 +181,13 @@ https://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-ce
 https://stackoverflow.com/questions/44593237/elevate-md-card-in-angular-material
 https://stackoverflow.com/questions/35327929/angular-2-ngmodel-in-child-component-updates-parent-component-property
 https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage
-https://ngrx.io/
 https://stackoverflow.com/questions/6182315/how-can-i-do-base64-encoding-in-node-js
 https://medium.com/angular-shots/shot-3-how-to-add-http-headers-to-every-request-in-angular-fab3d10edc26
 https://gist.github.com/mwrouse/05d8c11cd3872c19c684bd1904a2202e
 https://stackoverflow.com/questions/61217446/how-can-i-get-suggestions-registercompletionitemprovider-to-show-between-curly
 https://codecraft.tv/courses/angular/unit-testing/routing/
 https://juristr.com/blog/2021/02/common-chunk-lazy-loading-angular-cli/
+https://ngrx.io/guide/store
 
 ## Setup
 https://hub.docker.com/r/bitnami/mongodb-sharded/

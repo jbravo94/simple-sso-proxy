@@ -59,6 +59,7 @@ public class UiSuggestionGenerator {
             JSONObject jsonObject = new JSONObject();
 
             jsonObject.put("label", m.getName());
+            // 1 = monaco.languages.CompletionItemKind.Function
             jsonObject.put("kind", 1);
             jsonObject.put("detail", preview);
             jsonObject.put("insertText", suggestion);
@@ -66,8 +67,7 @@ public class UiSuggestionGenerator {
             suggestions.put(jsonObject);
         }
 
-        String sanitizedJSONString = suggestions.toString(4).replaceAll("1",
-                "monaco.languages.CompletionItemKind.Function");
+        String sanitizedJSONString = suggestions.toString(4);
 
         String fileContent = "export const scriptingApiSuggestions = " + sanitizedJSONString + ";";
 

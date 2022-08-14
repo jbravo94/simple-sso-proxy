@@ -30,6 +30,7 @@ import { ScriptingComponent } from './scripting/scripting.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BearerTokenInterceptor } from './token/bearer-token.interceptor';
 import { GridComponent } from './grid/grid.component';
+import { StoreModule } from '@ngrx/store';
 
 const MATERIAL_MODULES = [
   MatIconModule,
@@ -63,7 +64,8 @@ const MATERIAL_MODULES = [
     HttpClientModule,
     FormsModule,
     MonacoEditorModule,
-    ...MATERIAL_MODULES
+    ...MATERIAL_MODULES,
+    StoreModule.forRoot({}, {})
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BearerTokenInterceptor, multi: true },
