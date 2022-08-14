@@ -20,6 +20,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+import { environment } from "src/environments/environment";
+
 export const COOKIE_NAME: string = 'simple-sso-proxy-token';
-export const BACKEND_URL: string = 'http://10.0.0.225:8084';
+export const BACKEND_URL: string = environment.production ? '' : 'http://10.0.0.225:8084';
 export const IS_DEV: boolean = false;
