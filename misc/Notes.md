@@ -63,6 +63,7 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 * License Update: mvn license:format
 * Javadoc: mvn javadoc:javadoc => target/site/apidocs
 * Generate Ui Examples: mvn exec:java -Dexec.mainClass="dev.heinzl.simplessoproxy.utils.UiSuggestionGenerator" -Dexec.args="../frontend/src/app/scripting"
+* docker exec f620b7d5a083 mongodump --username root --password example --authenticationDatabase admin --db test --out backup
 * Caching example for future maybe
 ```
 @Configuration
@@ -194,6 +195,11 @@ https://stackoverflow.com/questions/61217446/how-can-i-get-suggestions-registerc
 https://codecraft.tv/courses/angular/unit-testing/routing/
 https://juristr.com/blog/2021/02/common-chunk-lazy-loading-angular-cli/
 https://ngrx.io/guide/store
+https://stackoverflow.com/questions/66067320/running-mongorestore-on-docker-once-the-container-starts
+https://stackoverflow.com/questions/46438659/correct-syntax-to-do-mongodump-of-mongodb-docker-instance
+https://davejansen.com/how-to-dump-restore-a-mongodb-database-from-a-docker-container/
+https://www.javainuse.com/spring/boot_swagger3
+https://www.testcontainers.org/test_framework_integration/junit_5/
 
 ## Setup
 https://hub.docker.com/r/bitnami/mongodb-sharded/

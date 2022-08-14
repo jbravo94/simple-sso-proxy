@@ -7,7 +7,9 @@ mongo:
     MONGO_INITDB_ROOT_USERNAME: root
     MONGO_INITDB_ROOT_PASSWORD: example
   volumes:
-    - /opt/mongo/data:/data/db
+    - ./data:/data/db
+    - ./mongorestore.sh:/docker-entrypoint-initdb.d/mongorestore.sh
+    - ./test:/home/test
 
 mongo-express:
   image: mongo-express
