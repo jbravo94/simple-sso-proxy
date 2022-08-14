@@ -31,6 +31,7 @@ import java.time.Duration;
 import javax.script.ScriptException;
 
 import org.junit.ClassRule;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -66,6 +67,11 @@ public class ScriptingApiFactoryTests {
     @BeforeAll
     public static void prepare() {
         environment.start();
+    }
+
+    @AfterAll
+    public static void tearDown() {
+        environment.stop();
     }
 
     @Test
