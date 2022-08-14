@@ -1,4 +1,14 @@
 {
+    "ignore": [
+        "*",
+        "node_modules",
+        "coverage",
+        "*.pdf",
+        "misc",
+        "dist",
+        ".vscode",
+        ".angular"
+    ],
     "license": "MIT.txt",
     "licenseFormats": {
         "html|xml|svg": {
@@ -10,6 +20,5 @@
             "append": "*/"
         }
     },
-    "trailingWhitespace": "TRIM",
-    "regexIdentifier": "##"
+    "trailingWhitespace": "TRIM"
 }
