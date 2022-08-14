@@ -1,13 +1,11 @@
 {
     "ignore": [
-        "*",
-        "node_modules",
-        "coverage",
-        "*.pdf",
-        "misc",
-        "dist",
         ".vscode",
-        ".angular"
+        ".angular",
+        "*",
+        "coverage",
+        "misc",
+        "src/assets"
     ],
     "license": "MIT.txt",
     "licenseFormats": {
