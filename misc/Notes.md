@@ -26,6 +26,8 @@
 * Measuring Coverage
 * Defensive Programming
 * Apply Multithreading
+* Enable embedded H2 database to enable spring boot tests
+* Implement Checkstyle
 
 ## Frontend
 * Cypress Frontend e2e tests

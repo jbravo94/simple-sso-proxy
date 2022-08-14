@@ -278,7 +278,7 @@
 				<version>3.4.1</version>
 				<configuration>
 					<subpackages>
-						dev.heinzl.simplessoproxy.scripting
+						dev.heinzl.simplessoproxy.scripting.api
 					</subpackages>
 				</configuration>
 			</plugin>

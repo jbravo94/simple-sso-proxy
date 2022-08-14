@@ -22,6 +22,13 @@
  */
 package dev.heinzl.simplessoproxy.scripting.api;
 
+/**
+ * This enum represents a list of suggested default script types which are
+ * usually needed for authentication flows.
+ * 
+ * @author Johannes HEINZL
+ * @author heinzl.dev
+ */
 public enum ScriptType {
     LOGIN,
     LOGOUT,
