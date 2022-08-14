@@ -134,6 +134,18 @@ This sections shows the results of the applied unit testing.
 ![Backend Coverage Overview](misc/backend-coverage-overview.png?raw=true "Backend Coverage Overview")
 ![Backend Coverage](misc/backend-coverage.png?raw=true "Backend Coverage")
 
+### Documentation
+
+This section shows generated documentation.
+
+#### Openapi Swagger
+
+![Backend OpenAPI Swagger](misc/backend-openapi-swagger.png?raw=true "Backend OpenAPI Swagger")
+
+#### Javadoc
+
+![Backend Javadoc](misc/backend-javadoc.png?raw=true "Backend Javadoc")
+
 ## Build automation
 
 The backend build automation is performed via Maven.
