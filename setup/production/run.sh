@@ -18,8 +18,11 @@ restart)
 reset)
    docker-compose down -v
    ;;
+build)
+   docker-compose build
+   ;;
 *)
-   echo "Usage: $0 {start|stop|status|restart|reset}"
+   echo "Usage: $0 {start|stop|status|restart|reset|build}"
 esac
 
 exit 0 

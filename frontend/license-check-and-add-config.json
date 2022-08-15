@@ -1,0 +1,23 @@
+{
+    "ignore": [
+        ".vscode",
+        ".angular",
+        "*",
+        "coverage",
+        "misc",
+        "src/assets"
+    ],
+    "license": "MIT.txt",
+    "licenseFormats": {
+        "html|xml|svg": {
+            "prepend": "<!--",
+            "append": "-->"
+        },
+        "js|ts|css|scss|less": {
+            "prepend": "/*",
+            "append": "*/"
+        }
+    },
+    "trailingWhitespace": "TRIM",
+    "regexIdentifier": "##"
+}
