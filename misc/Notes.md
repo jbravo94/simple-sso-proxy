@@ -26,6 +26,7 @@
 * Measuring Coverage
 * Defensive Programming
 * Apply Multithreading
+* Implement Checkstyle
 
 ## Frontend
 * Cypress Frontend e2e tests
@@ -57,6 +58,11 @@ keytool -keystore truststore.jks -alias demo.mybahmni.org -import -file cert.pem
 * Dev Tools > Application > Storage > Tick all options after "Clear Site Data" button > Clear Site Data
 * Enable Profile via `-Dspring.profiles.active=dev`
 * AspectJ Bytecode weaving needs package phase because of postprocessing after lombok
+* Swagger UI: http://localhost:8084/swagger-ui/
+* Jacoco directory => target/site/jacoco
+* License Update: mvn license:format
+* Javadoc: mvn javadoc:javadoc => target/site/apidocs
+* Generate Ui Examples: mvn exec:java -Dexec.mainClass="dev.heinzl.simplessoproxy.utils.UiSuggestionGenerator" -Dexec.args="../frontend/src/app/scripting"
 * Caching example for future maybe
 ```
 @Configuration
@@ -72,6 +78,15 @@ public class CacheConfig {
     }
 }
 ```
+
+## Frontend
+
+* npx license-check-and-add add -f license-check-and-add-config.json -r 2022 "Johannes HEINZL"
+
+## Setup
+
+* docker exec f620b7d5a083 mongodump --username root --password example --authenticationDatabase admin --db test --out backup
+* nginx -s reload
 * Mongo DB Sharded Example for future maybe
 ```
 version: '2'
@@ -161,6 +176,14 @@ https://stackoverflow.com/questions/3555472/mockito-verify-method-arguments
 https://medium.com/@KosteRico/spring-aop-in-2021-level-up-your-logging-8d1498242ba2
 https://www.javainuse.com/spring/spring-boot-aop
 https://github.com/peterhuba/maven-lombok-with-aspectj
+https://www.baeldung.com/swagger-2-documentation-for-spring-rest-api
+https://github.com/spring-projects/spring-boot/issues/384
+https://www.baeldung.com/executable-jar-with-maven
+https://maven.apache.org/plugins/maven-shade-plugin/examples/includes-excludes.html
+https://stackoverflow.com/questions/37671125/how-to-configure-spring-security-to-allow-swagger-url-to-be-accessed-without-aut
+https://www.baeldung.com/maven-java-main-method
+https://www.baeldung.com/spring-boot-h2-database
+https://rieckpil.de/mongodb-testcontainers-setup-for-datamongotest/
 
 ## Frontend
 https://github.com/materiahq/ngx-monaco-editor
@@ -169,15 +192,23 @@ https://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-ce
 https://stackoverflow.com/questions/44593237/elevate-md-card-in-angular-material
 https://stackoverflow.com/questions/35327929/angular-2-ngmodel-in-child-component-updates-parent-component-property
 https://stormpath.com/blog/where-to-store-your-jwts-cookies-vs-html5-web-storage
-https://ngrx.io/
 https://stackoverflow.com/questions/6182315/how-can-i-do-base64-encoding-in-node-js
 https://medium.com/angular-shots/shot-3-how-to-add-http-headers-to-every-request-in-angular-fab3d10edc26
 https://gist.github.com/mwrouse/05d8c11cd3872c19c684bd1904a2202e
 https://stackoverflow.com/questions/61217446/how-can-i-get-suggestions-registercompletionitemprovider-to-show-between-curly
 https://codecraft.tv/courses/angular/unit-testing/routing/
 https://juristr.com/blog/2021/02/common-chunk-lazy-loading-angular-cli/
+https://ngrx.io/guide/store
+https://stackoverflow.com/questions/66067320/running-mongorestore-on-docker-once-the-container-starts
+https://stackoverflow.com/questions/46438659/correct-syntax-to-do-mongodump-of-mongodb-docker-instance
+https://davejansen.com/how-to-dump-restore-a-mongodb-database-from-a-docker-container/
+https://www.javainuse.com/spring/boot_swagger3
+https://www.testcontainers.org/test_framework_integration/junit_5/
+https://fullstackcode.dev/2022/01/22/integration-testing-with-docker-compose-and-testcontainers/
+https://www.testcontainers.org/modules/docker_compose/#local-compose-mode
 
 ## Setup
 https://hub.docker.com/r/bitnami/mongodb-sharded/
 https://www.theserverside.com/blog/Coffee-Talk-Java-News-Stories-and-Opinions/Docker-Nginx-reverse-proxy-setup-example
 https://unix.stackexchange.com/questions/236084/how-do-i-create-a-service-for-a-shell-script-so-i-can-start-and-stop-it-like-a-d
+https://www.serverlab.ca/tutorials/linux/web-servers-linux/how-to-configure-nginx-for-angular-and-reactjs/
